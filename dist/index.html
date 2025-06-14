@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Data Annotation Platform</title>
-    <link href="./output.css" rel="stylesheet">
+    <!-- React and ReactDOM from unpkg with correct integrity -->
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
+    <!-- Babel standalone for in-browser JSX (development only) -->
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js" integrity="sha384-AISI5AuDG6E8DeEiFMVB3rGQxhZt24OU0avMp+GMV64+tpnA3+Z6F5MT0f96iPva" crossorigin="anonymous"></script>
+    <!-- Tailwind CDN (replace with compiled CSS in production: https://tailwindcss.com/docs/installation) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' };
+    </script>
+    <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-98SPL77FT1"></script>
     <script>
         window.dataLayer = window.dataLayer || [];
@@ -13,790 +23,949 @@
         gtag('config', 'G-98SPL77FT1');
         window.disableAnalytics = false;
     </script>
-    <style>
-        .tooltip {
-            position: relative;
-        }
-        .tooltip .tooltip-text {
-            visibility: hidden;
-            width: 140px;
-            background-color: #555;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 5px;
-            position: absolute;
-            z-index: 50;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -70px;
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        .tooltip:hover .tooltip-text {
-            visibility: visible;
-            opacity: 1;
-        }
-        .label-btn {
-            transition: all 0.2s ease;
-        }
-        .label-btn:checked + .label-text {
-            font-weight: bold;
-            transform: scale(1.05);
-        }
-        #progressBar {
-            transition: width 0.3s ease;
-        }
-        #privacyNotice {
-            z-index: 1000;
-        }
-        #currentData {
-            word-break: break-word;
-        }
-        .dark .bg-gray-50 { background-color: #1f2937; }
-        .dark .bg-white { background-color: #374151; }
-        .dark .text-gray-800 { color: #e5e7eb; }
-        .dark .text-gray-700 { color: #d1d5db; }
-        .dark .text-gray-600 { color: #9ca3af; }
-        .dark .bg-gray-100 { background-color: #4b5563; }
-        .dark .bg-gray-200 { background-color: #6b7280; }
-        .dark .border-gray-300 { border-color: #4b5563; }
-        .dark .text-green-500 { color: #34d399; }
-        .dark .text-red-500 { color: #f87171; }
-        .dark .bg-blue-600 { background-color: #2563eb; }
-        .dark .bg-gray-600 { background-color: #4b5563; }
-        .dark .bg-purple-600 { background-color: #7c3aed; }
-        .dark .bg-yellow-600 { background-color: #d97706; }
-        .dark .bg-red-600 { background-color: #dc2626; }
-        .dark .bg-indigo-600 { background-color: #4f46e5; }
-        .dark .bg-green-600 { background-color: #16a34a; }
-        .dark .bg-orange-600 { background-color: #ea580c; }
-        .dark .hover\:bg-blue-700:hover { background-color: #1d4ed8; }
-        .dark .hover\:bg-gray-700:hover { background-color: #374151; }
-        .dark .hover\:bg-purple-700:hover { background-color: #6d28d9; }
-        .dark .hover\:bg-yellow-700:hover { background-color: #b45309; }
-        .dark .hover\:bg-red-700:hover { background-color: #b91c1c; }
-        .dark .hover\:bg-indigo-700:hover { background-color: #4338ca; }
-        .dark .hover\:bg-green-700:hover { background-color: #15803d; }
-        .dark .hover\:bg-orange-700:hover { background-color: #c2410c; }
-        .dark .text-blue-500 { color: #60a5fa; }
-        .dark .hover\:text-blue-700:hover { color: #3b82f6; }
-        .dark .bg-green-100 { background-color: #064e3b; }
-        .dark .text-green-800 { color: #6ee7b7; }
-        .dark .hover\:bg-green-200:hover { background-color: #047857; }
-        .dark .bg-gray-100 { background-color: #4b5563; }
-        .dark .text-gray-800 { color: #d1d5db; }
-        .dark .hover\:bg-gray-200:hover { background-color: #6b7280; }
-        .dark .bg-red-100 { background-color: #7f1d1d; }
-        .dark .text-red-800 { color: #f87171; }
-        .dark .hover\:bg-red-200:hover { background-color: #991b1b; }
-        .dark .bg-yellow-100 { background-color: #713f12; }
-        .dark .text-yellow-800 { color: #facc15; }
-        .dark .hover\:bg-yellow-200:hover { background-color: #854d0e; }
-        .dark .bg-blue-100 { background-color: #1e3a8a; }
-        .dark .text-blue-800 { color: #93c5fd; }
-        .dark .hover\:bg-blue-200:hover { background-color: #1e40af; }
-        .dark .bg-gray-800 { background-color: #1f2937; }
-        .transition-colors {
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-    </style>
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 flex flex-col items-center min-h-screen font-sans transition-colors">
-    <div class="bg-white dark:bg-gray-800 p-4 sm:p-8 rounded-xl card-shadow w-full max-w-3xl mx-2 sm:mx-0 transition-colors flex-grow">
-        <h1 class="text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 text-center transition-colors">Data Annotation Platform</h1>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen font-sans transition-colors duration-300">
+    <div id="root"></div>
+    <script type="text/babel">
+        const { useState, useEffect, useRef, useCallback, useMemo } = React;
 
-        <!-- CSV Upload -->
-        <div class="mb-6">
-            <label for="csvUpload" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Upload CSV File:</label>
-            <input type="file" id="csvUpload" accept="text/csv,.csv" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-colors bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200">
-            <p id="uploadStatus" class="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mt-2 transition-colors">Select a CSV file (e.g., with text columns). If CSV files are not visible, select 'All Files' in the file picker.</p>
-        </div>
+        /**
+         * File Upload Component
+         * @param {Object} props
+         * @param {Function} props.onFileUpload
+         */
+        const FileUpload = ({ onFileUpload }) => {
+            const [dragActive, setDragActive] = useState(false);
+            const fileInputRef = useRef(null);
 
-        <!-- Progress and File Info -->
-        <div class="mb-4 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-            <div class="flex flex-col">
-                <span id="fileInfo" class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors">No file loaded</span>
-                <span id="progressCount" class="text-xs sm:text-sm font-medium text-gray-600 dark:text-gray-400 mt-1 transition-colors">Annotated 0 of 0 items</span>
-            </div>
-            <div class="w-full sm:w-1/3">
-                <div class="bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 transition-colors">
-                    <div id="progressBar" class="bg-primary h-2.5 rounded-full" style="width: 0%"></div>
-                </div>
-            </div>
-        </div>
+            const handleDrag = (e) => {
+                e.preventDefault();
+                setDragActive(e.type === 'dragenter' || e.type === 'dragover');
+            };
 
-        <!-- Data Display -->
-        <div id="dataDisplay" class="bg-gray-100 dark:bg-gray-700 p-4 sm:p-6 rounded-lg mb-6 border transition-colors">
-            <div id="currentData" class="text-base sm:text-lg text-gray-800 dark:text-gray-200 transition-colors">Upload a CSV file to load data for annotation.</div>
-            <p id="endOfFile" class="text-xs sm:text-sm text-red-500 dark:text-red-400 mt-2 hidden transition-colors">End of file reached.</p>
-        </div>
-
-        <!-- Annotation Input -->
-        <div class="mb-6">
-            <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Select Label:</label>
-            <div id="labelsContainer" class="flex flex-wrap gap-2 sm:gap-4"></div>
-            <div id="othersInput" class="mt-4 hidden">
-                <label for="otherDetails" class="block text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">Additional Details:</label>
-                <textarea id="otherDetails" rows="4" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm transition-colors bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200" placeholder="Enter additional details for 'Others'..."></textarea>
-            </div>
-        </div>
-
-        <!-- Controls -->
-        <div class="flex flex-col sm:flex-row justify-between mb-6 gap-4">
-            <button id="prevBtn" class="tooltip bg-secondary text-white px-4 py-3 rounded-lg hover:bg-gray-700 disabled:opacity-50 text-sm sm:text-base transition-colors" disabled>
-                Previous
-                <span class="tooltip-text">Go to previous data item (←)</span>
-            </button>
-            <button id="saveBtn" class="tooltip bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm sm:text-base transition-colors" disabled>
-                Save Annotation
-                <span class="tooltip-text">Save and go to next item (Enter)</span>
-            </button>
-            <button id="nextBtn" class="tooltip bg-secondary text-white px-4 py-3 rounded-lg hover:bg-gray-700 disabled:opacity-50 text-sm sm:text-base transition-colors" disabled>
-                Next Data
-                <span class="tooltip-text">Go to next data item (→)</span>
-            </button>
-        </div>
-        <p id="saveStatus" class="text-xs sm:text-sm text-green-500 dark:text-green-400 text-center hidden transition-colors">Annotation saved!</p>
-
-        <!-- Additional Controls -->
-        <div class="flex flex-wrap justify-between mb-6 gap-4">
-            <button id="viewAnnotationsBtn" class="tooltip bg-purple-600 text-white px-4 py-3 rounded-lg hover:bg-purple-700 disabled:opacity-50 text-sm sm:text-base flex-1 sm:flex-none transition-colors" disabled>
-                View Annotations
-                <span class="tooltip-text">See all saved annotations</span>
-            </button>
-            <button id="undoBtn" class="tooltip bg-yellow-600 text-white px-4 py-3 rounded-lg hover:bg-yellow-700 disabled:opacity-50 text-sm sm:text-base flex-1 sm:flex-none transition-colors" disabled>
-                Undo Last
-                <span class="tooltip-text">Revert last annotation (Ctrl+Z)</span>
-            </button>
-            <button id="clearAnnotationsBtn" class="tooltip bg-orange-600 text-white px-4 py-3 rounded-lg hover:bg-orange-700 disabled:opacity-50 text-sm sm:text-base flex-1 sm:flex-none transition-colors" disabled>
-                Clear Annotations
-                <span class="tooltip-text">Reset annotations and start new session</span>
-            </button>
-            <button id="resetBtn" class="tooltip bg-red-600 text-white px-4 py-3 rounded-lg hover:bg-red-700 disabled:opacity-50 text-sm sm:text-base flex-1 sm:flex-none transition-colors" disabled>
-                Return to Start
-                <span class="tooltip-text">Go to first data item</span>
-            </button>
-            <button id="settingsBtn" class="tooltip bg-indigo-600 text-white px-4 py-3 rounded-lg hover:bg-indigo-700 text-sm sm:text-base flex-1 sm:flex-none transition-colors">
-                Settings
-                <span class="tooltip-text">Customize labels, column, and theme</span>
-            </button>
-            <button id="downloadBtn" class="tooltip bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-blue-700 disabled:opacity-50 text-sm sm:text-base flex-1 sm:flex-none transition-colors" disabled>
-                Download CSV
-                <span class="tooltip-text">Download annotations as CSV</span>
-            </button>
-        </div>
-
-        <!-- Google Sheets Instructions -->
-        <p class="text-sm text-gray-600 dark:text-gray-400 mb-6 transition-colors">To share with Google Sheets: Download the CSV, then upload it to Google Drive and open it in Google Sheets, or use "File > Import" in Google Sheets.</p>
-
-        <!-- Annotations Modal -->
-        <div id="annotationsModal" class="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center hidden transition-colors">
-            <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl card-shadow w-[95%] sm:w-full max-w-2xl max-h-[80vh] overflow-y-auto transition-colors">
-                <h2 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 transition-colors">Saved Annotations</h2>
-                <ul id="annotationsList" class="list-disc pl-5 mb-4 text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors"></ul>
-                <button id="closeModalBtn" class="bg-secondary text-white px-4 py-3 hover:bg-gray-700 rounded-lg text-sm sm:text-base w-full sm:w-auto transition-colors">Close</button>
-            </div>
-        </div>
-
-        <!-- Settings Modal -->
-        <div id="settingsModal" class="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center hidden transition-colors">
-            <div class="bg-white dark:bg-gray-800 p-4 sm:p-6 rounded-xl card-shadow w-[95%] sm:w-full max-w-md transition-colors">
-                <h2 class="text-base sm:text-lg font-semibold mb-4 text-gray-800 dark:text-gray-200 transition-colors">Settings</h2>
-                <div class="mb-4">
-                    <label for="columnSelect" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Select Column for Annotation:</label>
-                    <select id="columnSelect" class="w-full p-2 border rounded-lg text-sm transition-colors bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200"></select>
-                </div>
-                <div class="mb-4">
-                    <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Theme:</label>
-                    <button id="themeToggleBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm transition-colors">Switch to Dark Theme</button>
-                </div>
-                <h3 class="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors">Customize Labels</h3>
-                <div id="labelsList" class="mb-4 text-sm text-gray-600 dark:text-gray-300 transition-colors"></div>
-                <div class="flex gap-2">
-                    <input id="newLabelInput" type="text" class="w-full p-2 border rounded-lg text-sm transition-colors bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-200" placeholder="Enter new label">
-                    <button id="addLabelBtn" class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-blue-700 text-sm transition-colors">Add</button>
-                </div>
-                <p id="labelError" class="text-xs text-red-500 dark:text-red-400 mt-2 hidden transition-colors">Label must be non-empty and unique.</p>
-                <div class="mt-4 flex justify-end gap-2 flex-col sm:flex-row">
-                    <button id="closeSettingsBtn" class="bg-secondary text-white px-4 py-3 rounded-lg hover:bg-gray-700 text-sm sm:text-base w-full sm:w-auto transition-colors">Close</button>
-                    <button id="saveSettingsBtn" class="bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 text-sm sm:text-base w-full sm:w-auto transition-colors">Save</button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Privacy Notice -->
-        <div id="privacyNotice" class="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex flex-col sm:flex-row justify-between items-center gap-4 transition-colors z-[1000]">
-            <p class="text-xs sm:text-sm flex-1 text-gray-200">We use cookies and Google Analytics to improve your experience. By continuing, you agree to our <a href="./privacy.html" class="underline hover:text-primary transition-colors" target="_blank">Privacy Policy</a>.</p>
-            <div class="flex gap-2 w-full sm:w-auto">
-                <button id="declinePrivacyBtn" class="bg-secondary text-white px-4 py-3 rounded-lg hover:bg-gray-700 text-sm sm:text-base flex-1 transition-colors">Decline</button>
-                <button id="acceptPrivacyBtn" class="bg-primary text-white px-4 py-3 rounded-lg hover:bg-blue-700 text-sm sm:text-base flex-1 transition-colors">Accept</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer class="bg-gray-800 text-white w-full p-4 mt-4 transition-colors">
-        <div class="max-w-3xl mx-auto text-center text-xs sm:text-sm">
-            <p class="mb-2 text-gray-300">© 2025 Data Annotation Platform. All rights reserved.</p>
-            <nav class="flex justify-center gap-4">
-                <a href="./privacy.html" class="text-gray-200 hover:text-primary transition-colors">Privacy Policy</a>
-                <a href="./guide.html" class="text-gray-200 hover:text-primary transition-colors">User Guide</a>
-                <a href="./about.html" class="text-gray-200 hover:text-primary transition-colors">About Us</a>
-                <a href="./contact.html" class="text-gray-200 hover:text-primary transition-colors">Contact Us</a>
-            </nav>
-        </div>
-    </footer>
-
-    <script>
-        let dataItems = [];
-        let annotations = [];
-        let currentIndex = -1;
-        let currentFileName = '';
-        let lastAnnotation = null;
-        let selectedColumn = 0;
-        let columnHeaders = [];
-        let labels = [
-            { name: 'Positive', color: 'bg-green-100 text-green-800 hover:bg-green-200 dark:bg-green-900 dark:text-green-300 dark:hover:bg-green-800' },
-            { name: 'Neutral', color: 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600' },
-            { name: 'Negative', color: 'bg-red-100 text-red-800 hover:bg-red-200 dark:bg-red-900 dark:text-red-300 dark:hover:bg-red-800' },
-            { name: 'Not Applicable', color: 'bg-yellow-100 text-yellow-800 hover:bg-yellow-200 dark:bg-yellow-900 dark:text-yellow-300 dark:hover:bg-yellow-800' },
-            { name: 'Others', color: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800' }
-        ];
-        let tempLabels = [...labels];
-        let tempColumn = selectedColumn;
-
-        const csvUpload = document.getElementById('csvUpload');
-        const uploadStatus = document.getElementById('uploadStatus');
-        const fileInfo = document.getElementById('fileInfo');
-        const progressCount = document.getElementById('progressCount');
-        const progressBar = document.getElementById('progressBar');
-        const dataDisplay = document.getElementById('currentData');
-        const endOfFile = document.getElementById('endOfFile');
-        const labelsContainer = document.getElementById('labelsContainer');
-        const othersInput = document.getElementById('othersInput');
-        const otherDetails = document.getElementById('otherDetails');
-        const prevBtn = document.getElementById('prevBtn');
-        const saveBtn = document.getElementById('saveBtn');
-        const nextBtn = document.getElementById('nextBtn');
-        const saveStatus = document.getElementById('saveStatus');
-        const viewAnnotationsBtn = document.getElementById('viewAnnotationsBtn');
-        const undoBtn = document.getElementById('undoBtn');
-        const clearAnnotationsBtn = document.getElementById('clearAnnotationsBtn');
-        const resetBtn = document.getElementById('resetBtn');
-        const settingsBtn = document.getElementById('settingsBtn');
-        const downloadBtn = document.getElementById('downloadBtn');
-        const annotationsModal = document.getElementById('annotationsModal');
-        const annotationsList = document.getElementById('annotationsList');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const settingsModal = document.getElementById('settingsModal');
-        const columnSelect = document.getElementById('columnSelect');
-        const labelsList = document.getElementById('labelsList');
-        const newLabelInput = document.getElementById('newLabelInput');
-        const addLabelBtn = document.getElementById('addLabelBtn');
-        const labelError = document.getElementById('labelError');
-        const closeSettingsBtn = document.getElementById('closeSettingsBtn');
-        const saveSettingsBtn = document.getElementById('saveSettingsBtn');
-        const privacyNotice = document.getElementById('privacyNotice');
-        const acceptPrivacyBtn = document.getElementById('acceptPrivacyBtn');
-        const declinePrivacyBtn = document.getElementById('declinePrivacyBtn');
-        const themeToggleBtn = document.getElementById('themeToggleBtn');
-
-        function initTheme() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.body.classList.toggle('dark', savedTheme === 'dark');
-            themeToggleBtn.textContent = savedTheme === 'dark' ? 'Switch to Light Theme' : 'Switch to Dark Theme';
-        }
-
-        function toggleTheme() {
-            const isDark = document.body.classList.toggle('dark');
-            const theme = isDark ? 'dark' : 'light';
-            localStorage.setItem('theme', theme);
-            themeToggleBtn.textContent = isDark ? 'Switch to Light Theme' : 'Switch to Dark Theme';
-            if (!window.disableAnalytics) {
-                gtag('event', 'theme_toggle', { 'event_category': 'display', 'event_label': theme });
-            }
-        }
-
-        function initPrivacyNotice() {
-            try {
-                console.log('Initializing privacy notice...');
-                if (localStorage.getItem('privacyConsent') === 'true') {
-                    console.log('Privacy already accepted, hiding notice.');
-                    privacyNotice.classList.add('hidden');
-                } else {
-                    console.log('Showing privacy notice.');
-                    privacyNotice.classList.remove('hidden');
+            const handleDrop = (e) => {
+                e.preventDefault();
+                setDragActive(false);
+                const file = e.dataTransfer.files[0];
+                if (file) {
+                    fileInputRef.current.files = e.dataTransfer.files;
+                    onFileUpload({ target: fileInputRef.current });
                 }
-                acceptPrivacyBtn.addEventListener('click', () => {
-                    localStorage.setItem('privacyConsent', 'true');
-                    privacyNotice.classList.add('hidden');
-                    console.log('Privacy accepted.');
-                    if (!window.disableAnalytics) {
-                        gtag('event', 'accept_privacy', { 'event_category': 'Privacy' });
-                    }
-                });
-                declinePrivacyBtn.addEventListener('click', () => {
-                    localStorage.setItem('privacyConsent', 'true');
-                    window.disableAnalytics = true;
-                    privacyNotice.classList.add('hidden');
-                    console.log('Privacy declined, analytics disabled.');
-                    if (!window.disableAnalytics) {
-                        gtag('event', 'decline_privacy', { 'event_category': 'Privacy' });
-                    }
-                });
-            } catch (error) {
-                console.error('Error initializing privacy notice:', error);
-                alert('Failed to initialize privacy notice. Check console for details.');
-            }
-        }
+            };
 
-        function renderLabels() {
-            labelsContainer.innerHTML = '';
-            labels.forEach((label, index) => {
-                const labelElement = document.createElement('label');
-                labelElement.className = 'flex items-center';
-                labelElement.innerHTML = `
-                    <input type="radio" name="label" value="${label.name}" class="hidden label-btn">
-                    <span class="label-text ${label.color} px-3 py-2 rounded-lg cursor-pointer text-sm sm:text-base transition-colors">${label.name}</span>
-                `;
-                labelsContainer.appendChild(labelElement);
-            });
-            const neutralInput = document.querySelector('input[value="Neutral"]');
-            if (neutralInput) neutralInput.checked = true;
-            document.querySelectorAll('input[name="label"]').forEach(input => {
-                input.addEventListener('change', () => {
-                    othersInput.classList.toggle('hidden', input.value !== 'Others');
-                    if (input.value !== 'Others') otherDetails.value = '';
-                });
-            });
-        }
+            return (
+                <div
+                    className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${dragActive ? 'border-blue-500 bg-blue-50 dark:bg-blue-900' : 'border-gray-300 dark:border-gray-600'}`}
+                    onDragEnter={handleDrag}
+                    onDragOver={handleDrag}
+                    onDragLeave={handleDrag}
+                    onDrop={handleDrop}
+                >
+                    <input
+                        type="file"
+                        accept=".csv"
+                        onChange={onFileUpload}
+                        ref={fileInputRef}
+                        className="hidden"
+                        id="file-upload"
+                    />
+                    <label htmlFor="file-upload" className="cursor-pointer text-blue-600 dark:text-blue-400 hover:underline">
+                        Drag and drop a CSV file here or click to browse
+                    </label>
+                </div>
+            );
+        };
 
-        function renderSettingsLabels() {
-            labelsList.innerHTML = '';
-            tempLabels.forEach((label, index) => {
-                const div = document.createElement('div');
-                div.className = 'flex justify-between items-center mb-2';
-                div.innerHTML = `
-                    <span class="text-gray-600 dark:text-gray-300 transition-colors">${label.name}</span>
-                    <button class="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300 text-sm transition-colors" data-index="${index}">Remove</button>
-                `;
-                labelsList.appendChild(div);
-            });
-            labelsList.querySelectorAll('button').forEach(btn => {
-                btn.addEventListener('click', () => {
-                    const index = parseInt(btn.dataset.index);
-                    tempLabels.splice(index, 1);
-                    renderSettingsLabels();
-                });
-            });
-        }
+        /**
+         * File Preview Component
+         * @param {Object} props
+         * @param {Array} props.columnHeaders
+         * @param {Array} props.dataItems
+         * @param {boolean} props.showPreview
+         * @param {Function} props.togglePreview
+         */
+        const FilePreview = ({ columnHeaders, dataItems, showPreview, togglePreview }) => {
+            if (!dataItems.length) return null;
 
-        function renderColumnSelector() {
-            columnSelect.innerHTML = '';
-            columnHeaders.forEach((header, index) => {
-                const option = document.createElement('option');
-                option.value = index;
-                option.textContent = header || `Column ${index + 1}`;
-                if (index === tempColumn) option.selected = true;
-                columnSelect.appendChild(option);
-            });
-            console.log('Column selector rendered:', columnHeaders, tempColumn);
-        }
+            const previewRows = dataItems.slice(0, 5); // Show up to 5 rows
 
-        csvUpload.addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            if (!file) {
-                uploadStatus.textContent = 'No file selected.';
-                console.error('No file selected.');
-                alert('Please select a file.');
-                return;
-            }
-            currentFileName = file.name;
-            uploadStatus.textContent = `Selected file: ${file.name}`;
-            console.log('Selected file:', file.name, 'Size:', file.size, 'Type:', file.type);
-            const reader = new FileReader();
-            reader.onload = (e) => {
+            return (
+                <div className="mt-4">
+                    <div className="flex justify-between items-center mb-2">
+                        <h3 className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                            File Preview (First {previewRows.length} Rows)
+                        </h3>
+                        <button
+                            onClick={togglePreview}
+                            className="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 text-sm"
+                            aria-label={showPreview ? 'Hide file preview' : 'Show file preview'}
+                        >
+                            {showPreview ? 'Hide Data Preview' : 'Show Preview'}
+                        </button>
+                    </div>
+                    {showPreview && (
+                        <div className="overflow-x-auto">
+                            <table className="w-full text-sm text-left text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-600">
+                                <thead className="bg-gray-100 dark:bg-gray-700">
+                                    <tr>
+                                        {columnHeaders.map((header, index) => (
+                                            <th key={index} className="px-4 py-2 border-b dark:border-gray-600 truncate max-w-xs">
+                                                {header || `Column ${index + 1}`}
+                                            </th>
+                                        ))}
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {previewRows.map((row, rowIndex) => (
+                                        <tr key={rowIndex} className="border-b dark:border-gray-600">
+                                            {row.map((cell, cellIndex) => (
+                                                <td key={cellIndex} className="px-4 py-2 truncate max-w-xs" title={cell}>
+                                                    {cell}
+                                                </td>
+                                            ))}
+                                        </tr>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    )}
+                </div>
+            );
+        };
+
+        /**
+         * Data Display Component
+         * @param {Object} props
+         */
+        const DataDisplay = ({ dataItems, currentIndex, selectedColumn }) => (
+            <div className="mb-6 p-4 bg-gray-100 dark:bg-gray-700 rounded-lg transition-colors">
+                <p className="text-lg text-gray-800 dark:text-gray-200">
+                    {currentIndex === -1
+                        ? 'Use Settings to select the column for annotation.'
+                        : dataItems[currentIndex]?.[selectedColumn] || 'No data available'}
+                </p>
+            </div>
+        );
+
+        /**
+         * Labels Component
+         * @param {Object} props
+         */
+        const Labels = ({ labels, onSelectLabel, isDisabled, onToggleComment, showCommentField, tempComment, setTempComment }) => (
+            <div className="mb-6">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    Select Label (1-{Math.min(labels.length, 9)})
+                </label>
+                <div className="flex flex-wrap gap-2 mb-4">
+                    {labels.map((label, index) => (
+                        <button
+                            key={label.name}
+                            onClick={() => !isDisabled && onSelectLabel(label.name)}
+                            disabled={isDisabled}
+                            className={`${label.color} px-4 py-2 rounded-lg text-sm hover:opacity-80 transition-colors duration-200 disabled:opacity-50 disabled:cursor-not-allowed`}
+                            aria-label={`Select ${label.name} label (shortcut: ${index + 1})`}
+                        >
+                            {label.name} ({index + 1})
+                        </button>
+                    ))}
+                </div>
+                <button
+                    onClick={onToggleComment}
+                    className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 mb-2"
+                    aria-label={showCommentField ? 'Hide comment field' : 'Show comment field'}
+                >
+                    {showCommentField ? 'Hide Comment Field' : 'Show Comment Field'}
+                </button>
+                {showCommentField && (
+                    <input
+                        type="text"
+                        value={tempComment}
+                        onChange={(e) => setTempComment(e.target.value)}
+                        placeholder="Optional comment for this annotation"
+                        className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white mt-2"
+                        aria-label="Optional comment input"
+                    />
+                )}
+                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">
+                    Use Settings to select the column for annotation.
+                </p>
+            </div>
+        );
+
+        /**
+         * Settings Modal Component
+         * @param {Object} props
+         */
+        const SettingsModal = ({ show, onClose, columnHeaders, selectedColumn, setSelectedColumn, labels, setLabels, setHasSelectedColumn }) => {
+            const [tempLabels, setTempLabels] = useState(labels);
+            const [newLabel, setNewLabel] = useState('');
+            const [error, setError] = useState('');
+
+            const addLabel = () => {
+                if (!newLabel.trim() || tempLabels.some(l => l.name.toLowerCase() === newLabel.toLowerCase())) {
+                    setError('Label must be non-empty and unique');
+                    return;
+                }
+                setTempLabels([...tempLabels, { name: newLabel, color: 'bg-blue-100 text-blue-800' }]);
+                setNewLabel('');
+                setError('');
+            };
+
+            const removeLabel = (index) => {
+                setTempLabels(tempLabels.filter((_, i) => i !== index));
+            };
+
+            const saveSettings = () => {
+                if (tempLabels.length === 0) {
+                    setError('At least one label is required');
+                    return;
+                }
+                setLabels(tempLabels);
+                setSelectedColumn(parseInt(document.getElementById('column-select').value));
+                setHasSelectedColumn(true);
+                onClose();
+            };
+
+            if (!show) return null;
+
+            return (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-md w-full transition-colors">
+                        <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Settings</h2>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Annotation Column</label>
+                            <select
+                                id="column-select"
+                                defaultValue={selectedColumn}
+                                className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                            >
+                                {columnHeaders.map((header, index) => (
+                                    <option key={index} value={index}>{header || `Column ${index + 1}`}</option>
+                                ))}
+                            </select>
+                        </div>
+                        <div className="mb-4">
+                            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">Custom Labels</label>
+                            {tempLabels.map((label, index) => (
+                                <div key={index} className="flex justify-between items-center mb-2">
+                                    <span className="text-gray-600 dark:text-gray-300">{label.name}</span>
+                                    <button onClick={() => removeLabel(index)} className="text-red-600 hover:text-red-700 dark:text-red-400 dark:hover:text-red-300">
+                                        Remove
+                                    </button>
+                                </div>
+                            ))}
+                            <div className="flex gap-2">
+                                <input
+                                    type="text"
+                                    value={newLabel}
+                                    onChange={(e) => setNewLabel(e.target.value)}
+                                    className="w-full p-2 border rounded bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+                                    placeholder="Enter new label"
+                                />
+                                <button onClick={addLabel} className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700">
+                                    Add
+                                </button>
+                            </div>
+                            {error && <p className="text-sm text-red-500 dark:text-red-400 mt-2">{error}</p>}
+                        </div>
+                        <div className="flex justify-end gap-2">
+                            <button onClick={onClose} className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700">
+                                Close
+                            </button>
+                            <button onClick={saveSettings} className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700">
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        /**
+         * Annotations Modal Component
+         * @param {Object} props
+         */
+        const AnnotationsModal = ({ show, onClose, annotations, dataItems, selectedColumn }) => {
+            useEffect(() => {
+                if (show) {
+                    console.log('AnnotationsModal opened. Annotations:', annotations);
+                }
+            }, [show, annotations]);
+
+            if (!show) return null;
+            return (
+                <div className="fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-lg max-w-2xl w-full max-h-[80vh] overflow-y-auto transition-colors">
+                        <h2 className="text-lg font-semibold mb-4 text-gray-800 dark:text-white">Annotations</h2>
+                        <ul className="list-disc pl-5 mb-4">
+                            {annotations.map((annotation, index) => annotation && (
+                                <li key={index} className="text-sm text-gray-600 dark:text-gray-300">
+                                    Data: "{dataItems[index]?.[selectedColumn] || 'N/A'}" - Label: {annotation.label}{annotation.comment ? ` - Comment: ${annotation.comment}` : ''}
+                                </li>
+                            ))}
+                        </ul>
+                        {annotations.every(a => !a) && (
+                            <p className="text-sm text-gray-600 dark:text-gray-300">No annotations available.</p>
+                        )}
+                        <button onClick={onClose} className="px-4 py-2 bg-gray-600 text-white rounded w-full hover:bg-gray-700">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            );
+        };
+
+        /**
+         * Welcome Screen Component
+         * @param {Object} props
+         * @param {Function} props.onGetStarted
+         */
+        const WelcomeScreen = ({ onGetStarted }) => (
+            <div className="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center animate-fade-in">
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Welcome to Data Annotation Platform</h2>
+                <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    Data annotation is the process of labeling data to train machine learning models. This platform allows you to:
+                </p>
+                <ul className="list-disc list-inside text-gray-600 dark:text-gray-300 mb-4 text-left max-w-md mx-auto">
+                    <li>Upload CSV files containing text data.</li>
+                    <li>Assign labels (e.g., Positive, Negative) to each entry.</li>
+                    <li>Save sessions and export results as CSV or JSON.</li>
+                    <li>Use keyboard shortcuts for efficient annotation.</li>
+                </ul>
+                <p className="text-gray-600 dark:text-gray-300 mb-6">
+                    Best practices: Ensure your CSV has clear headers, review annotations for consistency, and save sessions regularly (Ctrl+S).
+                </p>
+                <button
+                    onClick={onGetStarted}
+                    className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                    aria-label="Get Started"
+                >
+                    Get Started
+                </button>
+            </div>
+        );
+
+        /**
+         * Main App Component
+         */
+        const App = () => {
+            const [dataItems, setDataItems] = useState([]);
+            const [annotations, setAnnotations] = useState([]);
+            const [currentIndex, setCurrentIndex] = useState(-1);
+            const [fileName, setFileName] = useState('');
+            const [columnHeaders, setColumnHeaders] = useState([]);
+            const [selectedColumn, setSelectedColumn] = useState(0);
+            const [labels, setLabels] = useState([
+                { name: 'Positive', color: 'bg-green-100 text-green-800' },
+                { name: 'Neutral', color: 'bg-gray-100 text-gray-800' },
+                { name: 'Negative', color: 'bg-red-100 text-red-800' },
+                { name: 'Others', color: 'bg-blue-100 text-blue-800' }
+            ]);
+            const [theme, setTheme] = useState(localStorage.getItem('theme') || 'system');
+            const [showSettings, setShowSettings] = useState(false);
+            const [showAnnotations, setShowAnnotations] = useState(false);
+            const [privacyConsent, setPrivacyConsent] = useState(localStorage.getItem('privacyConsent') === 'true');
+            const [undoStack, setUndoStack] = useState([]);
+            const [redoStack, setRedoStack] = useState([]);
+            const [showWelcome, setShowWelcome] = useState(true);
+            const [showCommentField, setShowCommentField] = useState(false);
+            const [tempComment, setTempComment] = useState('');
+            const [hasSelectedColumn, setHasSelectedColumn] = useState(false);
+            const [showPreview, setShowPreview] = useState(false);
+
+            // Theme Handling
+            useEffect(() => {
+                const systemMedia = window.matchMedia('(prefers-color-scheme: dark)');
+                const updateTheme = () => {
+                    const effectiveTheme = theme === 'system' ? (systemMedia.matches ? 'dark' : 'light') : theme;
+                    document.documentElement.classList.toggle('dark', effectiveTheme === 'dark');
+                    localStorage.setItem('theme', theme);
+                };
+                updateTheme();
+                systemMedia.addEventListener('change', updateTheme);
+                return () => systemMedia.removeEventListener('change', updateTheme);
+            }, [theme]);
+
+            // Autosave
+            useEffect(() => {
+                if (fileName && annotations.length) {
+                    const timer = setInterval(() => {
+                        localStorage.setItem(`annotations_${fileName}`, JSON.stringify(annotations));
+                        console.log('Autosaved annotations:', annotations);
+                    }, 5000);
+                    return () => clearInterval(timer);
+                }
+            }, [annotations, fileName]);
+
+            // Load Saved Session
+            useEffect(() => {
+                const savedAnnotations = localStorage.getItem(`annotations_${fileName}`);
+                if (savedAnnotations) {
+                    const parsed = JSON.parse(savedAnnotations);
+                    console.log('Loaded annotations from localStorage:', parsed);
+                    setAnnotations(parsed);
+                }
+            }, [fileName]);
+
+            /**
+             * Parse CSV file
+             * @returns {Object} Parsed headers and data
+             */
+            const parseCSV = useCallback((text) => {
                 try {
-                    const text = e.target.result;
-                    console.log('Raw CSV content:', text);
-                    const { headers, data } = parseCSV(text);
-                    console.log('Parsed headers:', headers);
-                    console.log('Parsed data:', data);
-                    if (data.length === 0) {
-                        uploadStatus.textContent = 'No valid data found in CSV.';
-                        console.warn('No valid data found in CSV.');
-                        alert('No valid data found in CSV. Ensure it has at least one row of data.');
-                        fileInfo.textContent = 'No file loaded';
+                    const rows = text.split('\n').map(row => row.trim()).filter(row => row);
+                    if (!rows.length) return { headers: [], data: [] };
+                    const headers = rows[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/^"|"$/g, '').trim());
+                    const data = rows.slice(1)
+                        .map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim()))
+                        .filter(row => row.some(cell => cell));
+                    console.log('Parsed CSV:', { headers, data });
+                    return { headers, data };
+                } catch (error) {
+                    console.error('CSV Parsing Error:', error);
+                    return { headers: [], data: [] };
+                }
+            }, []);
+
+            /**
+             * Handle file upload
+             */
+            const handleFileUpload = useCallback((event) => {
+                const file = event.target.files[0];
+                if (!file) return;
+                setFileName(file.name);
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const { headers, data } = parseCSV(e.target.result);
+                    if (!data.length) {
+                        alert('No valid data found in CSV.');
                         return;
                     }
-                    columnHeaders = headers;
-                    dataItems = data;
-                    currentIndex = -1;
-                    const savedData = localStorage.getItem(`annotations_${currentFileName}`);
-                    annotations = savedData ? JSON.parse(savedData) : new Array(dataItems.length).fill(null);
-                    lastAnnotation = null;
-                    selectedColumn = 0;
-                    uploadStatus.textContent = `Loaded ${dataItems.length} data items from ${file.name} with ${columnHeaders.length} columns.`;
-                    fileInfo.textContent = `File: ${file.name} (${columnHeaders.length} columns)`;
-                    console.log('Initial state:', { dataItems, annotations, selectedColumn });
+                    setColumnHeaders(headers);
+                    setDataItems(data);
+                    const newAnnotations = new Array(data.length).fill(null);
+                    setAnnotations(newAnnotations);
+                    setCurrentIndex(-1);
+                    setShowWelcome(false);
+                    setShowCommentField(false);
+                    setTempComment('');
+                    setHasSelectedColumn(false);
+                    setShowPreview(true);
+                    localStorage.removeItem(`annotations_${file.name}`);
+                    console.log('File uploaded:', { fileName: file.name, headers, dataLength: data.length, annotations: newAnnotations });
                     if (!window.disableAnalytics) {
-                        gtag('event', 'upload_csv', {
-                            'event_category': 'File',
-                            'event_label': file.name,
-                            'value': data.length
-                        });
+                        gtag('event', 'upload_csv', { event_category: 'File', event_label: file.name, value: data.length });
                     }
-                    updateProgress();
-                    renderColumnSelector();
-                    loadNextData();
-                } catch (error) {
-                    uploadStatus.textContent = 'Error parsing CSV file.';
-                    console.error('Error parsing CSV:', error);
-                    alert('Error parsing CSV file. Check console for details.');
-                    fileInfo.textContent = 'No file loaded';
+                };
+                reader.onerror = () => alert('Error reading file.');
+                reader.readAsText(file);
+            }, [parseCSV]);
+
+            /**
+             * Save annotation
+             * @param {string} label
+             */
+            const saveAnnotation = useCallback((label) => {
+                console.log('Saving annotation:', { label, currentIndex, annotationsLength: annotations.length, comment: tempComment });
+                if (currentIndex < 0) {
+                    setCurrentIndex(0);
+                    console.log('Set currentIndex to 0');
+                    return;
                 }
-            };
-            reader.onerror = () => {
-                uploadStatus.textContent = 'Error reading file.';
-                console.error('FileReader error:', reader.error);
-                alert('Error reading file.');
-                fileInfo.textContent = 'No file loaded';
-            };
-            reader.readAsText(file);
-        });
+                if (currentIndex >= dataItems.length) {
+                    console.log('Reached end of data items');
+                    return;
+                }
+                setUndoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
+                setRedoStack([]);
+                setAnnotations(prev => {
+                    const newAnnotations = [...prev];
+                    newAnnotations[currentIndex] = { label, comment: tempComment.trim() || null };
+                    console.log('Updated annotations:', newAnnotations);
+                    return newAnnotations;
+                });
+                setTempComment('');
+                if (currentIndex < dataItems.length - 1) {
+                    setCurrentIndex(prev => {
+                        const newIndex = prev + 1;
+                        console.log('Advanced to index:', newIndex);
+                        return newIndex;
+                    });
+                } else {
+                    console.log('At last item, not advancing');
+                }
+            }, [currentIndex, annotations, dataItems.length, tempComment]);
 
-        function parseCSV(text) {
-            const rows = text.split('\n').map(row => row.trim()).filter(row => row);
-            if (rows.length <= 0) {
-                console.warn('No rows found in CSV.');
-                return { headers: [], data: [] };
-            }
-            const headers = rows[0].split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(h => h.replace(/^"|"$/g, '').trim());
-            const data = rows.slice(1).map(row => {
-                const columns = row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim());
-                return columns;
-            }).filter(row => row.some(cell => cell));
-            console.log('Parsed CSV:', { headers, data });
-            return { headers, data };
-        }
+            /**
+             * Handle label selection
+             * @param {string} label
+             */
+            const handleSelectLabel = useCallback((label) => {
+                if (!hasSelectedColumn) {
+                    alert('Please select a column in Settings.');
+                    setShowSettings(true);
+                    return;
+                }
+                console.log('Label selected:', label);
+                saveAnnotation(label);
+            }, [hasSelectedColumn, saveAnnotation]);
 
-        function loadNextData() {
-            if (currentIndex < dataItems.length - 1) {
-                currentIndex++;
-                dataDisplay.textContent = dataItems[currentIndex][selectedColumn] || 'No data available.';
-                endOfFile.classList.toggle('hidden', currentIndex < dataItems.length - 1);
-                resetInputs();
-                updateButtons();
-            }
-        }
+            /**
+             * Toggle comment field
+             */
+            const toggleCommentField = useCallback(() => {
+                setShowCommentField(prev => !prev);
+                setTempComment('');
+                console.log('Toggled comment field:', !showCommentField);
+            }, [showCommentField]);
 
-        function loadPrevData() {
-            if (currentIndex > 0) {
-                currentIndex--;
-                dataDisplay.textContent = dataItems[currentIndex][selectedColumn] || 'No data available.';
-                endOfFile.classList.add('hidden');
-                resetInputs();
-                updateButtons();
-            }
-        }
+            /**
+             * Toggle file preview
+             */
+            const togglePreview = useCallback(() => {
+                setShowPreview(prev => !prev);
+                console.log('Toggled preview:', !showPreview);
+            }, [showPreview]);
 
-        function resetToStart() {
-            currentIndex = -1;
-            loadNextData();
-        }
-
-        function clearAnnotations() {
-            if (confirm('Are you sure you want to clear all annotations? This action cannot be undone unless you download the CSV first.')) {
-                annotations = new Array(dataItems.length).fill(null);
-                localStorage.removeItem(`annotations_${currentFileName}`);
-                lastAnnotation = null;
-                currentIndex = -1;
-                updateProgress();
-                loadNextData();
+            /**
+             * Handle Support Our Work click
+             */
+            const handleCoffeeClick = useCallback(() => {
+                console.log('Support Our Work clicked');
                 if (!window.disableAnalytics) {
-                    gtag('event', 'clear_annotations', {
-                        'event_category': 'Annotation',
-                        'event_label': currentFileName
+                    gtag('event', 'support_our_work', { event_category: 'Support' });
+                }
+            }, []);
+
+            /**
+             * Navigation handlers
+             */
+            const nextData = useCallback(() => {
+                if (!hasSelectedColumn) {
+                    alert('Please select a column in Settings.');
+                    setShowSettings(true);
+                    return;
+                }
+                if (currentIndex < dataItems.length - 1) {
+                    setCurrentIndex(prev => {
+                        const newIndex = prev + 1;
+                        console.log('Navigated to next:', newIndex);
+                        return newIndex;
                     });
                 }
-            }
-        }
+            }, [currentIndex, dataItems.length, hasSelectedColumn]);
 
-        function resetInputs() {
-            document.querySelectorAll('input[name="label"]').forEach(input => {
-                input.checked = input.value === 'Neutral';
-            });
-            othersInput.classList.add('hidden');
-            otherDetails.value = '';
-            if (annotations[currentIndex]) {
-                document.querySelector(`input[value="${annotations[currentIndex].label}"]`).checked = true;
-                othersInput.classList.toggle('hidden', annotations[currentIndex].label !== 'Others');
-                otherDetails.value = annotations[currentIndex].details || '';
-            }
-        }
-
-        function updateButtons() {
-            prevBtn.disabled = currentIndex <= 0 || dataItems.length === 0;
-            nextBtn.disabled = currentIndex >= dataItems.length - 1 || dataItems.length === 0;
-            saveBtn.disabled = dataItems.length === 0;
-            viewAnnotationsBtn.disabled = annotations.every(a => a === null);
-            undoBtn.disabled = lastAnnotation === null || dataItems.length === 0;
-            clearAnnotationsBtn.disabled = annotations.every(a => a === null) || dataItems.length === 0;
-            resetBtn.disabled = dataItems.length === 0;
-            downloadBtn.disabled = annotations.every(a => a === null);
-        }
-
-        function updateProgress() {
-            const annotatedCount = annotations.filter(a => a !== null).length;
-            const totalCount = dataItems.length;
-            const percentage = totalCount > 0 ? (annotatedCount / totalCount) * 100 : 0;
-            progressCount.textContent = `Annotated ${annotatedCount} of ${totalCount} items`;
-            progressBar.style.width = `${percentage}%`;
-        }
-
-        function saveAnnotation() {
-            try {
-                const selectedLabel = document.querySelector('input[name="label"]:checked').value;
-                const otherText = selectedLabel === 'Others' ? otherDetails.value.trim() : '';
-                if (currentIndex >= 0) {
-                    lastAnnotation = { index: currentIndex, annotation: annotations[currentIndex] };
-                    annotations[currentIndex] = { label: selectedLabel, details: otherText };
-                    localStorage.setItem(`annotations_${currentFileName}`, JSON.stringify(annotations));
-                    if (!window.disableAnalytics) {
-                        gtag('event', 'save_annotation', {
-                            'event_category': 'Annotation',
-                            'event_label': selectedLabel,
-                            'value': currentIndex
-                        });
-                    }
-                    updateProgress();
-                    saveStatus.textContent = 'Annotation saved!';
-                    saveStatus.classList.remove('hidden');
-                    setTimeout(() => saveStatus.classList.add('hidden'), 2000);
-                    if (currentIndex < dataItems.length - 1) {
-                        loadNextData();
-                    } else {
-                        endOfFile.classList.remove('hidden');
-                        resetInputs();
-                        updateButtons();
-                    }
-                }
-            } catch (error) {
-                console.error('Save annotation error:', error);
-                alert('Failed to save annotation.');
-            }
-        }
-
-        function undoAnnotation() {
-            try {
-                if (lastAnnotation) {
-                    annotations[lastAnnotation.index] = lastAnnotation.annotation;
-                    localStorage.setItem(`annotations_${currentFileName}`, JSON.stringify(annotations));
-                    currentIndex = lastAnnotation.index;
-                    dataDisplay.textContent = dataItems[currentIndex][selectedColumn] || 'No data available';
-                    endOfFile.classList.toggle('hidden', currentIndex < dataItems.length - 1);
-                    lastAnnotation = null;
-                    updateProgress();
-                    resetInputs();
-                    updateButtons();
-                }
-            } catch (error) {
-                console.error('Error undoing annotation:', error);
-                alert('Failed to undo annotation.');
-            }
-        }
-
-        function showAnnotations() {
-            try {
-                console.log('Opening annotations modal...');
-                annotationsList.innerHTML = '';
-                annotations.forEach((annotation, index) => {
-                    if (annotation) {
-                        const li = document.createElement('li');
-                        const details = annotation.details ? ` (${annotation.details})` : '';
-                        li.innerHTML = `Data: "${dataItems[index][selectedColumn]}" - Label: ${annotation.label}${details} <button class="edit-btn text-blue-500 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 transition-colors" data-index="${index}">Edit</button>`;
-                        annotationsList.appendChild(li);
-                    }
-                });
-                annotationsList.querySelectorAll('.edit-btn').forEach(btn => {
-                    btn.addEventListener('click', () => {
-                        const index = parseInt(btn.dataset.index);
-                        currentIndex = index;
-                        dataDisplay.textContent = dataItems[currentIndex][selectedColumn] || 'No data available';
-                        resetInputs();
-                        annotationsModal.classList.add('hidden');
-                        updateButtons();
+            const prevData = useCallback(() => {
+                if (currentIndex > 0) {
+                    setCurrentIndex(prev => {
+                        const newIndex = prev - 1;
+                        console.log('Navigated to previous:', newIndex);
+                        return newIndex;
                     });
+                }
+            }, [currentIndex]);
+
+            /**
+             * Undo/Redo handlers
+             */
+            const undo = useCallback(() => {
+                if (!undoStack.length) return;
+                const lastAction = undoStack[undoStack.length - 1];
+                console.log('Undoing action:', lastAction);
+                setRedoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
+                setAnnotations(prev => {
+                    const newAnnotations = [...prev];
+                    newAnnotations[lastAction.index] = lastAction.annotation;
+                    console.log('After undo, annotations:', newAnnotations);
+                    return newAnnotations;
                 });
-                annotationsModal.classList.remove('hidden');
-            } catch (error) {
-                console.error('Error showing annotations modal:', error);
-                alert('Failed to show annotations.');
-            }
-        }
+                setCurrentIndex(lastAction.index);
+                setUndoStack(prev => prev.slice(0, -1));
+            }, [undoStack, annotations, currentIndex]);
 
-        function showSettings() {
-            try {
-                console.log('Opening settings modal...');
-                tempLabels = [...labels];
-                tempColumn = selectedColumn;
-                renderSettingsLabels();
-                renderColumnSelector();
-                settingsModal.classList.remove('hidden');
-            } catch (error) {
-                console.error('Error showing settings modal:', error);
-                alert('Failed to show settings.');
-            }
-        }
-
-        function addLabel() {
-            try {
-                const newLabel = newLabelInput.value.trim();
-                if (!newLabel || tempLabels.some(label => label.name.toLowerCase() === newLabel.toLowerCase())) {
-                    labelError.textContent = 'Label must be non-empty and unique.';
-                    labelError.classList.remove('hidden');
-                    return;
-                }
-                labelError.classList.add('hidden');
-                tempLabels.push({ name: newLabel, color: 'bg-blue-100 text-blue-800 hover:bg-blue-200 dark:bg-blue-900 dark:text-blue-300 dark:hover:bg-blue-800' });
-                newLabelInput.value = '';
-                renderSettingsLabels();
-            } catch (error) {
-                console.error('Error adding label:', error);
-            }
-        }
-
-        function saveSettings() {
-            try {
-                if (tempLabels.length === 0) {
-                    labelError.textContent = 'At least one label is required.';
-                    labelError.classList.remove('hidden');
-                    return;
-                }
-                const newColumn = parseInt(columnSelect.value);
-                if (newColumn !== selectedColumn && annotations.some(a => a !== null)) {
-                    if (confirm('Changing the column will reset annotations. Do you want to download the current annotations first?')) {
-                        downloadAnnotations();
-                    }
-                    annotations = new Array(dataItems.length).fill(null);
-                    localStorage.setItem(`annotations_${currentFileName}`, JSON.stringify(annotations));
-                    lastAnnotation = null;
-                    currentIndex = -1;
-                }
-                labels = [...tempLabels];
-                selectedColumn = newColumn;
-                console.log('Settings saved:', { labels, selectedColumn });
-                renderLabels();
-                settingsModal.classList.add('hidden');
-                labelError.classList.add('hidden');
-                updateProgress();
-                updateButtons();
-                loadNextData();
-            } catch (error) {
-                console.error('Error saving settings:', error);
-                alert('Failed to save settings.');
-            }
-        }
-
-        function downloadAnnotations() {
-            try {
-                const csvRows = ['"Data","Label","Details"'];
-                dataItems.forEach((row, index) => {
-                    if (annotations[index]) {
-                        const data = row[selectedColumn] || '';
-                        const label = annotations[index].label || '';
-                        const details = annotations[index].details ? `"${annotations[index].details.replace(/"/g, '""')}"` : '';
-                        csvRows.push(`"${data.replace(/"/g, '""')}","${label}",${details}`);
-                    }
+            const redo = useCallback(() => {
+                if (!redoStack.length) return;
+                const nextAction = redoStack[redoStack.length - 1];
+                console.log('Redoing action:', nextAction);
+                setUndoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
+                setAnnotations(prev => {
+                    const newAnnotations = [...prev];
+                    newAnnotations[nextAction.index] = nextAction.annotation;
+                    console.log('After redo, annotations:', newAnnotations);
+                    return newAnnotations;
                 });
-                if (csvRows.length <= 1) {
-                    alert('No annotations to download.');
-                    return;
+                setCurrentIndex(nextAction.index);
+                setRedoStack(prev => prev.slice(0, -1));
+            }, [redoStack, annotations, currentIndex]);
+
+            /**
+             * Download annotations
+             * @param {string} format
+             */
+            const downloadAnnotations = useCallback((format = 'csv') => {
+                console.log('Downloading annotations:', annotations);
+                let content = '';
+                let mimeType, extension;
+                if (format === 'json') {
+                    const jsonData = annotations.map((annotation, index) => annotation && ({
+                        data: dataItems[index][selectedColumn],
+                        label: annotation.label,
+                        comment: annotation.comment || null
+                    })).filter(Boolean);
+                    content = JSON.stringify(jsonData, null, 2);
+                    mimeType = 'application/json';
+                    extension = 'json';
+                } else {
+                    const csvRows = ['"Data","Label","Comment"'];
+                    dataItems.forEach((row, index) => {
+                        if (annotations[index]) {
+                            const data = row[selectedColumn] || '';
+                            const label = annotations[index].label || '';
+                            const comment = annotations[index].comment || '';
+                            csvRows.push(`"${data.replace(/"/g, '""')}","${label}","${comment.replace(/"/g, '""')}"`);
+                        }
+                    });
+                    content = csvRows.join('\n');
+                    mimeType = 'text/csv;charset=utf-8;';
+                    extension = 'csv';
                 }
-                const csvContent = csvRows.join('\n');
-                const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+                const blob = new Blob([content], { type: mimeType });
                 const link = document.createElement('a');
                 link.href = URL.createObjectURL(blob);
-                link.download = `annotations_column_${columnHeaders[selectedColumn] || selectedColumn + 1}.csv`;
-                document.body.appendChild(link);
+                link.download = `annotations_${fileName}.${extension}`;
                 link.click();
-                document.body.removeChild(link);
                 URL.revokeObjectURL(link.href);
                 if (!window.disableAnalytics) {
-                    gtag('event', 'download_csv', {
-                        'event_category': 'File',
-                        'event_label': currentFileName,
-                        'value': annotations.filter(a => a !== null).length
-                    });
+                    gtag('event', `download_${format}`, { event_category: 'File', event_label: fileName });
                 }
-            } catch (error) {
-                console.error('Download error:', error);
-                alert('Failed to download CSV.');
-            }
-        }
+            }, [dataItems, annotations, selectedColumn, fileName]);
 
-        window.addEventListener('beforeunload', (e) => {
-            if (annotations.some(a => a !== null)) {
-                e.preventDefault();
-                e.returnValue = 'You have unsaved annotations. Are you sure you want to leave?';
-            }
-        });
+            /**
+             * Save session
+             */
+            const saveSession = useCallback(() => {
+                const session = { dataItems, annotations, fileName, columnHeaders, selectedColumn, labels, hasSelectedColumn, showPreview };
+                localStorage.setItem('saved_session', JSON.stringify(session));
+                console.log('Session saved:', session);
+                alert('Session saved!');
+            }, [dataItems, annotations, fileName, columnHeaders, selectedColumn, labels, hasSelectedColumn, showPreview]);
 
-        document.addEventListener('keydown', (e) => {
-            if (settingsModal.classList.contains('hidden')) {
-                if (e.key === 'Enter' && !saveBtn.disabled) {
-                    saveAnnotation();
-                } else if (e.key === 'ArrowLeft' && !prevBtn.disabled) {
-                    loadPrevData();
-                } else if (e.key === 'ArrowRight' && !nextBtn.disabled) {
-                    loadNextData();
-                } else if (e.ctrlKey && e.key === 'z' && !undoBtn.disabled) {
-                    undoAnnotation();
-                } else if (e.key >= '1' && e.key <= '5' && dataItems.length > 0) {
-                    const index = parseInt(e.key) - 1;
-                    if (index < labels.length) {
-                        document.querySelector(`input[value="${labels[index].name}"]`).checked = true;
-                        othersInput.classList.toggle('hidden', labels[index].name !== 'Others');
-                        if (labels[index].name !== 'Others') otherDetails.value = '';
+            /**
+             * Load session
+             */
+            const loadSession = useCallback(() => {
+                const session = localStorage.getItem('saved_session');
+                if (session) {
+                    const { dataItems, annotations, fileName, columnHeaders, selectedColumn, labels, hasSelectedColumn, showPreview } = JSON.parse(session);
+                    setDataItems(dataItems);
+                    setAnnotations(annotations);
+                    setFileName(fileName);
+                    setColumnHeaders(columnHeaders);
+                    setSelectedColumn(selectedColumn);
+                    setLabels(labels);
+                    setHasSelectedColumn(hasSelectedColumn);
+                    setShowPreview(showPreview);
+                    setCurrentIndex(hasSelectedColumn ? 0 : -1);
+                    setShowWelcome(false);
+                    console.log('Session loaded:', { dataItems, annotations, fileName, hasSelectedColumn, showPreview });
+                    alert('Session loaded!');
+                } else {
+                    alert('No saved session found.');
+                }
+            }, []);
+
+            /**
+             * Keyboard shortcuts
+             */
+            useEffect(() => {
+                const handleKeydown = (e) => {
+                    if (showSettings || showAnnotations) return;
+                    if (e.key === 'ArrowRight') nextData();
+                    if (e.key === 'ArrowLeft') prevData();
+                    if (e.ctrlKey && e.key === 'z') undo();
+                    if (e.ctrlKey && e.key === 'y') redo();
+                    if (e.key >= '1' && e.key <= '9') {
+                        const index = parseInt(e.key) - 1;
+                        if (labels[index]) {
+                            console.log('Keyboard shortcut:', e.key, 'Label:', labels[index].name);
+                            handleSelectLabel(labels[index].name);
+                        }
                     }
+                    if (e.ctrlKey && e.key === 's') {
+                        e.preventDefault();
+                        saveSession();
+                    }
+                };
+                window.addEventListener('keydown', handleKeydown);
+                return () => window.removeEventListener('keydown', handleKeydown);
+            }, [nextData, prevData, undo, redo, handleSelectLabel, labels, saveSession, showSettings, showAnnotations]);
+
+            /**
+             * Handle privacy consent
+             */
+            const handlePrivacyConsent = (accepted) => {
+                setPrivacyConsent(accepted);
+                localStorage.setItem('privacyConsent', accepted);
+                if (!accepted) window.disableAnalytics = true;
+                if (!window.disableAnalytics) {
+                    gtag('event', accepted ? 'accept_privacy' : 'decline_privacy', { event_category: 'Privacy' });
                 }
+            };
+
+            /**
+             * Progress calculation
+             */
+            const progress = useMemo(() => {
+                const annotatedCount = annotations.filter(a => a !== null).length;
+                const percentage = dataItems.length > 0 ? (annotatedCount / dataItems.length) * 100 : 0;
+                console.log('Progress:', { count: annotatedCount, total: dataItems.length, percentage });
+                return { count: annotatedCount, total: dataItems.length, percentage };
+            }, [annotations, dataItems]);
+
+            return (
+                <div className="flex flex-col min-h-screen">
+                    <header className="bg-white dark:bg-gray-800 shadow-md p-4">
+                        <div className="max-w-7xl mx-auto flex justify-between items-center">
+                            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Data Annotation Platform</h1>
+                            <div className="flex gap-2 sm:gap-4 flex-wrap">
+                                <select
+                                    value={theme}
+                                    onChange={(e) => setTheme(e.target.value)}
+                                    className="px-4 py-2 rounded bg-gray-200 dark:bg-gray-700 dark:text-white text-sm sm:text-base"
+                                    aria-label="Select theme"
+                                >
+                                    <option value="system">System</option>
+                                    <option value="light">Light</option>
+                                    <option value="dark">Dark</option>
+                                </select>
+                                <button
+                                    onClick={() => setShowSettings(true)}
+                                    className="px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700 text-sm sm:text-base"
+                                    aria-label="Open settings"
+                                >
+                                    Settings
+                                </button>
+                                <a
+                                    href="https://coff.ee/clueanalytq"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    onClick={handleCoffeeClick}
+                                    className="px-4 py-2 rounded bg-orange-600 text-white hover:bg-orange-700 text-sm sm:text-base transition-colors"
+                                    aria-label="Support our work via donation"
+                                >
+                                    Support Our Work
+                                </a>
+                            </div>
+                        </div>
+                    </header>
+
+                    <main className="flex-grow p-4">
+                        {showWelcome ? (
+                            <WelcomeScreen onGetStarted={() => setShowWelcome(false)} />
+                        ) : (
+                            <div className="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 animate-fade-in">
+                                <FileUpload onFileUpload={handleFileUpload} />
+                                <p className="text-sm text-gray-500 dark:text-gray-400 mt-2">{fileName || 'No file selected'}</p>
+                                <FilePreview
+                                    columnHeaders={columnHeaders}
+                                    dataItems={dataItems}
+                                    showPreview={showPreview}
+                                    togglePreview={togglePreview}
+                                />
+                                {dataItems.length > 0 && (
+                                    <>
+                                        <div className="mb-6 flex justify-between items-center">
+                                            <span className="text-sm text-gray-600 dark:text-gray-400">
+                                                Annotated {progress.count} of {progress.total} items
+                                            </span>
+                                            <div className="w-1/3 bg-gray-200 dark:bg-gray-600 rounded-full h-2.5">
+                                                <div
+                                                    className="bg-blue-600 h-2.5 rounded-full transition-all duration-300"
+                                                    style={{ width: `${progress.percentage}%` }}
+                                                ></div>
+                                            </div>
+                                        </div>
+                                        <DataDisplay dataItems={dataItems} currentIndex={currentIndex} selectedColumn={selectedColumn} />
+                                        <Labels
+                                            labels={labels}
+                                            onSelectLabel={handleSelectLabel}
+                                            isDisabled={!hasSelectedColumn}
+                                            onToggleComment={toggleCommentField}
+                                            showCommentField={showCommentField}
+                                            tempComment={tempComment}
+                                            setTempComment={setTempComment}
+                                        />
+                                        <div className="flex flex-wrap gap-4 mb-6">
+                                            <button
+                                                onClick={prevData}
+                                                disabled={currentIndex <= 0}
+                                                className="px-4 py-2 bg-gray-600 text-white rounded disabled:opacity-50 hover:bg-gray-700 transition-colors"
+                                                aria-label="Previous item (Arrow Left)"
+                                            >
+                                                Previous
+                                            </button>
+                                            <button
+                                                onClick={nextData}
+                                                disabled={currentIndex >= dataItems.length - 1}
+                                                className="px-4 py-2 bg-gray-600 text-white rounded disabled:opacity-50 hover:bg-gray-700 transition-colors"
+                                                aria-label="Next item (Arrow Right)"
+                                            >
+                                                Next
+                                            </button>
+                                            <button
+                                                onClick={undo}
+                                                disabled={!undoStack.length}
+                                                className="px-4 py-2 bg-yellow-600 text-white rounded disabled:opacity-50 hover:bg-yellow-700 transition-colors"
+                                                aria-label="Undo (Ctrl+Z)"
+                                            >
+                                                Undo
+                                            </button>
+                                            <button
+                                                onClick={redo}
+                                                disabled={!redoStack.length}
+                                                className="px-4 py-2 bg-yellow-600 text-white rounded disabled:opacity-50 hover:bg-yellow-700 transition-colors"
+                                                aria-label="Redo (Ctrl+Y)"
+                                            >
+                                                Redo
+                                            </button>
+                                            <button
+                                                onClick={() => setShowAnnotations(true)}
+                                                disabled={!annotations.some(a => a)}
+                                                className="px-4 py-2 bg-purple-600 text-white rounded disabled:opacity-50 hover:bg-purple-700 transition-colors"
+                                                aria-label="View annotations"
+                                            >
+                                                View Annotations
+                                            </button>
+                                            <button
+                                                onClick={() => downloadAnnotations('csv')}
+                                                disabled={!annotations.some(a => a)}
+                                                className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50 hover:bg-green-700 transition-colors"
+                                                aria-label="Download CSV"
+                                            >
+                                                Download CSV
+                                            </button>
+                                            <button
+                                                onClick={() => downloadAnnotations('json')}
+                                                disabled={!annotations.some(a => a)}
+                                                className="px-4 py-2 bg-green-600 text-white rounded disabled:opacity-50 hover:bg-green-700 transition-colors"
+                                                aria-label="Download JSON"
+                                            >
+                                                Download JSON
+                                            </button>
+                                            <button
+                                                onClick={saveSession}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                                                aria-label="Save session (Ctrl+S)"
+                                            >
+                                                Save Session
+                                            </button>
+                                            <button
+                                                onClick={loadSession}
+                                                className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors"
+                                                aria-label="Load session"
+                                            >
+                                                Load Session
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
+                            </div>
+                        )}
+                    </main>
+
+                    <SettingsModal
+                        show={showSettings}
+                        onClose={() => setShowSettings(false)}
+                        columnHeaders={columnHeaders}
+                        selectedColumn={selectedColumn}
+                        setSelectedColumn={setSelectedColumn}
+                        labels={labels}
+                        setLabels={setLabels}
+                        setHasSelectedColumn={setHasSelectedColumn}
+                    />
+                    <AnnotationsModal
+                        show={showAnnotations}
+                        onClose={() => setShowAnnotations(false)}
+                        annotations={annotations}
+                        dataItems={dataItems}
+                        selectedColumn={selectedColumn}
+                    />
+
+                    {!privacyConsent && (
+                        <div className="fixed bottom-0 left-0 right-0 bg-gray-800 text-white p-4 flex flex-col sm:flex-row justify-between items-center gap-4 z-[1000]">
+                            <p className="text-sm text-gray-200">
+                                We use cookies and Google Analytics to improve your experience. By continuing, you agree to our{' '}
+                                <a href="./privacy.html" className="underline hover:text-blue-400" target="_blank">Privacy Policy</a>.
+                            </p>
+                            <div className="flex gap-2 w-full sm:w-auto">
+                                <button
+                                    onClick={() => handlePrivacyConsent(false)}
+                                    className="px-4 py-2 bg-gray-600 text-white rounded flex-1 hover:bg-gray-700"
+                                    aria-label="Decline analytics"
+                                >
+                                    Decline
+                                </button>
+                                <button
+                                    onClick={() => handlePrivacyConsent(true)}
+                                    className="px-4 py-2 bg-blue-600 text-white rounded flex-1 hover:bg-blue-700"
+                                    aria-label="Accept analytics"
+                                >
+                                    Accept
+                                </button>
+                            </div>
+                        </div>
+                    )}
+
+                    <footer className="bg-gray-800 text-white p-4 mt-auto">
+                        <div className="max-w-7xl mx-auto text-center text-sm">
+                            <p className="mb-2 text-gray-300">© 2025 Data Annotation Platform. All rights reserved.</p>
+                            <nav className="flex justify-center gap-4 flex-wrap">
+                                <a href="./privacy.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Privacy Policy</a>
+                                <a href="./guide.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">User Guide</a>
+                                <a href="./about.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">About Us</a>
+                                <a href="./contact.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Contact</a>
+                            </nav>
+                        </div>
+                    </footer>
+                </div>
+            );
+        };
+
+        class ErrorBoundary extends React.Component {
+            state = { hasError: false };
+
+            static getDerivedStateFromError() {
+                return { hasError: true };
             }
-        });
 
-        try {
-            console.log('Binding event listeners...');
-            nextBtn.addEventListener('click', loadNextData);
-            prevBtn.addEventListener('click', loadPrevData);
-            saveBtn.addEventListener('click', saveAnnotation);
-            viewAnnotationsBtn.addEventListener('click', showAnnotations);
-            undoBtn.addEventListener('click', undoAnnotation);
-            clearAnnotationsBtn.addEventListener('click', clearAnnotations);
-            resetBtn.addEventListener('click', resetToStart);
-            settingsBtn.addEventListener('click', showSettings);
-            addLabelBtn.addEventListener('click', addLabel);
-            closeSettingsBtn.addEventListener('click', () => {
-                settingsModal.classList.add('hidden');
-                labelError.classList.add('hidden');
-            });
-            saveSettingsBtn.addEventListener('click', saveSettings);
-            downloadBtn.addEventListener('click', downloadAnnotations);
-            closeModalBtn.addEventListener('click', () => annotationsModal.classList.add('hidden'));
-            themeToggleBtn.addEventListener('click', toggleTheme);
-        } catch (error) {
-            console.error('Error binding event listeners:', error);
+            render() {
+                if (this.state.hasError) {
+                    return (
+                        <div className="max-w-7xl mx-auto p-4 text-center">
+                            <h2 className="text-xl font-semibold text-red-600 dark:text-red-400">Something went wrong.</h2>
+                            <p className="text-gray-600 dark:text-gray-300">Please refresh the page or try again later.</p>
+                        </div>
+                    );
+                }
+                return this.props.children;
+            }
         }
 
-        try {
-            console.log('Initializing application...');
-            initTheme();
-            renderLabels();
-            updateButtons();
-            initPrivacyNotice();
-        } catch (error) {
-            console.error('Initialization error:', error);
-            alert('Failed to initialize application.');
-        }
+        ReactDOM.render(
+            <ErrorBoundary>
+                <App />
+            </ErrorBoundary>,
+            document.getElementById('root')
+        );
     </script>
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.3s ease-out;
+        }
+    </style>
 </body>
 </html>
