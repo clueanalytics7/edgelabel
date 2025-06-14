@@ -1,12 +1,12 @@
 # Data Annotation Platform
 
-[![Demo](https://img.shields.io/badge/Demo-Live-green)](https://jinka97.github.io/data-annotation/) 
+[![Demo](https://img.shields.io/badge/Demo-Live-green)](https://clueanalytics7.github.io/data-annotation/) 
 [![License](https://img.shields.io/badge/License-MIT-blue)](LICENSE)
 
 A **web-based platform** for annotating CSV data with a mobile-friendly interface, theme toggle, and privacy notice. 
 
 
-🔗 **Live Demo:** [https://jinka97.github.io/data-annotation/](https://jinka97.github.io/data-annotation/) 
+🔗 **Live Demo:** [https://clueanalytics7.github.io/data-annotation/](https://clueanalytics7.github.io/data-annotation/) 
 
 ---
 
@@ -42,7 +42,7 @@ A **web-based platform** for annotating CSV data with a mobile-friendly interfac
 
 ### Installation  
 ```bash
-git clone https://github.com/jinka97/data-annotation.git
+git clone https://github.com/clueanalytics7/data-annotation.git
 cd data-annotation-tool
 npm install
 npm start  # Dev server: http://localhost:3000
