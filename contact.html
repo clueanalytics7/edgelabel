@@ -3,43 +3,287 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact Us</title>
+    <title>Contact Us - Clue Analytics</title>
     <script src="https://cdn.tailwindcss.com"></script>
-   <!-- <link href="./output.css" rel="stylesheet">-->
-   
+    <script src="https://unpkg.com/motion@10.16.4/dist/motion.min.js"></script>
+    <style>
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .slide-up {
+            animation: slideUp 0.6s ease-out;
+        }
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </head>
 <body class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen font-sans transition-colors">
     <header class="w-full bg-white dark:bg-gray-800 shadow-md transition-colors">
-        <nav class="max-w-3xl mx-auto py-4 px-4 sm:px-6 flex justify-between items-center">
-            <a href="./index.html" class="text-primary dark:text-blue-500 font-semibold text-lg hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Back to Data Annotation</a>
-            <!--<a href="./index.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors text-sm sm:text-base">Back to Annotation</a>-->
+        <nav class="max-w-5xl mx-auto py-4 px-4 sm:px-6 flex justify-between items-center">
+            <a href="./index.html" class="text-blue-600 dark:text-blue-400 font-semibold text-lg hover:text-blue-700 dark:hover:text-blue-300 transition-colors">Back to EdgeLabel</a>
         </nav>
     </header>
-    <main class="bg-white dark:bg-gray-800 p-4 sm:p-8 rounded-xl card-shadow w-full max-w-3xl mx-auto mt-6 transition-colors flex-grow">
-        <h1 class="text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 mb-6 text-center transition-colors">Contact Us</h1>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 transition-colors">
-            Have questions or feedback? Reach out to us at:
-        </p>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 transition-colors">
-            Email: <a href="mailto:clueanalytics7@gmail.com" class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">clueanalytics7@gmail.com</a>
-        </p>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 transition-colors">
-            We aim to respond within 48 hours. For technical issues, please include details about your browser and any error messages.
-        </p>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors">
-            Follow us on <a href="https://x.com/ClueAnalytics" class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors" target="_blank">X</a> for updates.
-        </p>
+
+    <main class="bg-white dark:bg-gray-800 p-4 sm:p-8 rounded-xl shadow-lg w-full max-w-5xl mx-auto my-8 transition-colors flex-grow">
+        <div class="text-center max-w-2xl mx-auto">
+            <h1 class="text-3xl sm:text-4xl font-bold mb-6 text-blue-800 dark:text-blue-300 slide-up">
+                Contact Us
+            </h1>
+            <p class="text-lg text-gray-700 dark:text-gray-300 mb-8 leading-relaxed slide-up">
+                Have a question, feedback, or a data request under GDPR? Reach out to us using the form below.
+                Select your inquiry type to help us direct your message to the right team.
+            </p>
+
+            <div id="form-container" class="space-y-6">
+                <!-- Success message will be inserted here -->
+                <form id="contact-form" class="space-y-6">
+                    <div id="error-message" class="hidden p-4 rounded-lg bg-red-50 border border-red-200">
+                        <p class="text-red-700 text-sm" role="alert"></p>
+                    </div>
+
+                    <div class="slide-up">
+                        <label for="inquiryType" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Inquiry Type <span class="text-red-500">*</span>
+                        </label>
+                        <select
+                            id="inquiryType"
+                            name="inquiryType"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            required
+                        >
+                            <option value="general">General Inquiry</option>
+                            <option value="dataRequest">Data Request (GDPR)</option>
+                            <option value="feedback">Feedback / Suggestion</option>
+                            <option value="collaboration">Collaboration Inquiry</option>
+                        </select>
+                    </div>
+
+                    <div class="slide-up">
+                        <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Name <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="name"
+                            name="name"
+                            placeholder="Your name"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            required
+                        />
+                    </div>
+
+                    <div class="slide-up">
+                        <label for="email" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Email <span class="text-red-500">*</span>
+                        </label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="your.email@example.com"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            required
+                        />
+                    </div>
+
+                    <div class="slide-up">
+                        <label for="message" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                            Message <span class="text-red-500">*</span>
+                        </label>
+                        <textarea
+                            id="message"
+                            name="message"
+                            placeholder="How can we help you?"
+                            rows="5"
+                            class="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 shadow-sm transition duration-200 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                            required
+                        ></textarea>
+                    </div>
+
+                    <button
+                        type="submit"
+                        id="submit-btn"
+                        class="w-full px-6 py-3 rounded-lg bg-blue-600 text-white font-medium hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 slide-up"
+                    >
+                        Send Message
+                    </button>
+                </form>
+            </div>
+        </div>
     </main>
-    <footer class="bg-gray-800 w-full p-4 mt-auto transition-colors">
-        <div class="max-w-3xl mx-auto text-center text-xs sm:text-sm">
-            <p class="mb-2 text-gray-300 dark:text-gray-400">© 2025 Data Annotation Platform. All rights reserved.</p>
+
+    <footer class="bg-gray-800 dark:bg-gray-900 w-full p-4 mt-auto transition-colors">
+        <div class="max-w-5xl mx-auto text-center text-xs sm:text-sm">
+            <p class="mb-2 text-gray-300 dark:text-gray-400">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" class="text-gray-200 hover:text-blue-400 transition-colors">ClueAnalytics</a> - EdgeLabel. All rights reserved.</p>
             <nav class="flex justify-center gap-4">
-                <a href="./privacy.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">Privacy Policy</a>
-                <a href="./guide.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">User Guide</a>
-                <a href="./about.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">About Us</a>
-                <a href="./contact.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">Contact Us</a>
+                <a href="./privacy.html" class="text-gray-200 hover:text-blue-400 transition-colors">Privacy Policy</a>
+                <a href="./guide.html" class="text-gray-200 hover:text-blue-400 transition-colors">User Guide</a>
+                <a href="./about.html" class="text-gray-200 hover:text-blue-400 transition-colors">About Us</a>
+                <a href="./contact.html" class="text-gray-200 hover:text-blue-400 transition-colors">Contact Us</a>
             </nav>
         </div>
     </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('contact-form');
+            const formContainer = document.getElementById('form-container');
+            const errorMessage = document.getElementById('error-message');
+            const submitBtn = document.getElementById('submit-btn');
+            const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxbKvo_PY1U67Wv-ZWLMVFKLCobPcGlRqcrv5SJKLVUyUlHm1RtS3ZOzrF2eSksuesR/exec';
+
+            function validateEmail(email) {
+                return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+            }
+
+            form.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                const formData = {
+                    name: document.getElementById('name').value.trim(),
+                    email: document.getElementById('email').value.trim(),
+                    message: document.getElementById('message').value.trim(),
+                    inquiryType: document.getElementById('inquiryType').value
+                };
+
+                // Validate
+                if (!formData.name || !formData.email || !formData.message) {
+                    showError("Please fill in all required fields.");
+                    return;
+                }
+
+                if (!validateEmail(formData.email)) {
+                    showError("Please enter a valid email address.");
+                    return;
+                }
+
+                // Disable button and show loading
+                submitBtn.disabled = true;
+                submitBtn.innerHTML = `
+                    <span class="flex items-center justify-center">
+                        <svg class="spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        Sending...
+                    </span>
+                `;
+
+                try {
+                    // First try POST request
+                    let success = false;
+                    try {
+                        const response = await fetch(GOOGLE_SCRIPT_URL, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(formData)
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            if (result.success) {
+                                success = true;
+                                showSuccess();
+                            } else {
+                                throw new Error(result.message || 'Submission failed');
+                            }
+                        } else {
+                            throw new Error(`HTTP error ${response.status}`);
+                        }
+                    } catch (postError) {
+                        console.warn('POST failed, trying JSONP:', postError);
+                        // Fallback to JSONP
+                        await submitViaJsonp(formData);
+                        success = true;
+                        showSuccess();
+                    }
+
+                    if (!success) {
+                        throw new Error('Both POST and JSONP failed');
+                    }
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    showError("Failed to send message. Please try again later.");
+                } finally {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Send Message';
+                }
+            });
+
+            function submitViaJsonp(formData) {
+                return new Promise((resolve, reject) => {
+                    const callbackName = `jsonp_${Date.now()}`;
+                    const script = document.createElement('script');
+
+                    window[callbackName] = (response) => {
+                        cleanup();
+                        if (response && response.success) {
+                            resolve(response);
+                        } else {
+                            reject(new Error(response?.message || 'JSONP submission failed'));
+                        }
+                    };
+
+                    const cleanup = () => {
+                        delete window[callbackName];
+                        if (document.body.contains(script)) {
+                            document.body.removeChild(script);
+                        }
+                    };
+
+                    script.onerror = () => {
+                        cleanup();
+                        reject(new Error('Network error during JSONP request'));
+                    };
+
+                    const params = new URLSearchParams();
+                    params.append('callback', callbackName);
+                    params.append('name', formData.name);
+                    params.append('email', formData.email);
+                    params.append('message', formData.message);
+                    params.append('inquiryType', formData.inquiryType);
+
+                    script.src = `${GOOGLE_SCRIPT_URL}?${params.toString()}`;
+                    document.body.appendChild(script);
+                });
+            }
+
+            function showError(message) {
+                errorMessage.classList.remove('hidden');
+                errorMessage.querySelector('p').textContent = message;
+                errorMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            function showSuccess() {
+                formContainer.innerHTML = `
+                    <div class="p-4 mb-6 rounded-lg bg-green-50 border border-green-200 fade-in">
+                        <p class="text-green-700 font-medium">
+                            Thank you for your message! We'll be in touch soon.
+                        </p>
+                    </div>
+                    <button
+                        onclick="window.location.reload()"
+                        class="btn bg-gray-500 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition duration-200 fade-in"
+                    >
+                        Send another message
+                    </button>
+                `;
+            }
+        });
+    </script>
 </body>
 </html>

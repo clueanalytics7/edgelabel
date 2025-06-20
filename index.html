@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Data Annotation Platform</title>
+    <title>EdgeLabel </title>
     <!-- React and ReactDOM from unpkg with correct integrity -->
     <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
@@ -322,7 +322,7 @@
          */
         const WelcomeScreen = ({ onGetStarted }) => (
             <div className="max-w-7xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6 text-center animate-fade-in">
-                <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Welcome to Data Annotation Platform</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-gray-800 dark:text-white">Welcome to EdgeLabel</h2>
                 <p className="text-gray-600 dark:text-gray-300 mb-4">
                     Data annotation is the process of labeling data to train machine learning models. This platform allows you to:
                 </p>
@@ -726,7 +726,7 @@
                 <div className="flex flex-col min-h-screen">
                     <header className="bg-white dark:bg-gray-800 shadow-md p-4">
                         <div className="max-w-7xl mx-auto flex justify-between items-center">
-                            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">Data Annotation Platform</h1>
+                            <h1 className="text-2xl font-bold text-gray-800 dark:text-white">EdgeLabel</h1>
                             <div className="flex gap-2 sm:gap-4 flex-wrap">
                                 <select
                                     value={theme}
@@ -916,17 +916,20 @@
                         </div>
                     )}
 
+                    
                     <footer className="bg-gray-800 text-white p-4 mt-auto">
-                        <div className="max-w-7xl mx-auto text-center text-sm">
-                            <p className="mb-2 text-gray-300">© 2025 Data Annotation Platform. All rights reserved.</p>
-                            <nav className="flex justify-center gap-4 flex-wrap">
-                                <a href="./privacy.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Privacy Policy</a>
-                                <a href="./guide.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">User Guide</a>
-                                <a href="./about.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">About Us</a>
-                                <a href="./contact.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Contact</a>
-                            </nav>
-                        </div>
-                    </footer>
+                  <div className="max-w-7xl mx-auto text-center text-sm">
+                      <p className="mb-2 text-gray-300">
+                          © 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-blue-400 transition-colors">ClueAnalytics</a> - EdgeLabel. All rights reserved.
+                      </p>
+                      <nav className="flex justify-center gap-4 flex-wrap">
+                          <a href="./privacy.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Privacy Policy</a>
+                          <a href="./guide.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">User Guide</a>
+                          <a href="./about.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">About Us</a>
+                          <a href="./contact.html" className="text-gray-200 hover:text-blue-400 transition-colors" target="_blank">Contact</a>
+                      </nav>
+                  </div>
+              </footer>
                 </div>
             );
         };
