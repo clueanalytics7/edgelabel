@@ -4,6 +4,7 @@ import autoprefixer from 'autoprefixer';
 
 export default defineConfig({
   base: '/edgelabel/', // Critical for GitHub Pages
+  publicDir:'public',
   css: {
     postcss: {
       plugins: [tailwindcss, autoprefixer]
