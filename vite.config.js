@@ -1,23 +1,21 @@
 import { defineConfig } from 'vite';
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
+import react from '@vitejs/plugin-react';
 
+// Multi-page app: each HTML file is its own entry point.
+// Vite compiles JSX at build time — no Babel CDN needed at runtime.
 export default defineConfig({
-  base: '/edgelabel/', // Critical for GitHub Pages
-  publicDir:'public',
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer]
-    }
-  },
+  plugins: [react()],
   build: {
-    outDir: 'dist',
-    emptyOutDir: true,
     rollupOptions: {
-      output: {
-        assetFileNames: 'assets/[name].[hash].[ext]',
-        entryFileNames: 'assets/[name].[hash].js'
-      }
-    }
-  }
+      input: {
+        main:        'index.html',
+        annotation:  'annotation.html',
+        translation: 'translation.html',
+        about:       'about.html',
+        contact:     'contact.html',
+        guide:       'guide.html',
+        privacy:     'privacy.html',
+      },
+    },
+  },
 });
