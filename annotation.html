@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EdgeLabel </title>
+    <title>EdgeLabel — Data Annotation</title>
+    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
     <!-- React and ReactDOM from unpkg with correct integrity -->
     <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
@@ -14,14 +15,30 @@
     <script>
         tailwind.config = { darkMode: 'class' };
     </script>
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-98SPL77FT1"></script>
+    <!-- Google Analytics: NOT loaded until the user explicitly accepts analytics.
+         The gtag() stub queues nothing while disableAnalytics is true.
+         On accept, GA is injected dynamically; on reload it respects prior consent. -->
     <script>
+        window.disableAnalytics = true; // default: off until consent
         window.dataLayer = window.dataLayer || [];
-        function gtag() { dataLayer.push(arguments); }
-        gtag('js', new Date());
-        gtag('config', 'G-98SPL77FT1');
-        window.disableAnalytics = false;
+        function gtag() { if (!window.disableAnalytics) { window.dataLayer.push(arguments); } }
+
+        function _loadGA() {
+            if (window._gaLoaded) return;
+            window._gaLoaded = true;
+            window.disableAnalytics = false;
+            const s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=G-98SPL77FT1';
+            s.onload = function() {
+                gtag('js', new Date());
+                gtag('config', 'G-98SPL77FT1');
+            };
+            document.head.appendChild(s);
+        }
+
+        // Restore GA for users who already accepted in a previous session
+        if (localStorage.getItem('privacyConsent') === 'true') { _loadGA(); }
     </script>
 </head>
 <body class="bg-gray-100 dark:bg-gray-900 min-h-screen font-sans transition-colors duration-300">
@@ -701,14 +718,19 @@
             }, [nextData, prevData, undo, redo, handleSelectLabel, labels, saveSession, showSettings, showAnnotations]);
 
             /**
-             * Handle privacy consent
+             * Handle privacy consent.
+             * GA is only loaded here — never from the page head.
              */
             const handlePrivacyConsent = (accepted) => {
                 setPrivacyConsent(accepted);
-                localStorage.setItem('privacyConsent', accepted);
-                if (!accepted) window.disableAnalytics = true;
-                if (!window.disableAnalytics) {
-                    gtag('event', accepted ? 'accept_privacy' : 'decline_privacy', { event_category: 'Privacy' });
+                localStorage.setItem('privacyConsent', String(accepted));
+                if (accepted) {
+                    _loadGA(); // dynamically inject GA script after consent
+                    // _loadGA sets disableAnalytics = false before onload fires,
+                    // so queue the event immediately — it will flush once gtag config runs.
+                    gtag('event', 'accept_privacy', { event_category: 'Privacy' });
+                } else {
+                    window.disableAnalytics = true;
                 }
             };
 
