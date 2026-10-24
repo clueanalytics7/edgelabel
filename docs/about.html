@@ -5,88 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>About Us | EdgeLabel</title>
   <link rel="icon" href="./assets/favicon-B3Ar59hU.svg" type="image/svg+xml">
-  <link rel="stylesheet" crossorigin href="./assets/FileComponents-C5I7qqrf.css">
+  <script>const t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');</script>
+  <link rel="stylesheet" crossorigin href="./assets/input-Bj_bwi9g.css">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen font-sans transition-colors">
-  <header class="w-full bg-white dark:bg-gray-800 shadow-md">
-    <nav class="max-w-3xl mx-auto py-4 px-6 flex justify-between items-center">
-      <a href="./index.html" class="text-blue-600 dark:text-blue-400 font-bold text-lg hover:text-blue-700 transition-colors">EdgeLabel</a>
-      <a href="./index.html" class="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">← Back to Home</a>
+<body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
+
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="./index.html" class="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-xl">
+        <svg class="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
+        EdgeLabel
+      </a>
+      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <a href="./guide.html" class="hover:text-blue-600 dark:hover:text-blue-400">Guide</a>
+        <a href="./about.html" class="text-blue-600 dark:text-blue-400 font-semibold">About</a>
+        <a href="./contact.html" class="hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
+          <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <a href="./annotation.html" class="hidden sm:inline-flex px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">Start Free →</a>
+      </div>
     </nav>
   </header>
 
-  <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-12">
-    <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">About EdgeLabel</h1>
-    <p class="text-gray-500 dark:text-gray-400 mb-8 text-sm">Built by Clue Analytics</p>
+  <main class="pt-24 pb-20 px-6 min-h-screen">
+    <div class="max-w-3xl mx-auto">
 
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">What we built and why</h2>
-      <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">
-        EdgeLabel is a data annotation and translation platform that runs entirely inside your browser.
-        There is no server, no account, and no upload. Your dataset files are processed locally using
-        the browser's built-in File API and never leave your device.
-      </p>
-      <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-        We built it because most annotation tools are cloud-first — useful for large teams, but a poor
-        fit for researchers, independent data scientists, and small teams working with sensitive or
-        proprietary data who need a credible privacy guarantee, not just a policy checkbox.
-      </p>
-    </section>
+      <div class="mb-12">
+        <span class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full border border-blue-100 dark:border-blue-800 mb-4">Clue Analytics</span>
+        <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-4">About EdgeLabel</h1>
+        <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed">A data annotation platform built on a single principle: your data is yours.</p>
+      </div>
 
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Who it's for</h2>
-      <ul class="space-y-3 text-gray-600 dark:text-gray-300">
-        <li class="flex gap-3"><span class="text-blue-500 font-bold mt-0.5">→</span><span><strong class="text-gray-700 dark:text-gray-200">NLP researchers</strong> who need to label text datasets for classification, sentiment, or intent detection without sending data to a third-party service.</span></li>
-        <li class="flex gap-3"><span class="text-blue-500 font-bold mt-0.5">→</span><span><strong class="text-gray-700 dark:text-gray-200">AI/ML teams</strong> preparing fine-tuning datasets for language models, including JSONL export ready for OpenAI, Anthropic, and Mistral formats.</span></li>
-        <li class="flex gap-3"><span class="text-blue-500 font-bold mt-0.5">→</span><span><strong class="text-gray-700 dark:text-gray-200">Localisation teams</strong> translating datasets row by row with structured CSV output, no separate translation software required.</span></li>
-        <li class="flex gap-3"><span class="text-blue-500 font-bold mt-0.5">→</span><span><strong class="text-gray-700 dark:text-gray-200">Clinical and legal professionals</strong> who cannot share patient or client data with cloud services due to regulatory or contractual requirements.</span></li>
-      </ul>
-    </section>
+      <div class="space-y-8">
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">What we built and why</h2>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-4">EdgeLabel is a data annotation and translation platform that runs entirely inside your browser. There is no server, no account, and no upload. Your dataset files are processed locally using the browser's built-in File API and never leave your device.</p>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">We built it because most annotation tools are cloud-first — useful for large teams, but a poor fit for researchers, independent data scientists, and small teams working with sensitive or proprietary data who need a credible privacy guarantee, not just a policy checkbox.</p>
+        </div>
 
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">The privacy commitment</h2>
-      <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">
-        "Local-first" is not a marketing phrase here — it is a technical constraint we deliberately
-        designed around. The annotation and translation tools have no network calls, no server,
-        and no third-party data pipeline. Sessions are stored in your browser's localStorage,
-        visible only to you, and exports go directly to your Downloads folder.
-      </p>
-      <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-        Optional Google Analytics (anonymised page-view statistics only) is available but is
-        <strong>disabled by default</strong> and only activates when you explicitly accept the consent
-        banner. Declining it has no effect on product functionality.
-      </p>
-    </section>
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">Who it's for</h2>
+          <div class="space-y-4">
+            <div class="flex gap-4">
+              <div class="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17H3a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v10a2 2 0 01-2 2h-2"/></svg>
+              </div>
+              <div><p class="font-semibold text-gray-900 dark:text-white mb-1">NLP Researchers</p><p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Label text datasets for classification, sentiment, or intent detection without sending data to a third-party service.</p></div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 bg-purple-100 dark:bg-purple-900/40 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              </div>
+              <div><p class="font-semibold text-gray-900 dark:text-white mb-1">AI / ML Teams</p><p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Prepare fine-tuning datasets for language models with JSONL export ready for OpenAI, Anthropic, Mistral, and Llama pipelines.</p></div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 bg-green-100 dark:bg-green-900/40 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.048 9.5A18.022 18.022 0 016.412 9m6.088 9h7M11 21l5-10 5 10M12.751 5C11.783 10.77 8.07 15.61 3 18.129"/></svg>
+              </div>
+              <div><p class="font-semibold text-gray-900 dark:text-white mb-1">Localisation Teams</p><p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Translate datasets row by row with structured CSV output. No separate translation software required.</p></div>
+            </div>
+            <div class="flex gap-4">
+              <div class="w-8 h-8 bg-red-100 dark:bg-red-900/40 rounded-lg flex items-center justify-center shrink-0 mt-0.5">
+                <svg class="w-4 h-4 text-red-600 dark:text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+              </div>
+              <div><p class="font-semibold text-gray-900 dark:text-white mb-1">Clinical &amp; Legal Professionals</p><p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Annotate data that cannot leave your device under GDPR, HIPAA, or NDA. Zero uploads, zero exposure.</p></div>
+            </div>
+          </div>
+        </div>
 
-    <section class="mb-10">
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Clue Analytics</h2>
-      <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
-        EdgeLabel is developed and maintained by <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-600 dark:text-blue-400">Clue Analytics</a>,
-        an AI and machine learning consulting practice. We build tools and provide advisory services
-        to organisations navigating practical data science problems — from dataset preparation
-        and model evaluation through to deployment and governance.
-      </p>
-    </section>
+        <div class="bg-blue-50 dark:bg-blue-900/20 rounded-2xl border border-blue-100 dark:border-blue-800 p-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">The privacy commitment</h2>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed mb-3">"Local-first" is a technical constraint, not a marketing phrase. The annotation and translation tools have no network calls, no server, and no third-party data pipeline. Sessions are stored in your browser's localStorage, visible only to you, and exports go directly to your Downloads folder.</p>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">Optional Google Analytics (anonymised page-view statistics only) is <strong class="text-gray-900 dark:text-white">disabled by default</strong> and only activates when you explicitly accept the consent banner. Declining it has no effect on product functionality.</p>
+        </div>
 
-    <section>
-      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Get in touch</h2>
-      <p class="text-gray-600 dark:text-gray-300">
-        Questions, feedback, or partnership enquiries — visit our <a href="./contact.html" class="text-blue-500 hover:text-blue-600 dark:text-blue-400">Contact page</a>.
-        We read everything.
-      </p>
-    </section>
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
+          <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-4">Clue Analytics</h2>
+          <p class="text-gray-600 dark:text-gray-300 leading-relaxed">EdgeLabel is developed and maintained by <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" class="text-blue-600 dark:text-blue-400 hover:underline">Clue Analytics</a>, an AI and machine learning consulting practice. We build tools and provide advisory services to organisations navigating practical data science problems — from dataset preparation and model evaluation through to deployment and governance.</p>
+          <div class="mt-4">
+            <a href="./contact.html" class="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400 hover:underline">Get in touch →</a>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 
-  <footer class="bg-gray-800 text-white w-full p-4 mt-auto">
-    <div class="max-w-3xl mx-auto text-center text-sm">
-      <p class="mb-2 text-gray-300">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">ClueAnalytics</a> — EdgeLabel. All rights reserved.</p>
-      <nav class="flex justify-center gap-4 flex-wrap">
-        <a href="./privacy.html" class="text-gray-300 hover:text-blue-400 transition-colors">Privacy Policy</a>
-        <a href="./guide.html"   class="text-gray-300 hover:text-blue-400 transition-colors">User Guide</a>
-        <a href="./about.html"   class="text-gray-300 hover:text-blue-400 transition-colors">About Us</a>
-        <a href="./contact.html" class="text-gray-300 hover:text-blue-400 transition-colors">Contact</a>
+  <footer class="bg-gray-950 dark:bg-black text-gray-400 py-10 px-6 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-sm">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition-colors">ClueAnalytics</a> — EdgeLabel. MIT License.</p>
+      <nav class="flex gap-6 text-sm">
+        <a href="./privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="./guide.html" class="hover:text-white transition-colors">User Guide</a>
+        <a href="./contact.html" class="hover:text-white transition-colors">Contact</a>
+        <a href="https://github.com/clueanalytics7/edgelabel" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
       </nav>
     </div>
   </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+    function updateIcons() { const d = document.documentElement.classList.contains('dark'); sun.classList.toggle('hidden', !d); moon.classList.toggle('hidden', d); }
+    updateIcons();
+    toggle.addEventListener('click', () => { const d = document.documentElement.classList.toggle('dark'); localStorage.setItem('theme', d ? 'dark' : 'light'); updateIcons(); });
+  </script>
 </body>
 </html>
