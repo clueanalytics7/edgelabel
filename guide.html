@@ -1,55 +1,161 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Guide | EdgeLabel</title>
-    <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-    <link href="./output.css" rel="stylesheet">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Guide | EdgeLabel</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link href="./output.css" rel="stylesheet">
 </head>
-<body class="bg-gray-50 dark:bg-gray-900 flex flex-col items-center min-h-screen font-sans transition-colors">
-    <header class="w-full bg-white dark:bg-gray-800 shadow-md transition-colors">
-        <nav class="max-w-3xl mx-auto py-4 px-4 sm:px-6 flex justify-between items-center">
-            <a href="./index.html" class="text-primary dark:text-blue-500 font-semibold text-lg hover:text-blue-700 transition-colors">EdgeLabel</a>
-            <a href="./index.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-blue-400 transition-colors text-sm sm:text-base">Back to Home</a>
-        </nav>
-    </header>
-    <main class="bg-white dark:bg-gray-800 p-4 sm:p-8 rounded-xl card-shadow w-full max-w-3xl mx-auto mt-6 transition-colors flex-grow">
-        <h1 class="text-2xl sm:text-3xl text-gray-800 dark:text-gray-100 mb-6 text-center transition-colors">User Guide</h1>
-        <h2 class="text-lg sm:text-xl text-gray-900 dark:text-gray-200 mb-4 transition-colors">Getting Started</h2>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 mb-4 transition-colors">
-            Welcome to the EdgeLabel Platform! Follow these steps to annotate your CSV data:
-        </p>
-        <ol class="list-decimal pl-5 sm:pl-6 mb-4 text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors">
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">Upload a CSV File</strong>: Click "Upload CSV" and select a CSV with text columns (e.g., "Text,Description").</li>
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">Annotate Data</strong>: Select a label (e.g., Positive, Neutral) and click "Save Annotation" or press Enter to save and move to the next item.</li>
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">Navigate</strong>: Use "Previous" (←) and "Next Data" (→) buttons or arrow keys to move through items.</li>
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">View Annotations</strong>: Click "View Annotations" to see all saved annotations in a modal.</li>
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">Customize Settings</strong>: Open "Settings" to select a column, toggle light/dark theme, or add custom labels.</li>
-            <li class="mb-2"><strong class="text-blue-600 dark:text-blue-400">Clear Annotations</strong>: Click "Clear Annotations" to reset annotations (download CSV first to save progress).</li>
-            <li><strong class="text-blue-600 dark:text-blue-400">Download Results</strong>: Click "Download CSV" to export annotations.</li>
-        </ol>
-        <h2 class="text-lg sm:text-xl text-gray-900 dark:text-gray-200 mb-4 transition-colors">Tips</h2>
-        <ul class="list-disc pl-5 sm:pl-6 mb-4 text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors">
-            <li class="mb-2">Use keyboard shortcuts: 1-5 for labels, Ctrl+Z to undo.</li>
-            <li class="mb-2">Check the privacy notice and accept/decline analytics tracking.</li>
-            <li class="mb-2">Ensure CSV files are UTF-8 encoded to avoid parsing errors.</li>
-            <li>Test on mobile devices for responsive design.</li>
-        </ul>
-        <p class="text-sm sm:text-base text-gray-600 dark:text-gray-300 transition-colors">
-            For support, visit the <a href="./contact.html" class="text-blue-500 hover:text-blue-600 dark:text-blue-400 dark:hover:text-blue-300 transition-colors">Contact Us</a> page.
-        </p>
-    </main>
-    <footer class="bg-gray-800 text-white w-full p-4 mt-auto transition-colors">
-        <div class="max-w-3xl mx-auto text-center text-xs sm:text-sm">
-<p class="mb-2 text-gray-300 dark:text-gray-400">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="text-gray-200 hover:text-blue-400 transition-colors">ClueAnalytics</a> - EdgeLabel. All rights reserved.</p>
-            <nav class="flex justify-center gap-4">
-                <a href="./privacy.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-300 transition-colors">Privacy Policy</a>
-                <a href="./guide.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">User Guide</a>
-                <a href="./about.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">About Us</a>
-                <a href="./contact.html" class="text-gray-200 dark:text-gray-200 hover:text-blue-400 transition-colors">Contact Us</a>
-            </nav>
+<body class="bg-gray-50 dark:bg-gray-900 flex flex-col min-h-screen font-sans transition-colors">
+  <header class="w-full bg-white dark:bg-gray-800 shadow-md">
+    <nav class="max-w-3xl mx-auto py-4 px-6 flex justify-between items-center">
+      <a href="./index.html" class="text-blue-600 dark:text-blue-400 font-bold text-lg">EdgeLabel</a>
+      <a href="./index.html" class="text-sm text-gray-600 dark:text-gray-300 hover:text-blue-600 transition-colors">← Back to Home</a>
+    </nav>
+  </header>
+
+  <main class="flex-grow max-w-3xl w-full mx-auto px-6 py-12 space-y-10">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-800 dark:text-gray-100 mb-2">User Guide</h1>
+      <p class="text-gray-500 dark:text-gray-400 text-sm">Everything you need to annotate and translate CSV datasets with EdgeLabel.</p>
+    </div>
+
+    <!-- Quick start -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Quick start — Annotation</h2>
+      <ol class="space-y-3 text-gray-600 dark:text-gray-300 text-sm">
+        <li class="flex gap-3"><span class="text-blue-600 font-bold w-5 shrink-0">1.</span><span>Open <a href="./annotation.html" class="text-blue-500 hover:underline">annotation.html</a> and click <strong>Get Started</strong>.</span></li>
+        <li class="flex gap-3"><span class="text-blue-600 font-bold w-5 shrink-0">2.</span><span>Drag a CSV file onto the upload zone, or click to browse. The file is read locally — nothing is uploaded.</span></li>
+        <li class="flex gap-3"><span class="text-blue-600 font-bold w-5 shrink-0">3.</span><span>Click <strong>Settings</strong> and select the column containing the text you want to annotate. Click <strong>Save</strong>.</span></li>
+        <li class="flex gap-3"><span class="text-blue-600 font-bold w-5 shrink-0">4.</span><span>Click a label button, or press the number key shown (1–9). The row is saved and you advance automatically.</span></li>
+        <li class="flex gap-3"><span class="text-blue-600 font-bold w-5 shrink-0">5.</span><span>When finished, click <strong>↓ CSV</strong>, <strong>↓ JSON</strong>, or <strong>↓ JSONL</strong> to download your annotated dataset.</span></li>
+      </ol>
+    </section>
+
+    <!-- Sample files -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Sample datasets</h2>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mb-3">Download a sample to try EdgeLabel without using your own data.</p>
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+        <a href="./public/samples/sentiment-reviews.csv" download
+          class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+          <p class="font-medium text-gray-800 dark:text-gray-100 text-sm mb-1">Sentiment Reviews</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">15 customer reviews · use with Annotation tool · label: Positive / Neutral / Negative</p>
+        </a>
+        <a href="./public/samples/medical-ner.csv" download
+          class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-500 transition-colors">
+          <p class="font-medium text-gray-800 dark:text-gray-100 text-sm mb-1">Medical NER</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">12 clinical sentences · use with Annotation tool · label by entity type</p>
+        </a>
+        <a href="./public/samples/translation-support.csv" download
+          class="block p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-500 transition-colors">
+          <p class="font-medium text-gray-800 dark:text-gray-100 text-sm mb-1">Support Translation</p>
+          <p class="text-xs text-gray-500 dark:text-gray-400">12 support phrases · use with Translation tool · translate the English column</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Keyboard shortcuts -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Keyboard shortcuts</h2>
+      <table class="w-full text-sm text-gray-600 dark:text-gray-300 border border-gray-200 dark:border-gray-700 rounded-lg overflow-hidden">
+        <thead class="bg-gray-100 dark:bg-gray-700 text-left">
+          <tr>
+            <th class="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Key</th>
+            <th class="px-4 py-2 font-medium text-gray-700 dark:text-gray-200">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">1</kbd> – <kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">9</kbd></td><td class="px-4 py-2">Apply label 1–9 and advance to next row</td></tr>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">←</kbd> <kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">→</kbd></td><td class="px-4 py-2">Navigate to previous / next row</td></tr>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">Ctrl+Z</kbd></td><td class="px-4 py-2">Undo last annotation</td></tr>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">Ctrl+Y</kbd></td><td class="px-4 py-2">Redo</td></tr>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">Ctrl+S</kbd></td><td class="px-4 py-2">Save session to browser storage</td></tr>
+          <tr class="border-t border-gray-200 dark:border-gray-700"><td class="px-4 py-2"><kbd class="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-xs font-mono">Ctrl+Enter</kbd></td><td class="px-4 py-2">Save translation (Translation tool only)</td></tr>
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Export formats -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Export formats</h2>
+      <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200 mb-1">CSV</p>
+          <p>Three columns: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">Data</code>, <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">Label</code>, <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">Comment</code>. Only annotated rows are exported. RFC 4180 compliant — safe to open in Excel, Google Sheets, pandas.</p>
         </div>
-    </footer>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200 mb-1">JSON</p>
+          <p>Array of objects: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded text-xs">[{"data":"…","label":"…","comment":null}]</code>. Useful for programmatic post-processing.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200 mb-1">JSONL <span class="text-blue-500 text-xs font-normal ml-1">new</span></p>
+          <p>One JSON object per line — the standard format for LLM fine-tuning datasets (OpenAI, Anthropic, Mistral, Llama). Import directly into your training pipeline.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200 mb-1">Translation CSV</p>
+          <p>Your original CSV with two new columns appended: <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">Translation</code> and <code class="bg-gray-100 dark:bg-gray-700 px-1 rounded">Comment</code>. All original rows preserved.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CSV requirements -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">CSV file requirements</h2>
+      <ul class="space-y-2 text-sm text-gray-600 dark:text-gray-300">
+        <li class="flex gap-2"><span class="text-green-500">✓</span> UTF-8 encoding (most text editors and spreadsheet apps use this by default)</li>
+        <li class="flex gap-2"><span class="text-green-500">✓</span> First row is the header row (column names)</li>
+        <li class="flex gap-2"><span class="text-green-500">✓</span> Comma-delimited; quoted fields with embedded commas or newlines are supported</li>
+        <li class="flex gap-2"><span class="text-green-500">✓</span> Any number of columns; you select which one to annotate or translate</li>
+        <li class="flex gap-2"><span class="text-yellow-500">⚠</span> Very large files (&gt;50,000 rows) may slow down the browser — split them into batches</li>
+      </ul>
+    </section>
+
+    <!-- Browser support -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-3">Browser support</h2>
+      <p class="text-sm text-gray-600 dark:text-gray-300">EdgeLabel works in any modern browser that supports ES modules and the File API:</p>
+      <ul class="mt-2 flex flex-wrap gap-3 text-sm text-gray-600 dark:text-gray-300">
+        <li>✓ Chrome 90+</li><li>✓ Firefox 90+</li><li>✓ Safari 15+</li><li>✓ Edge 90+</li>
+      </ul>
+      <p class="text-sm text-gray-500 dark:text-gray-400 mt-2">Internet Explorer is not supported.</p>
+    </section>
+
+    <!-- FAQ -->
+    <section>
+      <h2 class="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">FAQ</h2>
+      <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300">
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200">Is my data safe?</p>
+          <p>Yes. Files are read by your browser's File API and never transmitted anywhere. All processing is in-memory, on your device.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200">What happens if I close the browser tab?</p>
+          <p>Use <strong>Save</strong> (or Ctrl+S) regularly. The session is saved to localStorage and can be reloaded from the same browser. If you don't save, unsaved progress is lost on close.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200">Can I add my own labels?</p>
+          <p>Yes — open <strong>Settings</strong> and add or remove labels before or during annotation. The default labels (Positive, Neutral, Negative, Others) can all be removed.</p>
+        </div>
+        <div>
+          <p class="font-semibold text-gray-700 dark:text-gray-200">Can I annotate the same file on multiple devices?</p>
+          <p>Not automatically — sessions are stored locally in each browser. Export your CSV after each session and reimport on the other device to continue.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="bg-gray-800 text-white w-full p-4 mt-auto">
+    <div class="max-w-3xl mx-auto text-center text-sm">
+      <p class="mb-2 text-gray-300">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" class="hover:text-blue-400 transition-colors">ClueAnalytics</a> — EdgeLabel. All rights reserved.</p>
+      <nav class="flex justify-center gap-4 flex-wrap">
+        <a href="./privacy.html" class="text-gray-300 hover:text-blue-400 transition-colors">Privacy Policy</a>
+        <a href="./guide.html"   class="text-gray-300 hover:text-blue-400 transition-colors">User Guide</a>
+        <a href="./about.html"   class="text-gray-300 hover:text-blue-400 transition-colors">About Us</a>
+        <a href="./contact.html" class="text-gray-300 hover:text-blue-400 transition-colors">Contact</a>
+      </nav>
+    </div>
+  </footer>
 </body>
 </html>
