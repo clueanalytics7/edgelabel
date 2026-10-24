@@ -1,13 +1,6 @@
 # Dependencies
 node_modules/
 
-# Build output
-dist/
-output.css
-
-# Generated CSS (build artefact)
-*.css.map
-
 # Vite cache
 .vite/
 

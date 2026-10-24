@@ -1,11 +1,13 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// Multi-page app: each HTML file is its own entry point.
-// Vite compiles JSX at build time — no Babel CDN needed at runtime.
 export default defineConfig({
   plugins: [react()],
+  // GitHub Pages serves the repo at /edgelabel/ — all asset paths must be relative
+  base: './',
   build: {
+    outDir: 'docs',
+    emptyOutDir: true,
     rollupOptions: {
       input: {
         main:        'index.html',
