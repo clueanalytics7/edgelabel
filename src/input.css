@@ -1,9 +1,15 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  h1, h2, h3 {
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    @apply antialiased;
+  }
+  h1, h2, h3, h4 {
     @apply font-bold tracking-tight;
   }
   a {
@@ -11,11 +17,32 @@
   }
 }
 
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 active:bg-blue-800 transition-all duration-200 shadow-sm hover:shadow-md;
+  }
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 font-semibold rounded-xl border-2 border-blue-100 hover:border-blue-300 hover:bg-blue-50 transition-all duration-200;
+  }
+  .card {
+    @apply bg-white dark:bg-gray-800 rounded-2xl border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow duration-200 p-6;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold;
+  }
+}
+
 @layer utilities {
-  .gradient-bg {
-    @apply bg-gradient-to-r from-primary to-indigo-600;
+  .gradient-hero {
+    background: linear-gradient(135deg, #1e40af 0%, #2563eb 40%, #4f46e5 100%);
+  }
+  .gradient-text {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-300;
   }
   .card-shadow {
     @apply shadow-lg hover:shadow-xl transition-shadow duration-300;
+  }
+  .section-pad {
+    @apply py-20 px-6;
   }
 }
