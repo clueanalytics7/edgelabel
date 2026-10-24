@@ -305,7 +305,6 @@
         const AnnotationsModal = ({ show, onClose, annotations, dataItems, selectedColumn }) => {
             useEffect(() => {
                 if (show) {
-                    console.log('AnnotationsModal opened. Annotations:', annotations);
                 }
             }, [show, annotations]);
 
@@ -328,6 +327,23 @@
                             Close
                         </button>
                     </div>
+                </div>
+            );
+        };
+
+        /**
+         * Toast notification component — replaces browser alert()
+         */
+        const Toast = ({ message, type, onClose }) => {
+            useEffect(() => {
+                const t = setTimeout(onClose, 3500);
+                return () => clearTimeout(t);
+            }, [onClose]);
+            const bg = { success: 'bg-green-600', error: 'bg-red-600', warning: 'bg-yellow-500', info: 'bg-blue-600' };
+            return (
+                <div className={`fixed top-4 right-4 z-[2000] flex items-center gap-3 px-5 py-3 rounded-lg text-white shadow-xl text-sm max-w-sm ${bg[type] || bg.info}`} role="alert">
+                    <span className="flex-1">{message}</span>
+                    <button onClick={onClose} className="opacity-75 hover:opacity-100 text-lg leading-none" aria-label="Dismiss">✕</button>
                 </div>
             );
         };
@@ -389,6 +405,8 @@
             const [tempComment, setTempComment] = useState('');
             const [hasSelectedColumn, setHasSelectedColumn] = useState(false);
             const [showPreview, setShowPreview] = useState(false);
+            const [toast, setToast] = useState(null);
+            const showToast = useCallback((message, type = 'info') => setToast({ message, type }), []);
 
             // Theme Handling
             useEffect(() => {
@@ -408,7 +426,6 @@
                 if (fileName && annotations.length) {
                     const timer = setInterval(() => {
                         localStorage.setItem(`annotations_${fileName}`, JSON.stringify(annotations));
-                        console.log('Autosaved annotations:', annotations);
                     }, 5000);
                     return () => clearInterval(timer);
                 }
@@ -419,7 +436,6 @@
                 const savedAnnotations = localStorage.getItem(`annotations_${fileName}`);
                 if (savedAnnotations) {
                     const parsed = JSON.parse(savedAnnotations);
-                    console.log('Loaded annotations from localStorage:', parsed);
                     setAnnotations(parsed);
                 }
             }, [fileName]);
@@ -436,10 +452,8 @@
                     const data = rows.slice(1)
                         .map(row => row.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g, '').trim()))
                         .filter(row => row.some(cell => cell));
-                    console.log('Parsed CSV:', { headers, data });
                     return { headers, data };
                 } catch (error) {
-                    console.error('CSV Parsing Error:', error);
                     return { headers: [], data: [] };
                 }
             }, []);
@@ -455,7 +469,7 @@
                 reader.onload = (e) => {
                     const { headers, data } = parseCSV(e.target.result);
                     if (!data.length) {
-                        alert('No valid data found in CSV.');
+                        showToast('No valid data found in CSV. Check that the file has at least one data row.', 'error');
                         return;
                     }
                     setColumnHeaders(headers);
@@ -469,12 +483,11 @@
                     setHasSelectedColumn(false);
                     setShowPreview(true);
                     localStorage.removeItem(`annotations_${file.name}`);
-                    console.log('File uploaded:', { fileName: file.name, headers, dataLength: data.length, annotations: newAnnotations });
                     if (!window.disableAnalytics) {
                         gtag('event', 'upload_csv', { event_category: 'File', event_label: file.name, value: data.length });
                     }
                 };
-                reader.onerror = () => alert('Error reading file.');
+                reader.onerror = () => showToast('Could not read the file. Please try again.', 'error');
                 reader.readAsText(file);
             }, [parseCSV]);
 
@@ -483,14 +496,11 @@
              * @param {string} label
              */
             const saveAnnotation = useCallback((label) => {
-                console.log('Saving annotation:', { label, currentIndex, annotationsLength: annotations.length, comment: tempComment });
                 if (currentIndex < 0) {
                     setCurrentIndex(0);
-                    console.log('Set currentIndex to 0');
                     return;
                 }
                 if (currentIndex >= dataItems.length) {
-                    console.log('Reached end of data items');
                     return;
                 }
                 setUndoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
@@ -498,18 +508,15 @@
                 setAnnotations(prev => {
                     const newAnnotations = [...prev];
                     newAnnotations[currentIndex] = { label, comment: tempComment.trim() || null };
-                    console.log('Updated annotations:', newAnnotations);
                     return newAnnotations;
                 });
                 setTempComment('');
                 if (currentIndex < dataItems.length - 1) {
                     setCurrentIndex(prev => {
                         const newIndex = prev + 1;
-                        console.log('Advanced to index:', newIndex);
                         return newIndex;
                     });
                 } else {
-                    console.log('At last item, not advancing');
                 }
             }, [currentIndex, annotations, dataItems.length, tempComment]);
 
@@ -519,11 +526,10 @@
              */
             const handleSelectLabel = useCallback((label) => {
                 if (!hasSelectedColumn) {
-                    alert('Please select a column in Settings.');
+                    showToast('Please select a column to annotate in Settings first.', 'warning');
                     setShowSettings(true);
                     return;
                 }
-                console.log('Label selected:', label);
                 saveAnnotation(label);
             }, [hasSelectedColumn, saveAnnotation]);
 
@@ -533,7 +539,6 @@
             const toggleCommentField = useCallback(() => {
                 setShowCommentField(prev => !prev);
                 setTempComment('');
-                console.log('Toggled comment field:', !showCommentField);
             }, [showCommentField]);
 
             /**
@@ -541,14 +546,12 @@
              */
             const togglePreview = useCallback(() => {
                 setShowPreview(prev => !prev);
-                console.log('Toggled preview:', !showPreview);
             }, [showPreview]);
 
             /**
              * Handle Support Our Work click
              */
             const handleCoffeeClick = useCallback(() => {
-                console.log('Support Our Work clicked');
                 if (!window.disableAnalytics) {
                     gtag('event', 'support_our_work', { event_category: 'Support' });
                 }
@@ -559,14 +562,13 @@
              */
             const nextData = useCallback(() => {
                 if (!hasSelectedColumn) {
-                    alert('Please select a column in Settings.');
+                    showToast('Please select a column to annotate in Settings first.', 'warning');
                     setShowSettings(true);
                     return;
                 }
                 if (currentIndex < dataItems.length - 1) {
                     setCurrentIndex(prev => {
                         const newIndex = prev + 1;
-                        console.log('Navigated to next:', newIndex);
                         return newIndex;
                     });
                 }
@@ -576,7 +578,6 @@
                 if (currentIndex > 0) {
                     setCurrentIndex(prev => {
                         const newIndex = prev - 1;
-                        console.log('Navigated to previous:', newIndex);
                         return newIndex;
                     });
                 }
@@ -588,12 +589,10 @@
             const undo = useCallback(() => {
                 if (!undoStack.length) return;
                 const lastAction = undoStack[undoStack.length - 1];
-                console.log('Undoing action:', lastAction);
                 setRedoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
                 setAnnotations(prev => {
                     const newAnnotations = [...prev];
                     newAnnotations[lastAction.index] = lastAction.annotation;
-                    console.log('After undo, annotations:', newAnnotations);
                     return newAnnotations;
                 });
                 setCurrentIndex(lastAction.index);
@@ -603,12 +602,10 @@
             const redo = useCallback(() => {
                 if (!redoStack.length) return;
                 const nextAction = redoStack[redoStack.length - 1];
-                console.log('Redoing action:', nextAction);
                 setUndoStack(prev => [...prev, { index: currentIndex, annotation: annotations[currentIndex] }]);
                 setAnnotations(prev => {
                     const newAnnotations = [...prev];
                     newAnnotations[nextAction.index] = nextAction.annotation;
-                    console.log('After redo, annotations:', newAnnotations);
                     return newAnnotations;
                 });
                 setCurrentIndex(nextAction.index);
@@ -620,7 +617,6 @@
              * @param {string} format
              */
             const downloadAnnotations = useCallback((format = 'csv') => {
-                console.log('Downloading annotations:', annotations);
                 let content = '';
                 let mimeType, extension;
                 if (format === 'json') {
@@ -663,8 +659,7 @@
             const saveSession = useCallback(() => {
                 const session = { dataItems, annotations, fileName, columnHeaders, selectedColumn, labels, hasSelectedColumn, showPreview };
                 localStorage.setItem('saved_session', JSON.stringify(session));
-                console.log('Session saved:', session);
-                alert('Session saved!');
+                showToast('Session saved.', 'success');
             }, [dataItems, annotations, fileName, columnHeaders, selectedColumn, labels, hasSelectedColumn, showPreview]);
 
             /**
@@ -684,10 +679,9 @@
                     setShowPreview(showPreview);
                     setCurrentIndex(hasSelectedColumn ? 0 : -1);
                     setShowWelcome(false);
-                    console.log('Session loaded:', { dataItems, annotations, fileName, hasSelectedColumn, showPreview });
-                    alert('Session loaded!');
+                    showToast('Session loaded.', 'success');
                 } else {
-                    alert('No saved session found.');
+                    showToast('No saved session found.', 'warning');
                 }
             }, []);
 
@@ -704,7 +698,6 @@
                     if (e.key >= '1' && e.key <= '9') {
                         const index = parseInt(e.key) - 1;
                         if (labels[index]) {
-                            console.log('Keyboard shortcut:', e.key, 'Label:', labels[index].name);
                             handleSelectLabel(labels[index].name);
                         }
                     }
@@ -740,7 +733,6 @@
             const progress = useMemo(() => {
                 const annotatedCount = annotations.filter(a => a !== null).length;
                 const percentage = dataItems.length > 0 ? (annotatedCount / dataItems.length) * 100 : 0;
-                console.log('Progress:', { count: annotatedCount, total: dataItems.length, percentage });
                 return { count: annotatedCount, total: dataItems.length, percentage };
             }, [annotations, dataItems]);
 
@@ -953,6 +945,7 @@
                       </nav>
                   </div>
               </footer>
+                {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
                 </div>
             );
         };

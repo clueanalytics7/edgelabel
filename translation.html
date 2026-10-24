@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EdgeTranslate — Data Translation | EdgeLabel</title>
     <link rel="icon" href="./favicon.svg" type="image/svg+xml">
-    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
-    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
-    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js"></script>
+    <script src="https://unpkg.com/react@18.2.0/umd/react.production.min.js" integrity="sha384-tMH8h3BGESGckSAVGZ82T9n90ztNXxvdwvdM6UoR56cYcf+0iGXBliJ29D+wZ/x8" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js" integrity="sha384-bm7MnzvK++ykSwVJ2tynSE5TRdN+xL418osEVF2DE/L/gfWHj91J2Sphe582B1Bh" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/@babel/standalone@7.24.7/babel.min.js" integrity="sha384-AISI5AuDG6E8DeEiFMVB3rGQxhZt24OU0avMp+GMV64+tpnA3+Z6F5MT0f96iPva" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' };
@@ -162,6 +162,20 @@
             );
         };
 
+        const Toast = ({ message, type, onClose }) => {
+            useEffect(() => {
+                const t = setTimeout(onClose, 3500);
+                return () => clearTimeout(t);
+            }, [onClose]);
+            const bg = { success: 'bg-green-600', error: 'bg-red-600', warning: 'bg-yellow-500', info: 'bg-blue-600' };
+            return (
+                <div className={`fixed top-4 right-4 z-[2000] flex items-center gap-3 px-5 py-3 rounded-lg text-white shadow-xl text-sm max-w-sm ${bg[type] || bg.info}`} role="alert">
+                    <span className="flex-1">{message}</span>
+                    <button onClick={onClose} className="opacity-75 hover:opacity-100 text-lg leading-none" aria-label="Dismiss">✕</button>
+                </div>
+            );
+        };
+
         const App = () => {
             const [dataItems, setDataItems] = useState([]);
             const [translations, setTranslations] = useState([]);
@@ -174,6 +188,8 @@
             const [showPreview, setShowPreview] = useState(true);
             const [translationInput, setTranslationInput] = useState('');
             const [showSettings, setShowSettings] = useState(false);
+            const [toast, setToast] = useState(null);
+            const showToast = useCallback((message, type = 'info') => setToast({ message, type }), []);
             const [hasSelectedColumn, setHasSelectedColumn] = useState(false);
             const [undoStack, setUndoStack] = useState([]);
             const [redoStack, setRedoStack] = useState([]);
@@ -208,7 +224,7 @@
                 reader.onload = (e) => {
                     const { headers, data } = parseCSV(e.target.result);
                     if (!data.length) {
-                        alert('No valid data found in CSV.');
+                        showToast('No valid data found in CSV. Check that the file has at least one data row.', 'error');
                         return;
                     }
                     setColumnHeaders(headers);
@@ -223,7 +239,7 @@
 
             const saveTranslation = (fromNext = false) => {
                 if (!hasSelectedColumn) {
-                    alert('Please select a column to translate in Settings.');
+                    showToast('Please select a column to translate in Settings first.', 'warning');
                     setShowSettings(true);
                     return;
                 }
@@ -281,7 +297,7 @@
             const saveSession = useCallback(() => {
                 const session = { dataItems, translations, fileName, columnHeaders, selectedColumn, hasSelectedColumn, showPreview };
                 localStorage.setItem('translation_session', JSON.stringify(session));
-                alert('Session saved!');
+                showToast('Session saved.', 'success');
             }, [dataItems, translations, fileName, columnHeaders, selectedColumn, hasSelectedColumn, showPreview]);
 
             const loadSession = useCallback(() => {
@@ -296,9 +312,9 @@
                     setHasSelectedColumn(hasSelectedColumn);
                     setShowPreview(showPreview);
                     setCurrentIndex(0);
-                    alert('Session loaded!');
+                    showToast('Session loaded.', 'success');
                 } else {
-                    alert('No saved session found.');
+                    showToast('No saved session found.', 'warning');
                 }
             }, []);
 
@@ -514,6 +530,7 @@
                             </nav>
                         </div>
                     </footer>
+                    {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
                 </div>
             );
         };

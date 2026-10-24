@@ -1,5 +1,5 @@
 {
-  "name": "data-annotation-platform",
+  "name": "edgelabel",
   "version": "1.0.0",
   "description": "A web-based platform for annotating CSV data",
   "scripts": {
