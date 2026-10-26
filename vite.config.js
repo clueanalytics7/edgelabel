@@ -3,7 +3,10 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  // GitHub Pages serves the repo at /edgelabel/ — all asset paths must be relative
+  server: {
+    host: '0.0.0.0',
+    port: 3000,
+  },
   base: './',
   build: {
     outDir: 'docs',
@@ -12,11 +15,13 @@ export default defineConfig({
       input: {
         main:        'index.html',
         annotation:  'annotation.html',
-        translation: 'translation.html',
-        about:       'about.html',
-        contact:     'contact.html',
-        guide:       'guide.html',
-        privacy:     'privacy.html',
+        translation:     'translation.html',
+        imageAnnotation: 'image-annotation.html',
+        about:           'about.html',
+        contact:         'contact.html',
+        guide:                'guide.html',
+        privacy:              'privacy.html',
+        securityArchitecture: 'security-architecture.html',
       },
     },
   },

@@ -3,6 +3,12 @@ import { parseCSV } from '../shared/csvParser.js';
 import { useTheme, savedTheme } from '../shared/theme.js';
 import { Toast } from '../shared/Toast.jsx';
 import { FileUpload, FilePreview } from '../shared/FileComponents.jsx';
+import { SuiteSwitcher } from '../shared/SuiteSwitcher.jsx';
+import { ExportModal } from '../shared/ExportModal.jsx';
+import { DatasetQualityModal } from '../shared/DatasetQualityModal.jsx';
+import { AgreementResolverModal } from '../shared/AgreementResolver.jsx';
+import { SchemaConfigModal } from '../shared/SchemaConfigModal.jsx';
+import { auditLogger } from '../shared/AuditTrail.js';
 
 // ─── Analytics (consent-gated) ───────────────────────────────────────────────
 function loadGA() {
@@ -184,6 +190,17 @@ export default function App() {
   const [theme, setTheme]                   = useState(savedTheme);
   const [showSettings, setShowSettings]     = useState(false);
   const [showAnnotations, setShowAnnotations] = useState(false);
+  const [showExportModal, setShowExportModal] = useState(false);
+  const [showQualityModal, setShowQualityModal] = useState(false);
+  const [showAgreementModal, setShowAgreementModal] = useState(false);
+  const [showSchemaModal, setShowSchemaModal] = useState(false);
+  const [schemaConfig, setSchemaConfig] = useState({
+    guidelines: 'Carefully read the text and apply the most accurate label.',
+    minLength: 1,
+    maxLength: 3000,
+    requireCommentForLabels: [],
+    allowMultipleLabels: false,
+  });
   const [privacyConsent, setPrivacyConsent] = useState(localStorage.getItem('privacyConsent') === 'true');
   const [undoStack, setUndoStack]           = useState([]);
   const [redoStack, setRedoStack]           = useState([]);
@@ -227,6 +244,7 @@ export default function App() {
       setShowCommentField(false);
       setTempComment('');
       localStorage.removeItem(`annotations_${file.name}`);
+      auditLogger.log('FILE_LOADED', { fileName: file.name, rowCount: data.length });
       if (!window.disableAnalytics) gtag('event', 'upload_csv', { event_category: 'File', value: data.length });
     };
     reader.onerror = () => showToast('Could not read the file.', 'error');
@@ -238,15 +256,52 @@ export default function App() {
     if (currentIndex >= dataItems.length) return;
     setUndoStack(p => [...p, { index: currentIndex, annotation: annotations[currentIndex] }]);
     setRedoStack([]);
-    setAnnotations(p => { const n=[...p]; n[currentIndex]={label, colour, comment: tempComment.trim()||null}; return n; });
+    const commentVal = tempComment.trim() || null;
+    setAnnotations(p => { const n=[...p]; n[currentIndex]={label, colour, comment: commentVal}; return n; });
+    auditLogger.log('LABEL_APPLIED', {
+      rowIndex: currentIndex,
+      label,
+      comment: commentVal,
+      text: dataItems[currentIndex]?.[selectedColumn],
+    });
     setTempComment('');
     if (currentIndex < dataItems.length - 1) setCurrentIndex(i => i + 1);
-  }, [currentIndex, annotations, dataItems.length, tempComment]);
+  }, [currentIndex, annotations, dataItems, selectedColumn, tempComment]);
 
   const handleSelectLabel = useCallback((label, colour) => {
     if (!hasSelectedColumn) { showToast('Select a column in Settings first.', 'warning'); setShowSettings(true); return; }
+    if (schemaConfig.requireCommentForLabels.includes(label) && !tempComment.trim()) {
+      showToast(`Comment required for "${label}" under schema rules.`, 'warning');
+      setShowCommentField(true);
+      return;
+    }
     saveAnnotation(label, colour);
-  }, [hasSelectedColumn, saveAnnotation, showToast]);
+  }, [hasSelectedColumn, schemaConfig, tempComment, saveAnnotation, showToast]);
+
+  const handleDeduplicate = useCallback(() => {
+    if (!dataItems.length) return;
+    const seen = new Set();
+    const newItems = [];
+    const newAnns = [];
+    let dupsRemoved = 0;
+
+    dataItems.forEach((row, idx) => {
+      const text = (row[selectedColumn] || '').trim().toLowerCase();
+      if (!seen.has(text)) {
+        seen.add(text);
+        newItems.push(row);
+        newAnns.push(annotations[idx]);
+      } else {
+        dupsRemoved++;
+      }
+    });
+
+    setDataItems(newItems);
+    setAnnotations(newAnns);
+    setCurrentIndex(0);
+    showToast(`Deduplication complete: removed ${dupsRemoved} duplicate rows!`, 'success');
+    auditLogger.log('DATASET_DEDUPLICATED', { removedCount: dupsRemoved });
+  }, [dataItems, annotations, selectedColumn, showToast]);
 
   const nextData = useCallback(() => {
     if (!hasSelectedColumn) { showToast('Select a column in Settings first.', 'warning'); setShowSettings(true); return; }
@@ -344,10 +399,13 @@ export default function App() {
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-10">
         <div className="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between gap-3 flex-wrap">
-          <a href="./index.html" className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-lg">
-            <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
-            <span className="hidden sm:inline">EdgeLabel</span>
-          </a>
+          <div className="flex items-center gap-3">
+            <a href="./index.html" className="flex items-center gap-2 text-blue-600 dark:text-blue-400 font-bold text-lg">
+              <svg className="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
+              <span className="hidden sm:inline">EdgeLabel</span>
+            </a>
+            <SuiteSwitcher activeProductId="edgelabel" />
+          </div>
 
           {fileName && (
             <div className="flex-1 min-w-0 hidden md:flex items-center gap-3">
@@ -357,6 +415,40 @@ export default function App() {
           )}
 
           <div className="flex items-center gap-2">
+            {dataItems.length > 0 && (
+              <>
+                <button
+                  onClick={() => setShowQualityModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors"
+                  title="Run Dataset Quality & Health Audit"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <span>QA Audit</span>
+                </button>
+
+                <button
+                  onClick={() => setShowAgreementModal(true)}
+                  className="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors hidden md:flex"
+                  title="Inter-Annotator Agreement (Cohen's Kappa)"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                  </svg>
+                  <span>Agreement (IAA)</span>
+                </button>
+
+                <button
+                  onClick={() => setShowSchemaModal(true)}
+                  className="px-2.5 py-1.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors hidden sm:block"
+                  title="Configure schema validation rules"
+                >
+                  Schema
+                </button>
+              </>
+            )}
+
             <select value={theme} onChange={e => setTheme(e.target.value)} aria-label="Theme"
               className="text-sm px-2 py-1.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 outline-none">
               <option value="system">Auto</option>
@@ -475,10 +567,20 @@ export default function App() {
                 {/* Action toolbar */}
                 <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-4 shadow-sm">
                   <div className="flex flex-wrap gap-2 items-center">
-                    <span className="text-xs text-gray-400 font-semibold mr-1 hidden sm:block">Export</span>
+                    <button
+                      onClick={() => setShowExportModal(true)}
+                      disabled={!annotations.some(Boolean)}
+                      className="px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white text-xs sm:text-sm font-bold rounded-xl shadow-xs transition-all disabled:opacity-40 flex items-center gap-1.5"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                      </svg>
+                      Export Dataset (LLM / CSV / HF)
+                    </button>
+                    <div className="w-px h-6 bg-gray-200 dark:bg-gray-700 mx-1 hidden sm:block"/>
                     {[['CSV', 'csv'], ['JSON', 'json'], ['JSONL', 'jsonl']].map(([label, fmt]) => (
                       <button key={fmt} onClick={() => downloadAnnotations(fmt)} disabled={!annotations.some(Boolean)}
-                        className="px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-xl hover:bg-green-700 disabled:opacity-40 transition-colors">
+                        className="px-3 py-1.5 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 text-xs font-medium rounded-xl hover:bg-gray-200 dark:hover:bg-gray-700 disabled:opacity-40 transition-colors">
                         ↓ {label}
                       </button>
                     ))}
@@ -488,6 +590,19 @@ export default function App() {
                       View All
                     </button>
                     <div className="flex-1"/>
+                    <button
+                      onClick={() => {
+                        auditLogger.exportAuditJson(fileName);
+                        showToast('Exported regulatory audit trail (.json)', 'success');
+                      }}
+                      className="px-3 py-1.5 text-xs font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors border border-gray-200 dark:border-gray-700 flex items-center gap-1.5"
+                      title="Export HIPAA / GDPR Compliance Audit Trail"
+                    >
+                      <svg className="w-3.5 h-3.5 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                      Audit Trail
+                    </button>
                     <button onClick={saveSession} className="px-4 py-2 text-sm font-semibold text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 rounded-xl transition-colors border border-gray-200 dark:border-gray-700">
                       Save
                     </button>
@@ -521,6 +636,45 @@ export default function App() {
         setHasSelectedColumn={setHasSelectedColumn}/>
       <AnnotationsModal show={showAnnotations} onClose={() => setShowAnnotations(false)}
         annotations={annotations} dataItems={dataItems} selectedColumn={selectedColumn}/>
+      <ExportModal show={showExportModal} onClose={() => setShowExportModal(false)}
+        dataItems={dataItems} annotations={annotations} selectedColumn={selectedColumn}
+        columnHeaders={columnHeaders} labelsList={labels} fileName={fileName} onToast={showToast}/>
+      <DatasetQualityModal
+        show={showQualityModal}
+        onClose={() => setShowQualityModal(false)}
+        dataItems={dataItems}
+        annotations={annotations}
+        selectedColumn={selectedColumn}
+        columnHeaders={columnHeaders}
+        fileName={fileName}
+        onSelectRow={(idx) => setCurrentIndex(idx)}
+        onDeduplicate={handleDeduplicate}
+        onToast={showToast}
+      />
+      <AgreementResolverModal
+        show={showAgreementModal}
+        onClose={() => setShowAgreementModal(false)}
+        dataItems={dataItems}
+        currentAnnotations={annotations}
+        selectedColumn={selectedColumn}
+        labelsList={labels}
+        onApplyAdjudicated={(updated) => {
+          setAnnotations(updated);
+          auditLogger.log('DISAGREEMENTS_ADJUDICATED', { count: updated.filter(Boolean).length });
+        }}
+        onToast={showToast}
+      />
+      <SchemaConfigModal
+        show={showSchemaModal}
+        onClose={() => setShowSchemaModal(false)}
+        schemaConfig={schemaConfig}
+        onSaveSchema={(newCfg) => {
+          setSchemaConfig(newCfg);
+          auditLogger.log('SCHEMA_UPDATED', newCfg);
+        }}
+        labelsList={labels}
+        onToast={showToast}
+      />
 
       {/* Privacy consent */}
       {!privacyConsent && (

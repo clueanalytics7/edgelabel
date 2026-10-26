@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Local-Processing Architecture &amp; Security Compliance | EdgeLabel</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./src/input.css">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme:dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased text-gray-900 dark:text-gray-100">
+
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="./index.html" class="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-xl">
+        <svg class="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
+        EdgeLabel
+      </a>
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <a href="./annotation.html" class="hover:text-blue-600 dark:hover:text-blue-400">Text Labeling</a>
+        <a href="./image-annotation.html" class="hover:text-violet-600 dark:hover:text-violet-400">EdgeVision</a>
+        <a href="./translation.html" class="hover:text-green-600 dark:hover:text-green-400">Translate</a>
+        <a href="./guide.html" class="hover:text-blue-600 dark:hover:text-blue-400">Guide</a>
+        <a href="./security-architecture.html" class="text-blue-600 dark:text-blue-400 font-semibold">Security Architecture</a>
+      </div>
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
+          <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <a href="./annotation.html" class="hidden sm:inline-flex px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">Start Free →</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-28 pb-20 px-6 max-w-4xl mx-auto space-y-12">
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-emerald-100 dark:bg-emerald-950/60 text-emerald-800 dark:text-emerald-300 text-xs font-bold border border-emerald-300 dark:border-emerald-800 mb-3">
+        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+        Zero Cloud Leakage Guarantee
+      </div>
+      <h1 class="text-3xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tight">
+        Local-Processing Architecture &amp; Security Whitepaper
+      </h1>
+      <p class="text-lg text-gray-500 dark:text-gray-400 leading-relaxed font-light">
+        A technical overview of EdgeLabel's memory-isolated architecture designed for HIPAA, GDPR, financial institutions, and sensitive NDA datasets.
+      </p>
+    </div>
+
+    <!-- Architecture Diagram Card -->
+    <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm space-y-6">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white flex items-center gap-2">
+        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+        </svg>
+        Client-Side Isolated Execution Flow
+      </h2>
+
+      <!-- Visual Flow Chart -->
+      <div class="p-6 bg-gray-50 dark:bg-gray-950 rounded-2xl border border-gray-200 dark:border-gray-800 font-mono text-xs text-gray-700 dark:text-gray-300 space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 rounded-xl font-bold border border-blue-200 dark:border-blue-800 w-48 text-center shrink-0">
+            [User Device Disk]<br><span class="text-[10px] font-normal">CSV / Images</span>
+          </div>
+          <span class="text-gray-400 font-bold">── HTML5 File API (FileReader) ──▶</span>
+          <div class="p-3 bg-purple-100 dark:bg-purple-900/40 text-purple-700 dark:text-purple-300 rounded-xl font-bold border border-purple-200 dark:border-purple-800 w-56 text-center shrink-0">
+            [Isolated Browser V8 Memory]<br><span class="text-[10px] font-normal">In-Memory Heap Array</span>
+          </div>
+        </div>
+
+        <div class="pl-24 py-1 text-gray-400 font-bold">
+          ▼ Zero HTTP(S) Outbound Requests
+        </div>
+
+        <div class="flex items-center gap-4">
+          <div class="p-3 bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300 rounded-xl font-bold border border-emerald-200 dark:border-emerald-800 w-48 text-center shrink-0">
+            [Client Blob Download]<br><span class="text-[10px] font-normal">JSONL / YOLO / CSV</span>
+          </div>
+          <span class="text-gray-400 font-bold">◀── URL.createObjectURL() ──</span>
+          <div class="p-3 bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300 rounded-xl font-bold border border-amber-200 dark:border-amber-800 w-56 text-center shrink-0">
+            [Browser LocalStorage]<br><span class="text-[10px] font-normal">Optional Local Session Key</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+        <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+          <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">0 Bytes Transmitted</h4>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Network inspection confirms zero dataset packets leave your browser sandbox during annotation or translation.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+          <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">Air-Gap Compatible</h4>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Disconnect your Wi-Fi, run inside a Faraday room, or deploy on an isolated intranet. EdgeLabel functions 100% offline.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-800/50 border border-gray-100 dark:border-gray-800">
+          <h4 class="font-bold text-sm text-gray-900 dark:text-white mb-1">No Server Database</h4>
+          <p class="text-xs text-gray-500 dark:text-gray-400">There is no central database or telemetry backend storing customer records or AI training prompts.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Regulatory Compliance Matrix -->
+    <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm space-y-6">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+        Regulatory Standard Mapping
+      </h2>
+
+      <div class="space-y-4">
+        <div class="p-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-850">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2 py-0.5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-300 font-bold text-[11px]">HIPAA</span>
+            <h3 class="font-bold text-sm text-gray-900 dark:text-white">Protected Health Information (PHI) Safe Harbor</h3>
+          </div>
+          <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            Under 45 CFR § 164.312, PHI must be protected against unauthorized transmission. Because EdgeLabel never ingests datasets into a remote cloud, healthcare providers and clinical researchers do not need to execute a third-party Business Associate Agreement (BAA). Clinical records remain strictly on the hospital or researcher's workstation.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-850">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-800 dark:text-purple-300 font-bold text-[11px]">GDPR</span>
+            <h3 class="font-bold text-sm text-gray-900 dark:text-white">Articles 5, 28, and 32 Data Minimization</h3>
+          </div>
+          <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            Eliminates cross-border data transfer liabilities (Schrems II). As no personal data is transferred across international boundaries or stored by third parties, compliance overhead is reduced by design.
+          </p>
+        </div>
+
+        <div class="p-4 rounded-2xl border border-gray-100 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-850">
+          <div class="flex items-center gap-2 mb-1">
+            <span class="px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-800 dark:text-amber-300 font-bold text-[11px]">SOC 2 &amp; ISO 27001</span>
+            <h3 class="font-bold text-sm text-gray-900 dark:text-white">Auditable Traceability Logs</h3>
+          </div>
+          <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+            EdgeLabel includes a client-side cryptographic Audit Trail logger. Every labeling action, schema configuration update, and adjudication decision is hashed with a timestamp and reviewer ID, exportable as an immutable JSON audit log for regulatory review.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- On-Premise & Air-Gapped Deployment Guide -->
+    <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm space-y-4">
+      <h2 class="text-xl font-bold text-gray-900 dark:text-white">
+        Deployment Guidance for Enterprise Teams
+      </h2>
+      <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed">
+        EdgeLabel can be hosted on your internal Kubernetes cluster, Nginx intranet gateway, or copied onto an air-gapped secure flash drive:
+      </p>
+
+      <div class="bg-gray-950 p-4 rounded-xl text-xs font-mono text-gray-300 overflow-x-auto border border-gray-800 leading-relaxed">
+        # 1. Clone repository in your secure enclave<br>
+        git clone https://github.com/clueanalytics7/edgelabel.git<br><br>
+        # 2. Build completely self-contained static assets<br>
+        npm install &amp;&amp; npm run build<br><br>
+        # 3. Serve via your internal web server or Docker container<br>
+        docker run -d -p 8080:80 -v $(pwd)/dist:/usr/share/nginx/html nginx:alpine
+      </div>
+    </div>
+  </main>
+
+  <footer class="bg-gray-950 text-gray-400 py-8 px-6 border-t border-gray-800 text-center text-xs">
+    <p>© 2025 ClueAnalytics — EdgeLabel. Privacy-First Local Processing Architecture.</p>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+    function updateIcons() {
+      const d = document.documentElement.classList.contains('dark');
+      sun.classList.toggle('hidden', !d);
+      moon.classList.toggle('hidden', d);
+    }
+    updateIcons();
+    toggle.addEventListener('click', () => {
+      const d = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', d ? 'dark' : 'light');
+      updateIcons();
+    });
+  </script>
+</body>
+</html>

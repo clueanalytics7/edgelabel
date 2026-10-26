@@ -1,0 +1,8 @@
+{
+  "name": "EdgeLabel",
+  "description": "Privacy-first, browser-based platform for CSV data annotation and translation",
+  "prompt": "Privacy-first, browser-based platform for CSV data annotation and translation",
+  "capabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
