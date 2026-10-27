@@ -16,25 +16,31 @@ A **browser-based, privacy-first platform** for annotating and translating CSV d
 - Select which column to annotate from a settings panel
 - Assign labels to each row with one click or keyboard shortcut (keys 1–9)
 - Customisable label sets — add or remove labels at any time
+- **Named Entity Recognition (NER) & Span Highlighter**: Select text spans to tag entities (PER, ORG, LOC, PII, MED, etc.) with keyboard shortcuts (1–8), character offset tracking, overlap prevention, and export to **SpaCy v3**, **CoNLL-2003 IOB2**, and **Hugging Face Token Classification**
+- **Local Heuristic Rules & Regex Pre-Labeling**: Batch classify datasets in-memory using regex patterns, substring rules, and presets (PII, sentiment, urgency, medical); includes live regex dry-run testing and rule collision analysis
 - Navigate rows with arrow keys (← →)
 - Undo / redo (Ctrl+Z / Ctrl+Y)
 - Optional per-row comment field
 - Progress bar showing annotated vs total rows
-- Export annotated results as **CSV** or **JSON**
+- Export annotated results as **CSV**, **JSON**, or ML training formats (OpenAI ChatML, Gemini Supervised, Alpaca, HF JSONL)
 - Save and reload sessions across page refreshes (localStorage)
 - Autosave every 5 seconds
 - Light / dark / system theme
+- **Air-Gapped PWA**: Installable app with Service Worker offline caching for air-gapped environments
 
 ### Data Translation (`translation.html`)
 - Upload a CSV and manually enter translations row by row
 - Select which column to translate from a settings panel
 - Add optional comments per row
+- Terminology & Glossary Manager with "Do Not Translate" (DNT) enforcement
+- Reviewer approval workflow (Draft, Needs Review, Approved)
 - Undo / redo support
 - Export the original CSV with a new `Translation` column appended
 - Save and reload sessions
 
-### Privacy
+### Privacy & Air-Gap Compliance
 - 100% local-first: no data is uploaded to any server
+- Progressive Web App (PWA) precached for air-gapped security cleanrooms
 - Google Analytics is **opt-in only** — never loaded until you accept the consent banner
 - Declining analytics keeps the product fully functional with zero tracking
 
@@ -42,7 +48,7 @@ A **browser-based, privacy-first platform** for annotating and translating CSV d
 
 ## 🗺️ Roadmap — what's coming
 
-These features are planned but **not yet implemented**. We will update this section as work progresses.
+These features are planned or newly released. We update this section as work progresses.
 
 | Feature | Status |
 |---|---|
@@ -53,7 +59,9 @@ These features are planned but **not yet implemented**. We will update this sect
 | Glossary & Localisation Studio (Approval workflows, terminology manager) | ✅ Released |
 | Regulatory Audit Trail & SHA-256 Data Integrity | ✅ Released |
 | Documented Air-Gap & Security Architecture (`security-architecture.html`) | ✅ Released |
-| Named Entity Recognition (NER) inline highlighter | Planned |
+| Named Entity Recognition (NER) Token/Span Highlighter (SpaCy, CoNLL IOB2, HF) | ✅ Released |
+| Heuristic Rules & Regex Pre-Labeling Engine (Batch rules, regex dry-run, collision detector) | ✅ Released |
+| Air-Gapped Progressive Web App (PWA) Offline Suite (Service worker precache, installable) | ✅ Released |
 | Audio / video annotation (timestamps, transcription) | Planned |
 
 ---

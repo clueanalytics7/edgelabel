@@ -5,6 +5,7 @@ import { Toast } from '../shared/Toast.jsx';
 import { FileUpload, FilePreview } from '../shared/FileComponents.jsx';
 import { Footer } from '../shared/Footer.jsx';
 import { SuiteSwitcher } from '../shared/SuiteSwitcher.jsx';
+import { PWAInstallButton, OfflineIndicator } from '../shared/PWAInstallButton.jsx';
 
 // ─── Glossary Modal ──────────────────────────────────────────────────────────
 function GlossaryModal({ show, onClose, glossary, onSaveGlossary, onToast }) {
@@ -449,6 +450,7 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-950 font-sans antialiased text-gray-900 dark:text-gray-100 transition-colors">
+      <OfflineIndicator />
       {/* ── Navbar ──────────────────────────────────────────────────────── */}
       <header className="bg-white dark:bg-gray-900 border-b border-gray-100 dark:border-gray-800 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 flex-wrap">
@@ -478,6 +480,8 @@ export default function App() {
               className="px-3 py-1.5 rounded-xl text-xs font-semibold bg-green-600 hover:bg-green-700 text-white flex items-center gap-1 transition-colors">
               Settings
             </button>
+
+            <PWAInstallButton compact />
 
             <select value={theme} onChange={(e) => setTheme(e.target.value)} aria-label="Theme"
               className="bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 text-xs rounded-xl px-2.5 py-1.5 outline-none">

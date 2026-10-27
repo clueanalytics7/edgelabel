@@ -2,6 +2,7 @@ import { useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import { useTheme, savedTheme } from '../shared/theme.js';
 import { Toast } from '../shared/Toast.jsx';
 import { SuiteSwitcher } from '../shared/SuiteSwitcher.jsx';
+import { PWAInstallButton, OfflineIndicator } from '../shared/PWAInstallButton.jsx';
 import { BoundingBoxCanvas } from './Canvas.jsx';
 import { getSampleCvDataset } from './sampleData.js';
 import { exportCocoJson, exportYoloZip, exportClassificationCsv } from './cvExporters.js';
@@ -219,6 +220,7 @@ export default function App() {
 
   return (
     <div className="flex flex-col min-h-screen bg-gray-950 text-gray-100 font-sans antialiased">
+      <OfflineIndicator />
       {/* ── Top Header ─────────────────────────────────────────────────── */}
       <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-30">
         <div className="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3 flex-wrap">
@@ -294,6 +296,8 @@ export default function App() {
             >
               Load Samples
             </button>
+
+            <PWAInstallButton compact />
 
             {/* Theme Toggle */}
             <select

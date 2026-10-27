@@ -1,8 +1,9 @@
 /**
- * Advanced Export Formats for LLM Fine-Tuning, ML Pipelines, and Data Science
+ * Advanced Export Formats for LLM Fine-Tuning, ML Pipelines, NER, and Data Science
  */
 
 export const EXPORT_FORMATS = [
+  // --- LLM & Classification Formats ---
   {
     id: 'openai_chat',
     name: 'OpenAI Chat (ChatML)',
@@ -13,6 +14,7 @@ export const EXPORT_FORMATS = [
     description: 'Standard format for GPT-4o / GPT-3.5 fine-tuning using system, user, and assistant messages.',
     hasInstruction: true,
     defaultInstruction: 'You are an accurate text classification assistant. Classify the user input according to the provided labels.',
+    mode: 'classification',
   },
   {
     id: 'gemini_tune',
@@ -24,6 +26,7 @@ export const EXPORT_FORMATS = [
     description: 'Vertex AI / Google AI Studio Gemini Supervised Tuning format (contents.parts schema).',
     hasInstruction: true,
     defaultInstruction: 'Classify the sentiment or category of the following message.',
+    mode: 'classification',
   },
   {
     id: 'alpaca_instruct',
@@ -35,6 +38,7 @@ export const EXPORT_FORMATS = [
     description: 'Instruction tuning standard (instruction, input, output schema) popular for Llama 3, Mistral, and Qwen.',
     hasInstruction: true,
     defaultInstruction: 'Analyze the text and return the correct classification category.',
+    mode: 'classification',
   },
   {
     id: 'huggingface_jsonl',
@@ -45,6 +49,7 @@ export const EXPORT_FORMATS = [
     badgeColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
     description: 'Compatible with `datasets.load_dataset("json")` including both integer label index and string label names.',
     hasInstruction: false,
+    mode: 'classification',
   },
   {
     id: 'openai_completion',
@@ -55,6 +60,7 @@ export const EXPORT_FORMATS = [
     badgeColor: 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-300',
     description: 'Classic {"prompt": "...", "completion": "..."} format with standard prompt delimiters.',
     hasInstruction: false,
+    mode: 'classification',
   },
   {
     id: 'standard_csv',
@@ -65,6 +71,7 @@ export const EXPORT_FORMATS = [
     badgeColor: 'bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300',
     description: 'Preserves your original columns with added Label and Comment columns.',
     hasInstruction: false,
+    mode: 'classification',
   },
   {
     id: 'standard_json',
@@ -75,18 +82,90 @@ export const EXPORT_FORMATS = [
     badgeColor: 'bg-indigo-100 text-indigo-800 dark:bg-indigo-900/40 dark:text-indigo-300',
     description: 'Clean array of JSON objects containing input text, label, and metadata.',
     hasInstruction: false,
+    mode: 'classification',
   },
+
+  // --- NER / Entity Spans Formats ---
   {
-    id: 'standard_jsonl',
-    name: 'Raw JSON Lines',
+    id: 'spacy_ner',
+    name: 'SpaCy v3 NER (JSONL)',
     ext: 'jsonl',
     mime: 'application/jsonlines',
-    badge: 'Lightweight',
-    badgeColor: 'bg-cyan-100 text-cyan-800 dark:bg-cyan-900/40 dark:text-cyan-300',
-    description: 'One JSON object per row with text, label, and optional comments.',
+    badge: 'NER Training',
+    badgeColor: 'bg-teal-100 text-teal-800 dark:bg-teal-900/40 dark:text-teal-300',
+    description: 'Standard SpaCy v3 entity training format: {"text": "...", "entities": [[start, end, "LABEL"], ...]}',
     hasInstruction: false,
+    mode: 'ner',
+  },
+  {
+    id: 'conll_iob2',
+    name: 'CoNLL-2003 IOB2 (.conll)',
+    ext: 'conll',
+    mime: 'text/plain;charset=utf-8;',
+    badge: 'Token Sequence',
+    badgeColor: 'bg-rose-100 text-rose-800 dark:bg-rose-900/40 dark:text-rose-300',
+    description: 'Token-level IOB2 tagging (Token B-LABEL, I-LABEL, O) for flair, BERT, and CRF models.',
+    hasInstruction: false,
+    mode: 'ner',
+  },
+  {
+    id: 'huggingface_ner',
+    name: 'Hugging Face Token Classification (JSONL)',
+    ext: 'jsonl',
+    mime: 'application/jsonlines',
+    badge: 'HF Transformers',
+    badgeColor: 'bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300',
+    description: 'Token classification schema {"id": 1, "tokens": [...], "ner_tags": [...]} for PyTorch/HuggingFace.',
+    hasInstruction: false,
+    mode: 'ner',
+  },
+  {
+    id: 'spans_json',
+    name: 'Entity Spans JSON',
+    ext: 'json',
+    mime: 'application/json',
+    badge: 'Structured Spans',
+    badgeColor: 'bg-purple-100 text-purple-800 dark:bg-purple-900/40 dark:text-purple-300',
+    description: 'Structured array of documents with character offsets, span texts, and entity categories.',
+    hasInstruction: false,
+    mode: 'ner',
   },
 ];
+
+/**
+ * Tokenize a text string while preserving character offsets
+ */
+function tokenizeWithOffsets(text) {
+  const regex = /\S+/g;
+  const tokens = [];
+  let match;
+  while ((match = regex.exec(text)) !== null) {
+    tokens.push({
+      text: match[0],
+      start: match.index,
+      end: match.index + match[0].length,
+    });
+  }
+  return tokens;
+}
+
+/**
+ * Convert character spans to token-level IOB2 tags
+ */
+function assignIOB2Tags(tokens, spans = []) {
+  const sortedSpans = [...spans].sort((a, b) => a.start - b.start);
+  return tokens.map((token) => {
+    // Find matching span
+    const matched = sortedSpans.find((s) => token.start >= s.start && token.end <= s.end);
+    if (!matched) return 'O';
+
+    // If token starts at beginning of span -> B-tag, otherwise I-tag
+    if (token.start === matched.start) {
+      return `B-${matched.label}`;
+    }
+    return `I-${matched.label}`;
+  });
+}
 
 /**
  * Builds the string payload according to the chosen format
@@ -100,15 +179,24 @@ export function formatDataset({
   instruction = '',
   includeAllOriginalColumns = false,
   labelsList = [],
+  annotationMode = 'classification',
 }) {
   const annotatedRows = [];
   dataItems.forEach((row, i) => {
     const ann = annotations[i];
     if (!ann) return;
+
+    // Check if row has classification or spans
+    const hasSpans = Array.isArray(ann.spans) && ann.spans.length > 0;
+    const hasLabel = !!ann.label;
+
+    if (!hasSpans && !hasLabel) return;
+
     annotatedRows.push({
       rowIndex: i,
       text: row[selectedColumn] || '',
       label: ann.label,
+      spans: ann.spans || [],
       comment: ann.comment || null,
       fullRow: row,
     });
@@ -122,6 +210,55 @@ export function formatDataset({
   });
 
   switch (formatId) {
+    // --- NER Formats ---
+    case 'spacy_ner': {
+      return annotatedRows
+        .map((r) => {
+          const entities = (r.spans || []).map((s) => [s.start, s.end, s.label]);
+          return JSON.stringify({
+            text: r.text,
+            entities,
+          });
+        })
+        .join('\n');
+    }
+
+    case 'conll_iob2': {
+      return annotatedRows
+        .map((r) => {
+          const tokens = tokenizeWithOffsets(r.text);
+          const iobTags = assignIOB2Tags(tokens, r.spans || []);
+          const lines = tokens.map((t, idx) => `${t.text}\t${iobTags[idx]}`);
+          return lines.join('\n');
+        })
+        .join('\n\n');
+    }
+
+    case 'huggingface_ner': {
+      return annotatedRows
+        .map((r, rowIdx) => {
+          const tokens = tokenizeWithOffsets(r.text);
+          const iobTags = assignIOB2Tags(tokens, r.spans || []);
+          return JSON.stringify({
+            id: rowIdx + 1,
+            tokens: tokens.map((t) => t.text),
+            ner_tags: iobTags,
+          });
+        })
+        .join('\n');
+    }
+
+    case 'spans_json': {
+      const formatted = annotatedRows.map((r) => ({
+        id: r.rowIndex + 1,
+        text: r.text,
+        spans: r.spans || [],
+        comment: r.comment,
+      }));
+      return JSON.stringify(formatted, null, 2);
+    }
+
+    // --- Classification Formats ---
     case 'openai_chat': {
       return annotatedRows
         .map((r) =>
@@ -129,7 +266,7 @@ export function formatDataset({
             messages: [
               ...(instruction ? [{ role: 'system', content: instruction }] : []),
               { role: 'user', content: r.text },
-              { role: 'assistant', content: r.label },
+              { role: 'assistant', content: r.label || (r.spans?.[0]?.label ?? '') },
             ],
           })
         )
@@ -148,7 +285,7 @@ export function formatDataset({
               },
               {
                 role: 'model',
-                parts: [{ text: r.label }],
+                parts: [{ text: r.label || (r.spans?.[0]?.label ?? '') }],
               },
             ],
           });
@@ -162,7 +299,7 @@ export function formatDataset({
           JSON.stringify({
             instruction: instruction || 'Classify the following text into the designated label.',
             input: r.text,
-            output: r.label,
+            output: r.label || (r.spans?.[0]?.label ?? ''),
           })
         )
         .join('\n');
@@ -175,7 +312,7 @@ export function formatDataset({
             id: r.rowIndex + 1,
             text: r.text,
             label: labelToId[r.label] ?? 0,
-            label_text: r.label,
+            label_text: r.label || '',
             comment: r.comment,
           })
         )
@@ -187,7 +324,7 @@ export function formatDataset({
         .map((r) =>
           JSON.stringify({
             prompt: `${r.text}\n\n###\n\n`,
-            completion: ` ${r.label}`,
+            completion: ` ${r.label || ''}`,
           })
         )
         .join('\n');
@@ -203,6 +340,7 @@ export function formatDataset({
           return {
             ...originalObj,
             _annotation_label: r.label,
+            _annotation_spans: r.spans,
             _annotation_comment: r.comment,
           };
         }
@@ -210,40 +348,30 @@ export function formatDataset({
           id: r.rowIndex + 1,
           data: r.text,
           label: r.label,
+          spans: r.spans,
           comment: r.comment,
         };
       });
       return JSON.stringify(formatted, null, 2);
     }
 
-    case 'standard_jsonl': {
-      return annotatedRows
-        .map((r) =>
-          JSON.stringify({
-            id: r.rowIndex + 1,
-            data: r.text,
-            label: r.label,
-            comment: r.comment,
-          })
-        )
-        .join('\n');
-    }
-
     case 'standard_csv':
     default: {
       const escape = (val) => `"${String(val ?? '').replace(/"/g, '""')}"`;
       if (includeAllOriginalColumns && columnHeaders.length) {
-        const headers = [...columnHeaders, 'Label', 'Comment'];
+        const headers = [...columnHeaders, 'Label', 'Entities_JSON', 'Comment'];
         const rows = [headers.map(escape).join(',')];
         annotatedRows.forEach((r) => {
-          const line = [...r.fullRow, r.label, r.comment || ''];
+          const spansJson = r.spans && r.spans.length ? JSON.stringify(r.spans) : '';
+          const line = [...r.fullRow, r.label || '', spansJson, r.comment || ''];
           rows.push(line.map(escape).join(','));
         });
         return rows.join('\n');
       } else {
-        const rows = ['"Data","Label","Comment"'];
+        const rows = ['"Data","Label","Entities_JSON","Comment"'];
         annotatedRows.forEach((r) => {
-          rows.push(`${escape(r.text)},${escape(r.label)},${escape(r.comment || '')}`);
+          const spansJson = r.spans && r.spans.length ? JSON.stringify(r.spans) : '';
+          rows.push(`${escape(r.text)},${escape(r.label || '')},${escape(spansJson)},${escape(r.comment || '')}`);
         });
         return rows.join('\n');
       }

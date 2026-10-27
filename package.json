@@ -20,7 +20,8 @@
     "gh-pages": "^6.3.0",
     "postcss": "^8.5.4",
     "tailwindcss": "^3.4.17",
-    "vite": "^5.4.19"
+    "vite": "^5.4.19",
+    "vite-plugin-pwa": "^2.0.0"
   },
   "author": "ClueAnalytics",
   "license": "MIT"

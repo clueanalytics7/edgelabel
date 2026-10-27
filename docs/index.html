@@ -10,14 +10,20 @@
   <meta property="og:description" content="Label and translate CSV datasets entirely in your browser. No uploads, no accounts, no compromise on data privacy.">
   <meta property="og:image" content="https://clueanalytics7.github.io/edgelabel/public/images/annotation_image.png">
   <meta property="og:url" content="https://clueanalytics7.github.io/edgelabel/">
+  <meta name="theme-color" content="#2563eb">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EdgeLabel">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <script>
     const t = localStorage.getItem('theme');
     if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       document.documentElement.classList.add('dark');
     }
   </script>
-  <link rel="stylesheet" crossorigin href="./assets/input-T9-jRpbd.css">
-</head>
+  <link rel="stylesheet" crossorigin href="./assets/input-BP3W71qx.css">
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased">
 
   <!-- ── NAVBAR ─────────────────────────────────────────────────────── -->
@@ -210,6 +216,30 @@
         </div>
         <h3 class="font-bold text-gray-900 dark:text-white mb-2">Progress tracking</h3>
         <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">A live progress bar shows annotated vs. remaining rows. Review all labels in context before exporting your completed dataset.</p>
+      </div>
+      <!-- Feature 7: NER Spans -->
+      <div class="card">
+        <div class="w-10 h-10 bg-indigo-100 dark:bg-indigo-900/40 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 dark:text-white mb-2">NER &amp; Entity Spans</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Tag clinical entities, medications, and sensitive tokens with mouse drag or hotkeys. Export to SpaCy v3, CoNLL-2003 IOB2, and Hugging Face.</p>
+      </div>
+      <!-- Feature 8: Heuristic Regex Engine -->
+      <div class="card">
+        <div class="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/40 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 dark:text-white mb-2">Heuristic Rules &amp; Regex</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Bulk pre-label patterns, clinical dosages, vitals, and PII in-memory with live dry-run previews and conflict detection before human review.</p>
+      </div>
+      <!-- Feature 9: PWA Air-Gapped Offline -->
+      <div class="card">
+        <div class="w-10 h-10 bg-cyan-100 dark:bg-cyan-900/40 rounded-lg flex items-center justify-center mb-4">
+          <svg class="w-5 h-5 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
+        </div>
+        <h3 class="font-bold text-gray-900 dark:text-white mb-2">Air-Gapped Desktop PWA</h3>
+        <p class="text-sm text-gray-500 dark:text-gray-400 leading-relaxed">Install EdgeLabel as a standalone desktop or tablet Progressive Web App. Operates 100% offline with zero network pings in isolated enterprise labs.</p>
       </div>
     </div>
   </section>

@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import { EXPORT_FORMATS, formatDataset } from './exportFormats.js';
 
 export function ExportModal({
@@ -10,14 +10,33 @@ export function ExportModal({
   columnHeaders,
   labelsList,
   fileName,
+  annotationMode = 'classification',
   onToast,
 }) {
-  const [selectedFormatId, setSelectedFormatId] = useState('openai_chat');
+  const [filterTab, setFilterTab] = useState(annotationMode === 'ner' ? 'ner' : 'all');
+  const [selectedFormatId, setSelectedFormatId] = useState(annotationMode === 'ner' ? 'spacy_ner' : 'openai_chat');
   const [instruction, setInstruction] = useState(
     EXPORT_FORMATS.find((f) => f.id === 'openai_chat')?.defaultInstruction || ''
   );
   const [includeAllCols, setIncludeAllCols] = useState(false);
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (show) {
+      if (annotationMode === 'ner') {
+        setFilterTab('ner');
+        setSelectedFormatId('spacy_ner');
+      } else {
+        setFilterTab('all');
+        setSelectedFormatId('openai_chat');
+      }
+    }
+  }, [show, annotationMode]);
+
+  const displayedFormats = useMemo(() => {
+    if (filterTab === 'all') return EXPORT_FORMATS;
+    return EXPORT_FORMATS.filter((f) => f.mode === filterTab);
+  }, [filterTab]);
 
   const currentFormat = useMemo(
     () => EXPORT_FORMATS.find((f) => f.id === selectedFormatId) || EXPORT_FORMATS[0],
@@ -25,7 +44,7 @@ export function ExportModal({
   );
 
   const totalAnnotated = useMemo(
-    () => annotations.filter(Boolean).length,
+    () => annotations.filter((a) => a && (a.label || (a.spans && a.spans.length > 0))).length,
     [annotations]
   );
 
@@ -40,6 +59,7 @@ export function ExportModal({
       instruction,
       includeAllOriginalColumns: includeAllCols,
       labelsList,
+      annotationMode,
     });
   }, [
     show,
@@ -51,13 +71,14 @@ export function ExportModal({
     instruction,
     includeAllCols,
     labelsList,
+    annotationMode,
     totalAnnotated,
   ]);
 
   const previewSnippet = useMemo(() => {
     if (!generatedContent) return 'No annotations available to export.';
     const lines = generatedContent.split('\n');
-    return lines.slice(0, 12).join('\n') + (lines.length > 12 ? '\n... (truncated)' : '');
+    return lines.slice(0, 14).join('\n') + (lines.length > 14 ? '\n... (truncated)' : '');
   }, [generatedContent]);
 
   if (!show) return null;
@@ -98,14 +119,14 @@ export function ExportModal({
           <div>
             <div className="flex items-center gap-2">
               <h2 className="font-bold text-gray-900 dark:text-white text-lg">
-                Export Annotated Dataset
+                Export Dataset ({totalAnnotated} items)
               </h2>
               <span className="text-xs font-semibold px-2.5 py-0.5 rounded-full bg-blue-100 text-blue-800 dark:bg-blue-900/40 dark:text-blue-300">
-                {totalAnnotated} items
+                100% Client-Side
               </span>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
-              One-click LLM fine-tuning datasets, machine learning formats, and raw tabular data.
+              SpaCy v3, CoNLL IOB2, Hugging Face, OpenAI ChatML, Gemini SFT, and Tabular CSV.
             </p>
           </div>
           <button
@@ -119,51 +140,67 @@ export function ExportModal({
         </div>
 
         {/* Body */}
-        <div className="overflow-y-auto flex-1 p-6 space-y-6">
+        <div className="overflow-y-auto flex-1 p-6 space-y-5">
+          {/* Filter Tabs */}
+          <div className="flex items-center gap-2 border-b border-gray-100 dark:border-gray-800 pb-2">
+            {[
+              { id: 'all', label: 'All Formats' },
+              { id: 'classification', label: 'LLM & Classification' },
+              { id: 'ner', label: 'NER & Entity Spans' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setFilterTab(tab.id)}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                  filterTab === tab.id
+                    ? 'bg-blue-600 text-white shadow-xs'
+                    : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800'
+                }`}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
+
           {/* Format Selection Grid */}
-          <div>
-            <label className="block text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-2.5">
-              Select Target Format
-            </label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
-              {EXPORT_FORMATS.map((fmt) => {
-                const isSelected = fmt.id === selectedFormatId;
-                return (
-                  <button
-                    key={fmt.id}
-                    type="button"
-                    onClick={() => {
-                      setSelectedFormatId(fmt.id);
-                      if (fmt.hasInstruction && !instruction) {
-                        setInstruction(fmt.defaultInstruction);
-                      }
-                    }}
-                    className={`text-left p-3 rounded-xl border transition-all text-sm flex flex-col justify-between ${
-                      isSelected
-                        ? 'border-blue-600 bg-blue-50/70 dark:bg-blue-950/40 dark:border-blue-500 shadow-sm ring-1 ring-blue-500'
-                        : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 bg-white dark:bg-gray-850'
-                    }`}
-                  >
-                    <div>
-                      <div className="flex items-center justify-between mb-1">
-                        <span className="font-semibold text-gray-900 dark:text-white truncate">
-                          {fmt.name}
-                        </span>
-                      </div>
-                      <span className={`inline-block text-[10px] font-medium px-2 py-0.5 rounded ${fmt.badgeColor} mb-1.5`}>
-                        {fmt.badge}
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-2.5">
+            {displayedFormats.map((fmt) => {
+              const isSelected = fmt.id === selectedFormatId;
+              return (
+                <button
+                  key={fmt.id}
+                  type="button"
+                  onClick={() => {
+                    setSelectedFormatId(fmt.id);
+                    if (fmt.hasInstruction && !instruction) {
+                      setInstruction(fmt.defaultInstruction);
+                    }
+                  }}
+                  className={`text-left p-3 rounded-xl border transition-all text-sm flex flex-col justify-between ${
+                    isSelected
+                      ? 'border-blue-600 bg-blue-50/70 dark:bg-blue-950/40 dark:border-blue-500 shadow-sm ring-1 ring-blue-500'
+                      : 'border-gray-200 dark:border-gray-800 hover:border-gray-300 dark:hover:border-gray-700 bg-white dark:bg-gray-850'
+                  }`}
+                >
+                  <div>
+                    <div className="flex items-center justify-between mb-1">
+                      <span className="font-semibold text-gray-900 dark:text-white truncate">
+                        {fmt.name}
                       </span>
-                      <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
-                        {fmt.description}
-                      </p>
                     </div>
-                    <span className="text-[10px] text-gray-400 font-mono mt-2 self-end">
-                      .{fmt.ext}
+                    <span className={`inline-block text-[10px] font-medium px-2 py-0.5 rounded ${fmt.badgeColor} mb-1.5`}>
+                      {fmt.badge}
                     </span>
-                  </button>
-                );
-              })}
-            </div>
+                    <p className="text-[11px] text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed">
+                      {fmt.description}
+                    </p>
+                  </div>
+                  <span className="text-[10px] text-gray-400 font-mono mt-2 self-end">
+                    .{fmt.ext}
+                  </span>
+                </button>
+              );
+            })}
           </div>
 
           {/* Conditional Options */}
@@ -179,9 +216,6 @@ export function ExportModal({
                 placeholder="e.g. You are a classification assistant..."
                 className="w-full text-xs p-2.5 rounded-lg border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-200 outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <p className="text-[11px] text-gray-400 mt-1">
-                This prompt will be embedded into each sample's system/instruction field.
-              </p>
             </div>
           )}
 
@@ -193,7 +227,7 @@ export function ExportModal({
                 onChange={(e) => setIncludeAllCols(e.target.checked)}
                 className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
               />
-              <span>Include all original CSV columns in the export (not just the target column)</span>
+              <span>Include all original CSV columns in the export (with Entities_JSON column)</span>
             </label>
           )}
 
@@ -204,10 +238,10 @@ export function ExportModal({
                 Output Preview ({currentFormat.ext.toUpperCase()})
               </span>
               <span className="text-[11px] text-gray-400">
-                First rows shown below
+                Generated in browser
               </span>
             </div>
-            <div className="bg-gray-950 text-gray-200 p-3.5 rounded-xl text-xs font-mono overflow-x-auto max-h-48 border border-gray-800 leading-relaxed shadow-inner">
+            <div className="bg-gray-950 text-gray-200 p-3.5 rounded-xl text-xs font-mono overflow-x-auto max-h-44 border border-gray-800 leading-relaxed shadow-inner">
               <pre>{previewSnippet}</pre>
             </div>
           </div>
@@ -221,28 +255,14 @@ export function ExportModal({
             disabled={!totalAnnotated}
             className="inline-flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-semibold border border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors disabled:opacity-40"
           >
-            {copied ? (
-              <>
-                <svg className="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                </svg>
-                Copied!
-              </>
-            ) : (
-              <>
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                </svg>
-                Copy to Clipboard
-              </>
-            )}
+            {copied ? '✓ Copied!' : 'Copy to Clipboard'}
           </button>
 
           <div className="flex items-center gap-2.5">
             <button
               type="button"
               onClick={onClose}
-              className="px-4 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 transition-colors"
+              className="px-4 py-2 text-xs font-semibold text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200"
             >
               Cancel
             </button>

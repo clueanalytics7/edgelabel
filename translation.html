@@ -3,9 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EdgeTranslate — Data Translation | EdgeLabel</title>
+  <title>EdgeTranslate — Dataset Localisation Studio | EdgeLabel</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <meta name="theme-color" content="#16a34a">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EdgeTranslate">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
   <link rel="stylesheet" href="./src/input.css">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
   <div id="root"></div>

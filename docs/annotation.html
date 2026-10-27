@@ -3,13 +3,25 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EdgeLabel — Data Annotation</title>
+  <title>EdgeLabel — Data Annotation &amp; NER</title>
   <link rel="icon" href="./assets/favicon-B3Ar59hU.svg" type="image/svg+xml">
-  <script type="module" crossorigin src="./assets/annotation-nbKvMB7E.js"></script>
-  <link rel="modulepreload" crossorigin href="./assets/SuiteSwitcher-dy6Ez3ZL.js">
-  <link rel="modulepreload" crossorigin href="./assets/FileComponents-Brw-z0n7.js">
-  <link rel="stylesheet" crossorigin href="./assets/input-T9-jRpbd.css">
-</head>
+  <meta name="theme-color" content="#2563eb">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="EdgeLabel">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+  <script type="module" crossorigin src="./assets/annotation-CwfeMkiy.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/PWAInstallButton-CO3hcDWU.js">
+  <link rel="modulepreload" crossorigin href="./assets/FileComponents-CdNQQnBC.js">
+  <link rel="stylesheet" crossorigin href="./assets/input-BP3W71qx.css">
+<link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
   <div id="root"></div>
 </body>
