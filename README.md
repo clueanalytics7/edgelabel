@@ -46,24 +46,52 @@ These features are planned but **not yet implemented**. We will update this sect
 
 | Feature | Status |
 |---|---|
-| Image annotation (bounding boxes, polygons, keypoints) | Planned |
+| LLM Fine-Tuning Export (OpenAI ChatML, Gemini Supervised, Alpaca, HF JSONL) | ✅ Released |
+| EdgeVision Computer Vision (Bounding boxes, YOLO .zip & COCO .json export) | ✅ Released |
+| Dataset QA & Health Checks (Duplicates, missing values, class imbalance) | ✅ Released |
+| Inter-Annotator Agreement (Cohen's Kappa & conflict resolution) | ✅ Released |
+| Glossary & Localisation Studio (Approval workflows, terminology manager) | ✅ Released |
+| Regulatory Audit Trail & SHA-256 Data Integrity | ✅ Released |
+| Documented Air-Gap & Security Architecture (`security-architecture.html`) | ✅ Released |
+| Named Entity Recognition (NER) inline highlighter | Planned |
 | Audio / video annotation (timestamps, transcription) | Planned |
-| Named Entity Recognition (NER) annotation | Planned |
-| Multi-label support (assign more than one label per row) | Planned |
-| JSONL export (for LLM fine-tuning workflows) | Planned |
-| COCO / Pascal VOC export formats | Planned |
-| Team collaboration / shared projects | Planned |
-| Role-based access (admin, annotator) | Planned |
-| Cloud storage integration (S3, GCP) | Planned |
-| REST API for automation | Planned |
-| Automated / AI-assisted labelling suggestions | Planned |
 
 ---
 
-## 🚀 Quick setup (local development)
+## 🚀 Deployment & GitHub Pages
+
+EdgeLabel can be deployed to GitHub Pages via either of two supported configurations:
+
+### Option A: GitHub Actions (Recommended)
+This repository includes an automated workflow at `.github/workflows/deploy.yml`:
+1. In your GitHub repository, go to **Settings** → **Pages**.
+2. Under **Build and deployment** → **Source**, select **GitHub Actions**.
+3. Every push to `main` will automatically build and publish the latest version without needing manual commits to `docs/`.
+
+### Option B: Deploy from `/docs` folder
+If you prefer branch-based deployment:
+1. In GitHub repository **Settings** → **Pages**, select **Deploy from a branch**.
+2. Choose branch: `main` (or `master`), folder: `/docs`.
+3. Whenever you make changes locally, run:
+   ```bash
+   npm run build
+   git add docs/
+   git commit -m "Build static site into docs"
+   git push origin main
+   ```
+
+### Option C: Push to `gh-pages` branch
+You can also deploy directly using the gh-pages CLI script:
+```bash
+npm run deploy
+```
+
+---
+
+## 🛠️ Quick setup (local development)
 
 ### Prerequisites
-- Node.js v18+
+- Node.js v18+ (Node 22 recommended)
 - npm
 
 ### Installation
@@ -71,9 +99,8 @@ These features are planned but **not yet implemented**. We will update this sect
 git clone https://github.com/clueanalytics7/edgelabel.git
 cd edgelabel
 npm install
-npm run dev        # Vite dev server at http://localhost:5173
-npm run build      # Production build → dist/
-npm run deploy     # Push dist/ to GitHub Pages
+npm run dev        # Vite dev server at http://localhost:3000
+npm run build      # Production build → docs/
 ```
 
 ---
@@ -82,31 +109,32 @@ npm run deploy     # Push dist/ to GitHub Pages
 
 ```
 edgelabel/
-├── index.html          # Landing page
-├── annotation.html     # Annotation tool
-├── translation.html    # Translation tool
+├── .github/workflows/deploy.yml  # Automated GitHub Actions deployment
+├── index.html                    # Landing page & suite switcher
+├── annotation.html               # Text annotation & LLM export tool
+├── image-annotation.html         # EdgeVision computer vision bounding boxes
+├── translation.html              # Localization, terminology & approval studio
+├── security-architecture.html    # Local processing & air-gap documentation
 ├── about.html
 ├── contact.html
 ├── guide.html
 ├── privacy.html
-├── favicon.svg
-├── public/images/
-├── src/input.css       # Tailwind source
-├── tailwind.config.js
+├── docs/                         # Production build folder for GitHub Pages
+├── public/                       # Static assets & sample datasets
+├── src/                          # React components & processing engines
+├── tailwind.config.cjs
 ├── vite.config.js
 └── package.json
 ```
 
 ---
 
-## 🔒 Privacy & analytics
+## 🔒 Privacy & Security
 
-EdgeLabel is built on a local-first principle: your dataset files are read by your browser using the [File API](https://developer.mozilla.org/en-US/docs/Web/API/File_API) and never transmitted anywhere.
-
-Optional Google Analytics (anonymised usage statistics) is available. It is disabled by default and only activated if you explicitly click **Accept** on the consent banner. You can change your preference at any time by clearing your browser's localStorage.
+EdgeLabel is built on a 100% local-first principle: your dataset files and image assets are read by your browser using the HTML5 [File API](https://developer.mozilla.org/en-US/docs/Web/API/File_API) and memory object URLs. They are never transmitted to external servers. Review the full interactive security model at `/security-architecture.html`.
 
 ---
 
 ## 📄 License
 
-MIT © 2025 [ClueAnalytics](https://clue-analytics.web.app/)
+MIT © 2025 [ClueAnalytics](https://clueanalytics7.github.io/edgelabel/)

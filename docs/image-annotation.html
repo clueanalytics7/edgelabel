@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EdgeVision — Computer Vision &amp; Bounding Box Annotation | EdgeLabel</title>
+  <link rel="icon" href="./assets/favicon-B3Ar59hU.svg" type="image/svg+xml">
+  <meta name="description" content="Annotate images with bounding boxes client-side in your browser. Export to YOLO, COCO JSON, and classification datasets with zero server uploads.">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+  <script type="module" crossorigin src="./assets/imageAnnotation-BwTdYwqO.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/SuiteSwitcher-dy6Ez3ZL.js">
+  <link rel="stylesheet" crossorigin href="./assets/input-T9-jRpbd.css">
+</head>
+<body class="bg-gray-950 text-gray-100 font-sans antialiased">
+  <div id="root"></div>
+</body>
+</html>

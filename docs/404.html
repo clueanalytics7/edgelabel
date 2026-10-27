@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Page Not Found — EdgeLabel</title>
+  <link rel="icon" href="./assets/favicon-B3Ar59hU.svg" type="image/svg+xml">
+  <script>
+    // If user navigated to a path without .html, attempt graceful client-side resolution
+    const path = window.location.pathname;
+    const segments = path.split('/').filter(Boolean);
+    const lastSeg = segments[segments.length - 1] || '';
+    const knownPages = ['annotation', 'translation', 'image-annotation', 'guide', 'about', 'contact', 'privacy', 'security-architecture'];
+    if (knownPages.includes(lastSeg)) {
+      window.location.replace(lastSeg + '.html');
+    }
+  </script>
+  <style>
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #090d16;
+      color: #f3f4f6;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1.5rem;
+      box-sizing: border-box;
+    }
+    .card {
+      max-width: 480px;
+      width: 100%;
+      background: #111827;
+      border: 1px solid #1f2937;
+      border-radius: 1rem;
+      padding: 2.5rem;
+      text-align: center;
+      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    }
+    .badge {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: rgba(37, 99, 235, 0.15);
+      color: #60a5fa;
+      border: 1px solid rgba(59, 130, 246, 0.3);
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 1rem;
+    }
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem;
+      color: #ffffff;
+    }
+    p {
+      color: #9ca3af;
+      font-size: 0.95rem;
+      line-height: 1.5;
+      margin: 0 0 1.75rem;
+    }
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.625rem;
+    }
+    a.btn {
+      display: block;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      font-weight: 600;
+      font-size: 0.875rem;
+      text-decoration: none;
+      transition: all 0.15s ease;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #ffffff;
+    }
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+    .btn-secondary {
+      background: #1f2937;
+      color: #d1d5db;
+      border: 1px solid #374151;
+    }
+    .btn-secondary:hover {
+      background: #374151;
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="badge">404 — EdgeLabel</div>
+    <h1>Page Not Found</h1>
+    <p>The page you are looking for doesn't exist or has moved. Return to the application workspace below.</p>
+    <div class="links">
+      <a href="./index.html" class="btn btn-primary">Go to Home</a>
+      <a href="./annotation.html" class="btn btn-secondary">Open Text Labeling Studio</a>
+      <a href="./image-annotation.html" class="btn btn-secondary">Open EdgeVision (CV Annotation)</a>
+      <a href="./translation.html" class="btn btn-secondary">Open Translation & Glossary Studio</a>
+    </div>
+  </div>
+</body>
+</html>
