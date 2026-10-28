@@ -136,6 +136,9 @@
           <button onclick="switchAdminTab('guide')" id="admin-tab-btn-guide" class="admin-tab-btn px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white whitespace-nowrap">
             📖 Features &amp; Workflow Guide
           </button>
+          <button onclick="switchAdminTab('differentiators')" id="admin-tab-btn-differentiators" class="admin-tab-btn px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white whitespace-nowrap">
+            💎 Core Differentiators &amp; Value Pitch
+          </button>
         </div>
 
         <!-- TAB 1: Inquiries & Leads Hub -->
@@ -248,7 +251,7 @@
               <div>
                 <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Licence Tier</label>
                 <select id="lic-tier" class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none text-xs">
-                  <option value="Team Workspace (Annual)">Team Workspace (Annual) — £199</option>
+                  <option value="Team Workspace (Annual)">Team Workspace — £199 (Year 1 Promotional Launch Rate)</option>
                   <option value="Enterprise Air-Gapped">Enterprise Air-Gapped (On-Premises)</option>
                   <option value="Academic Research Partner">Academic Research Partner</option>
                 </select>
@@ -508,10 +511,486 @@
 
         </div>
 
-      </div>
+        <!-- TAB 5: Core Differentiators & Commercial Pitch Deck -->
+        <div id="admin-panel-differentiators" class="admin-panel space-y-8 hidden">
 
-    </div>
-  </main>
+          <!-- Executive Value Pitch Banner -->
+          <div class="relative overflow-hidden rounded-3xl bg-gradient-to-br from-gray-900 via-blue-950 to-indigo-950 p-6 md:p-8 text-white border border-blue-900/40 shadow-xl">
+            <div class="relative z-10 max-w-4xl space-y-4">
+              <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-500/20 border border-blue-400/30 text-blue-300 text-xs font-semibold uppercase tracking-wider">
+                <span>🎯</span>
+                <span>Cueligence Commercial Pitch &amp; Battlecard</span>
+              </div>
+              <h2 class="text-2xl md:text-3xl font-black tracking-tight text-white">
+                How to Articulate EdgeLabel to SMBs, Clinical Teams &amp; Enterprises
+              </h2>
+              <p class="text-xs md:text-sm text-blue-100/90 leading-relaxed max-w-3xl">
+                EdgeLabel is not merely another tagging tool. It is an <strong>architectural paradigm shift</strong>: client-side zero-server computing that liberates regulated organisations from exorbitant cloud compute taxes, 6-month infosec delays, and third-party data liabilities.
+              </p>
+              <div class="pt-2 flex flex-wrap items-center gap-3">
+                <button
+                  onclick="copyPitchSnippet('pitch-elevator', this)"
+                  class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs rounded-xl transition shadow-md flex items-center gap-2"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  <span>Copy 30-Second Elevator Pitch</span>
+                </button>
+                <div class="hidden" id="pitch-elevator">EdgeLabel is a privacy-first data annotation platform built by Cueligence. Because it executes 100% inside the browser via WebAssembly and Web Workers, your sensitive customer, clinical, and proprietary data never touches a remote server. You bypass 6-month infosec security reviews, eliminate per-row cloud compute fees, and get built-in double-blind Cohen's Kappa adjudication and cryptographic SHA-256 audit trails from day one.</div>
+                <span class="text-xs text-blue-200/70">Click any card below to copy persona-specific talking points.</span>
+              </div>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+          </div>
+
+          <!-- The 5 Core Pillars Grid -->
+          <div class="space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">The 5 Structural Pillars of EdgeLabel</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Detailed technical mechanisms, business impact, and pitch language for each differentiator.</p>
+              </div>
+              <span class="text-xs font-mono font-semibold px-2.5 py-1 bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 rounded-lg">
+                5 Active Differentiators
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+
+              <!-- Pillar 1 -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-blue-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-blue-50 dark:bg-blue-950/60 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold text-base">
+                      🛡️
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300">
+                      Pillar 1 · Security
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Zero-Server Enclave Privacy</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Pure client-side execution via WebAssembly &amp; Web Workers. Zero raw data, PII, PHI, or image pixels ever egress to external cloud storage or remote servers.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Bypasses the typical 3–9 month enterprise InfoSec / GDPR Art. 28 vendor risk assessment. Eliminates third-party BAA liabilities.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p1">Because EdgeLabel operates 100% inside your browser's local sandbox, your patient records and sensitive CSVs never leave your workstation. You can verify zero network transmission in DevTools, which means you can begin labelling today without waiting 6 months for vendor security approvals.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p1', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-blue-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pillar 2 -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-emerald-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-emerald-50 dark:bg-emerald-950/60 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold text-base">
+                      💰
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-emerald-100 dark:bg-emerald-900/40 text-emerald-700 dark:text-emerald-300">
+                      Pillar 2 · Economics
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Disruptive Flat-Rate Pricing</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Workload computation executes on the user's local machine cores. Cueligence incurs zero server GPU or hosting overhead per row.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Unlimited rows and images for £199 first-year bonus rate vs £0.05–£0.15/row metered tax or £15,000+ cloud minimums from Labelbox or Scale.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p2">Cloud annotation giants bill you on data volume and compute time, charging thousands of pounds when you scale up. Because EdgeLabel uses your computer's own processing power, we provide completely uncapped annotation volume for a flat £199 first-year fee. Label 5,000 or 500,000 items with zero penalty.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p2', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-emerald-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pillar 3 -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-violet-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-violet-50 dark:bg-violet-950/60 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold text-base">
+                      📊
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300">
+                      Pillar 3 · Rigour
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Scientific Adjudication &amp; Kappa</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Integrated double-blind partition generator with configurable control overlap (e.g. 20%) and mathematical Cohen's Kappa (&kappa;) consensus engine.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Replaces error-prone manual Excel joins and custom Python scripts with turnkey inter-annotator concordance verification.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p3">EdgeLabel is built for scientific rigor. Instead of just letting people tag items, it automatically generates blinded batches with overlapping control sets, measures real-time Cohen's Kappa agreement, and flags conflicting rows for senior clinician adjudication.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p3', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-violet-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pillar 4 -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-amber-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-amber-50 dark:bg-amber-950/60 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold text-base">
+                      🔒
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-amber-100 dark:bg-amber-900/40 text-amber-700 dark:text-amber-300">
+                      Pillar 4 · Compliance
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Cryptographic Audit Trail (SHA-256)</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Real-time chronological action hash chain logging every keystroke, NER offset, label edit, and undo with monotonic timestamps.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Guarantees non-repudiation for FDA 21 CFR Part 11, EMA, and SOC2 audits without exposing raw data to central database logs.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p4">When filing with the FDA or EMA, you must prove your training datasets were not tampered with. EdgeLabel generates cryptographically sealed SHA-256 audit ledgers that can be independently verified in seconds to prove complete data integrity and chronological authenticity.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p4', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-amber-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pillar 5 -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-pink-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-pink-50 dark:bg-pink-950/60 text-pink-600 dark:text-pink-400 flex items-center justify-center font-bold text-base">
+                      ⚡
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-pink-100 dark:bg-pink-900/40 text-pink-700 dark:text-pink-300">
+                      Pillar 5 · Versatility
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Unified Tri-Modal Suite</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Token NER + regex heuristics for text, multi-class bounding box drawing for vision, and glossary-enforced translation in one cohesive PWA.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Eliminates tool sprawl. Replaces 3 disconnected tools (Doccano + CVAT + OmegaT) with consistent hotkeys and standard JSON/COCO/YOLO exports.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p5">Why manage three different vendor logins and file formats? EdgeLabel gives your team one standardized interface for text classification, image bounding boxes, and multi-language translation, all exportable in industry-standard YOLO, COCO, and JSONL formats.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p5', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-pink-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Pillar 6 / Bonus: Air-Gapped Readiness -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs flex flex-col justify-between space-y-4 hover:border-indigo-500 transition group">
+                <div class="space-y-3">
+                  <div class="flex items-center justify-between">
+                    <span class="w-9 h-9 rounded-xl bg-indigo-50 dark:bg-indigo-950/60 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-base">
+                      ✈️
+                    </span>
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold uppercase tracking-wider bg-indigo-100 dark:bg-indigo-900/40 text-indigo-700 dark:text-indigo-300">
+                      Pillar 6 · Deployment
+                    </span>
+                  </div>
+                  <h4 class="font-bold text-gray-900 dark:text-white text-base">Air-Gapped &amp; On-Premises Option</h4>
+                  <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <strong>Mechanism:</strong> Self-contained offline PWA cache or lightweight On-Premises Docker image requiring zero internet connectivity or telemetry.
+                  </p>
+                  <div class="p-3 bg-gray-50 dark:bg-gray-850 rounded-xl border border-gray-100 dark:border-gray-800 text-[11px] space-y-1">
+                    <div class="font-bold text-gray-800 dark:text-gray-200">Commercial Win:</div>
+                    <div class="text-gray-600 dark:text-gray-400">Solves the defense enclave and closed hospital intranet dilemma where external web traffic is strictly prohibited by policy.</div>
+                  </div>
+                </div>
+
+                <div class="pt-2 border-t border-gray-100 dark:border-gray-800">
+                  <div class="hidden" id="talk-p6">For defense contractors and isolated hospital LANs that are completely disconnected from the open internet, EdgeLabel can run entirely offline as an air-gapped PWA or on-premises Docker container with zero telemetry or callback pings.</div>
+                  <button
+                    onclick="copyPitchSnippet('talk-p6', this)"
+                    class="w-full py-1.5 px-3 rounded-lg bg-gray-100 hover:bg-indigo-600 hover:text-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 font-semibold text-xs transition flex items-center justify-center gap-1.5"
+                  >
+                    <span>Copy Talking Point</span>
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                  </button>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Competitive Battlecard Matrix -->
+          <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-6 shadow-sm space-y-4">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+              <div>
+                <h3 class="text-lg font-bold text-gray-900 dark:text-white">Competitive Battlecard &amp; Architectural Comparison</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">How EdgeLabel compares against Cloud SaaS Giants and Open-Source Self-Hosted scripts.</p>
+              </div>
+              <span class="text-xs text-blue-600 dark:text-blue-400 font-bold">Updated for 2025/2026 Procurement</span>
+            </div>
+
+            <div class="overflow-x-auto">
+              <table class="w-full text-xs text-left border-collapse">
+                <thead>
+                  <tr class="border-b border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-850">
+                    <th class="p-3 font-bold text-gray-700 dark:text-gray-300">Capability Vector</th>
+                    <th class="p-3 font-extrabold text-blue-600 dark:text-blue-400 bg-blue-50/50 dark:bg-blue-950/30 border-x border-blue-200 dark:border-blue-900">
+                      EdgeLabel (Cueligence)
+                    </th>
+                    <th class="p-3 font-bold text-gray-700 dark:text-gray-300">Cloud SaaS (Labelbox, Scale AI, V7)</th>
+                    <th class="p-3 font-bold text-gray-700 dark:text-gray-300">Open-Source (Doccano, CVAT)</th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Data Sovereignty &amp; Egress</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ 100% Client-Side Enclave (Zero Egress)
+                    </td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ Uploaded to vendor AWS/GCP cloud clusters</td>
+                    <td class="p-3 text-amber-600 dark:text-amber-400">⚠️ Local DB, but requires server hosting</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Infosec / Procurement Approval</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Same-day start (No BAA / DPA bottleneck)
+                    </td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ 3 to 9 months security &amp; compliance review</td>
+                    <td class="p-3 text-amber-600 dark:text-amber-400">⚠️ Requires internal IT &amp; DevOps signoff</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Pricing Predictability</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Flat £199 Year 1 Promotional Launch Rate
+                    </td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ Metered £0.05–£0.15/row + £15k+ annual minimums</td>
+                    <td class="p-3 text-amber-600 dark:text-amber-400">⚠️ "Free" software, but £10k+ in DevOps time</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Blinded Cohen's Kappa (&kappa;) Adjudication</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Built-in double-blind splitter &amp; conflict resolver
+                    </td>
+                    <td class="p-3 text-gray-500 dark:text-gray-400">⚠️ Enterprise tier add-on only</td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ None (requires custom external Python code)</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Cryptographic Non-Repudiation</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Web Crypto SHA-256 monotonic event ledger
+                    </td>
+                    <td class="p-3 text-gray-500 dark:text-gray-400">⚠️ Opaque server database logs</td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ Mutable SQL timestamps</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">DevOps &amp; Infrastructure Maintenance</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Zero infrastructure (Instant browser PWA)
+                    </td>
+                    <td class="p-3 text-emerald-600 dark:text-emerald-400">✓ Hosted SaaS web portal</td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ Heavy Docker, Redis, Postgres maintenance</td>
+                  </tr>
+                  <tr>
+                    <td class="p-3 font-semibold text-gray-800 dark:text-gray-200">Air-Gapped &amp; Offline Operation</td>
+                    <td class="p-3 font-bold text-emerald-600 dark:text-emerald-400 bg-blue-50/20 dark:bg-blue-950/10 border-x border-blue-200 dark:border-blue-900">
+                      ✓ Fully functional disconnected from internet
+                    </td>
+                    <td class="p-3 text-rose-500 dark:text-rose-400">✗ Cannot function without active internet</td>
+                    <td class="p-3 text-emerald-600 dark:text-emerald-400">✓ Can run on local network</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Persona-Specific Talk Tracks -->
+          <div class="space-y-4">
+            <div>
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white">Persona-Specific Talk Tracks</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">Tailored talking points depending on whether you are speaking with an engineering lead, compliance officer, or scientific researcher.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+
+              <!-- Persona: CTO / Eng -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs space-y-3 flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">💻</span>
+                    <div>
+                      <h4 class="font-bold text-gray-900 dark:text-white text-sm">For CTOs &amp; Lead Engineers</h4>
+                      <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Priority: Zero Maintenance &amp; Formats</span>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic bg-gray-50 dark:bg-gray-850 p-3 rounded-xl border border-gray-100 dark:border-gray-800" id="script-cto">
+                    "Instead of tasking your DevOps engineers with deploying and securing self-hosted open-source containers like Doccano or CVAT with Postgres and Redis, EdgeLabel runs instantly as a client-side PWA with zero infrastructure debt. Your team gets standard YOLO, COCO, and JSONL exports ready to feed directly into your training pipeline with zero API lock-in."
+                  </p>
+                </div>
+                <button
+                  onclick="copyPitchSnippet('script-cto', this)"
+                  class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span>Copy CTO Script</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                </button>
+              </div>
+
+              <!-- Persona: CISO / Compliance -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs space-y-3 flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🛡️</span>
+                    <div>
+                      <h4 class="font-bold text-gray-900 dark:text-white text-sm">For CISOs &amp; Data Protection Officers</h4>
+                      <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Priority: Zero Egress &amp; Risk Avoidance</span>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic bg-gray-50 dark:bg-gray-850 p-3 rounded-xl border border-gray-100 dark:border-gray-800" id="script-ciso">
+                    "EdgeLabel solves your data sovereignty dilemma at the architectural level. Because compute happens inside the annotator's browser with no remote network transmission, your organisation maintains 100% custody of patient health information (PHI) and proprietary IP. You do not need a third-party BAA or cross-border data transfer review."
+                  </p>
+                </div>
+                <button
+                  onclick="copyPitchSnippet('script-ciso', this)"
+                  class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span>Copy CISO Script</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                </button>
+              </div>
+
+              <!-- Persona: PI / Clinical -->
+              <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-5 shadow-xs space-y-3 flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="flex items-center gap-2">
+                    <span class="text-xl">🔬</span>
+                    <div>
+                      <h4 class="font-bold text-gray-900 dark:text-white text-sm">For PIs &amp; Clinical Researchers</h4>
+                      <span class="text-[10px] text-gray-400 uppercase tracking-wider font-semibold">Priority: Reproducibility &amp; Inter-Rater Agreement</span>
+                    </div>
+                  </div>
+                  <p class="text-xs text-gray-600 dark:text-gray-300 leading-relaxed italic bg-gray-50 dark:bg-gray-850 p-3 rounded-xl border border-gray-100 dark:border-gray-800" id="script-pi">
+                    "Peer-reviewed journals and regulatory bodies demand mathematical proof of label quality. EdgeLabel provides automated double-blind dataset partitioning with 20% control overlap, real-time Cohen's Kappa scoring, and chronological SHA-256 action logs so your methodology stands up to regulatory scrutiny."
+                  </p>
+                </div>
+                <button
+                  onclick="copyPitchSnippet('script-pi', this)"
+                  class="w-full py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-xs"
+                >
+                  <span>Copy Researcher Script</span>
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"/></svg>
+                </button>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Commercial Strategy & Explaining the £199 Promotional Launch Rate -->
+          <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-6 md:p-8 shadow-sm space-y-6">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-gray-100 dark:border-gray-800 pb-5">
+              <div>
+                <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md bg-emerald-100 dark:bg-emerald-950/50 text-emerald-800 dark:text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">
+                  Pricing Architecture
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 dark:text-white">Explaining the £199 Team Workspace Launch Rate</h3>
+                <p class="text-xs text-gray-500 dark:text-gray-400">Why our pricing is structured this way and how to navigate client budget conversations.</p>
+              </div>
+              <div class="text-right">
+                <span class="text-2xl font-black text-gray-900 dark:text-white">£199 <span class="text-xs font-normal text-gray-400">/ first year</span></span>
+                <div class="text-xs text-emerald-600 dark:text-emerald-400 font-bold">Standard: £399/year (Save £200)</div>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs">
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-850 border border-gray-100 dark:border-gray-800 space-y-2">
+                <h4 class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="text-blue-600">1.</span> Why Offer £199 for Year 1?
+                </h4>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  £199 is intentionally positioned as a <strong>frictionless, corporate-card-friendly launch bonus</strong>. At £199, an SMB team lead or university PI can expense the licence without waiting for multi-tier procurement committee sign-offs.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-850 border border-gray-100 dark:border-gray-800 space-y-2">
+                <h4 class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="text-emerald-600">2.</span> How is it Sustainable?
+                </h4>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Unlike traditional cloud SaaS companies that incur high AWS/GCP GPU cluster bills every time an annotator processes an image, <strong>Cueligence incurs zero server compute costs</strong>. Client devices bear the CPU/GPU workload.
+                </p>
+              </div>
+
+              <div class="p-4 rounded-2xl bg-gray-50 dark:bg-gray-850 border border-gray-100 dark:border-gray-800 space-y-2">
+                <h4 class="font-bold text-gray-900 dark:text-white flex items-center gap-1.5">
+                  <span class="text-violet-600">3.</span> The Expansion &amp; Upsell Path
+                </h4>
+                <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                  Year 1 establishes EdgeLabel as the team's indispensable workflow tool. In Year 2, licences renew at standard <strong>£399/yr</strong>, or clients upgrade to custom <strong>Enterprise Air-Gapped On-Premises (£1,499–£4,999/yr)</strong> or Managed Labelling contracts.
+                </p>
+              </div>
+            </div>
+
+            <!-- Common Objections & Answers -->
+            <div class="pt-2 space-y-3">
+              <h4 class="font-bold text-gray-900 dark:text-white text-xs uppercase tracking-wider text-gray-400">
+                Handling Common Client Objections
+              </h4>
+              <div class="space-y-3">
+                <div class="p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-850 text-xs space-y-1">
+                  <div class="font-bold text-gray-900 dark:text-white">Q: "Why shouldn't we just use free open-source software like Doccano or CVAT?"</div>
+                  <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <strong>Response:</strong> "Open-source software is only 'free' if your engineering team's time has zero value. Self-hosting requires spinning up cloud instances, patching PostgreSQL, managing Docker containers, and writing custom reconciliation scripts for inter-annotator agreement. EdgeLabel is instant, zero-maintenance, runs on any browser, and includes Cohen's Kappa adjudication out of the box for just £199."
+                  </p>
+                </div>
+
+                <div class="p-3.5 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-850 text-xs space-y-1">
+                  <div class="font-bold text-gray-900 dark:text-white">Q: "How do we know our confidential data won't leak if this runs in a browser?"</div>
+                  <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                    <strong>Response:</strong> "EdgeLabel is an offline-first Progressive Web App. All parsing, rendering, and indexing occurs exclusively in memory and local IndexedDB. You can load EdgeLabel, physically disconnect your Wi-Fi or unplug your ethernet cable, and continue labelling with full functionality. Your network team can inspect every packet in DevTools to verify that zero external network egress occurs."
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
 
   <!-- Change PIN Modal -->
   <div id="pin-modal" class="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm hidden items-center justify-center p-4">
@@ -586,7 +1065,7 @@
     }
 
     function switchAdminTab(tabId) {
-      const tabs = ['inquiries', 'audit', 'license', 'guide'];
+      const tabs = ['inquiries', 'audit', 'license', 'guide', 'differentiators'];
       tabs.forEach(t => {
         const panel = document.getElementById('admin-panel-' + t);
         const btn = document.getElementById('admin-tab-btn-' + t);
@@ -598,6 +1077,23 @@
           panel.classList.add('hidden');
           btn.className = 'admin-tab-btn px-4 py-2 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white whitespace-nowrap';
         }
+      });
+    }
+
+    function copyPitchSnippet(elementId, btnElement) {
+      const el = document.getElementById(elementId);
+      if (!el) return;
+      const text = el.innerText || el.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalHtml = btnElement.innerHTML;
+        btnElement.innerHTML = `<span>Copied to Clipboard! ✓</span>`;
+        btnElement.classList.add('bg-emerald-600', 'text-white');
+        setTimeout(() => {
+          btnElement.innerHTML = originalHtml;
+          btnElement.classList.remove('bg-emerald-600', 'text-white');
+        }, 2200);
+      }).catch(err => {
+        console.error('Copy failed:', err);
       });
     }
 

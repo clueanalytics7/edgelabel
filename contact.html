@@ -124,7 +124,7 @@
             <label for="type" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Enquiry type</label>
             <select id="type" name="type" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
               <option value="General enquiry">General enquiry</option>
-              <option value="Team Workspace Licence">Team Workspace Licence (£199/yr)</option>
+              <option value="Team Workspace Licence">Team Workspace Licence — £199 (Year 1 Launch Rate)</option>
               <option value="Enterprise Deployment">Enterprise Air-Gapped Deployment</option>
               <option value="Managed Data Labelling Services">Managed Data Labelling Services</option>
               <option value="Dataset quality audit">Dataset quality audit &amp; validation</option>
@@ -389,9 +389,9 @@
 
         if (lowerReq.includes('team') || lowerReq.includes('workspace') || lowerReq.includes('199')) {
           sel.value = "Team Workspace Licence";
-          planName = "Team Workspace Licence (£199/yr)";
+          planName = "Team Workspace Licence — £199 (Year 1 Launch Rate)";
           if (msgField && !msgField.value.trim()) {
-            msgField.value = "Hi Cueligence team,\n\nWe would like to upgrade to the Team Workspace Licence (£199/year). We have approximately [  ] annotators on our team.\n\nPlease provide invoice details and guidance on onboarding our annotators.";
+            msgField.value = "Hi Cueligence team,\n\nWe would like to take advantage of the Team Workspace Licence introductory launch rate (£199 for the first year, standard £399/yr). We have approximately [  ] annotators on our team.\n\nPlease provide invoice details and guidance on onboarding our annotators.";
           }
         } else if (lowerReq.includes('enterprise') || lowerReq.includes('air-gapped') || lowerReq.includes('compliance')) {
           sel.value = "Enterprise Deployment";
