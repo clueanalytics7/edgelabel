@@ -10,6 +10,9 @@ import { AgreementResolverModal } from '../shared/AgreementResolver.jsx';
 import { SchemaConfigModal } from '../shared/SchemaConfigModal.jsx';
 import { NERAnnotator, DEFAULT_ENTITY_TYPES } from '../shared/NERAnnotator.jsx';
 import { HeuristicRulesModal } from '../shared/HeuristicRulesModal.jsx';
+import { BlindedAssignmentModal } from '../shared/BlindedAssignmentModal.jsx';
+import { TaxonomyCodebookModal } from '../shared/TaxonomyCodebookModal.jsx';
+import { TextAugmentationModal } from '../shared/TextAugmentationModal.jsx';
 import { PWAInstallButton, OfflineIndicator } from '../shared/PWAInstallButton.jsx';
 import { auditLogger } from '../shared/AuditTrail.js';
 
@@ -229,6 +232,9 @@ export default function App() {
   const [showAgreementModal, setShowAgreementModal] = useState(false);
   const [showSchemaModal, setShowSchemaModal] = useState(false);
   const [showHeuristicsModal, setShowHeuristicsModal] = useState(false);
+  const [showBlindedModal, setShowBlindedModal] = useState(false);
+  const [showTaxonomyModal, setShowTaxonomyModal] = useState(false);
+  const [showTextAugmentModal, setShowTextAugmentModal] = useState(false);
   const [schemaConfig, setSchemaConfig] = useState({
     guidelines: 'Carefully read the text and apply the most accurate label or entity tags.',
     minLength: 1,
@@ -588,11 +594,33 @@ export default function App() {
                 </button>
 
                 <button
-                  onClick={() => setShowSchemaModal(true)}
-                  className="px-2.5 py-1.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors hidden xl:block"
-                  title="Configure schema validation rules"
+                  onClick={() => setShowBlindedModal(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-violet-600 hover:bg-violet-700 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors hidden xl:flex"
+                  title="Generate Double-Blind Batches with Cohen's Kappa Control Overlap"
                 >
-                  Schema
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  <span>Blinded Split</span>
+                </button>
+
+                <button
+                  onClick={() => setShowTextAugmentModal(true)}
+                  className="flex items-center gap-1.5 px-2.5 py-1.5 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg shadow-xs transition-colors hidden sm:flex"
+                  title="Synthetic Text Augmentation & Noise Generator"
+                >
+                  <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <span>Augment</span>
+                </button>
+
+                <button
+                  onClick={() => setShowTaxonomyModal(true)}
+                  className="px-2.5 py-1.5 text-xs text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors hidden md:block"
+                  title="Taxonomy & Codebook JSON Import/Export"
+                >
+                  Codebook
                 </button>
               </>
             )}
@@ -884,6 +912,7 @@ export default function App() {
           setAnnotations(updated);
           auditLogger.log('DISAGREEMENTS_ADJUDICATED', { count: updated.filter(Boolean).length });
         }}
+        onOpenBlindedSplit={() => setShowBlindedModal(true)}
         onToast={showToast}
       />
       <SchemaConfigModal
@@ -895,6 +924,54 @@ export default function App() {
           auditLogger.log('SCHEMA_UPDATED', newCfg);
         }}
         labelsList={labels}
+        onToast={showToast}
+      />
+      <BlindedAssignmentModal
+        show={showBlindedModal}
+        onClose={() => setShowBlindedModal(false)}
+        dataItems={dataItems}
+        columnHeaders={columnHeaders}
+        fileName={fileName || 'dataset.csv'}
+        onToast={showToast}
+      />
+      <TaxonomyCodebookModal
+        show={showTaxonomyModal}
+        onClose={() => setShowTaxonomyModal(false)}
+        taskType={annotationMode === 'ner' ? 'ner' : 'text_classification'}
+        currentLabels={annotationMode === 'ner' ? entityTypes : labels}
+        currentGuidelines={schemaConfig?.guidelines || ''}
+        currentQualityRules={schemaConfig}
+        projectName={fileName ? fileName.replace(/\.[^/.]+$/, '') : 'EdgeLabel Dataset'}
+        onApplyTaxonomy={(imported) => {
+          if (imported.labels && imported.labels.length) {
+            if (annotationMode === 'ner') {
+              setEntityTypes(imported.labels);
+            } else {
+              setLabels(imported.labels);
+            }
+          }
+          if (imported.guidelines) {
+            setSchemaConfig((prev) => ({ ...prev, guidelines: imported.guidelines }));
+          }
+          if (imported.qualityRules) {
+            setSchemaConfig((prev) => ({ ...prev, ...imported.qualityRules }));
+          }
+          auditLogger.log('TAXONOMY_IMPORTED', { name: imported.projectName, count: imported.labels?.length });
+        }}
+        onToast={showToast}
+      />
+      <TextAugmentationModal
+        show={showTextAugmentModal}
+        onClose={() => setShowTextAugmentModal(false)}
+        dataItems={dataItems}
+        selectedColumn={selectedColumn}
+        columnHeaders={columnHeaders}
+        currentIndex={currentIndex}
+        onApplyAugmentation={(augmentedRows) => {
+          setDataItems((prev) => [...prev, ...augmentedRows]);
+          setAnnotations((prev) => [...prev, ...new Array(augmentedRows.length).fill(null)]);
+          auditLogger.log('DATASET_AUGMENTED', { count: augmentedRows.length });
+        }}
         onToast={showToast}
       />
 

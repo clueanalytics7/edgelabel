@@ -70,7 +70,10 @@
           <a href="#text-annotation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium">Text &amp; NER</a>
           <a href="#image-annotation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-violet-500 transition-colors font-medium">Image Annotation (EdgeVision)</a>
           <a href="#data-translation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 transition-colors font-medium">Data Translation</a>
-          <a href="#iaa-agreement" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-amber-500 transition-colors font-medium">Inter-Annotator Agreement (IAA)</a>
+          <a href="#blinded-split" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-500 transition-colors font-medium text-purple-600 dark:text-purple-400 font-bold">Blinded Assignment (κ)</a>
+          <a href="#taxonomy-codebook" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium text-blue-600 dark:text-blue-400 font-bold">Taxonomy &amp; Codebook</a>
+          <a href="#data-augmentation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-amber-500 transition-colors font-medium text-amber-600 dark:text-amber-400 font-bold">Data Augmentation</a>
+          <a href="#iaa-agreement" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-purple-500 transition-colors font-medium">Agreement &amp; Adjudication</a>
           <a href="#data-quality" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-cyan-500 transition-colors font-medium">Dataset Quality Scanner</a>
           <a href="#export-formats" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium">Export Formats</a>
         </div>
@@ -90,19 +93,28 @@
 
         <!-- Task Selector Tabs -->
         <div class="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto mb-6 text-xs sm:text-sm font-semibold">
-          <button type="button" onclick="switchTutorialTab('text')" id="tab-btn-text" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs">
+          <button type="button" onclick="switchTutorialTab('text')" id="tab-btn-text" class="tutorial-tab-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs">
             📝 Text &amp; NER
           </button>
-          <button type="button" onclick="switchTutorialTab('image')" id="tab-btn-image" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          <button type="button" onclick="switchTutorialTab('image')" id="tab-btn-image" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
             🖼️ Image Annotation
           </button>
-          <button type="button" onclick="switchTutorialTab('translation')" id="tab-btn-translation" class="tutorial-tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          <button type="button" onclick="switchTutorialTab('translation')" id="tab-btn-translation" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
             🌐 Data Translation
           </button>
-          <button type="button" onclick="switchTutorialTab('iaa')" id="tab-btn-iaa" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
-            ⚖️ IAA &amp; Adjudication
+          <button type="button" onclick="switchTutorialTab('blinded')" id="tab-btn-blinded" class="tutorial-tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            ⚡ Blinded Split (κ)
           </button>
-          <button type="button" onclick="switchTutorialTab('quality')" id="tab-btn-quality" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+          <button type="button" onclick="switchTutorialTab('codebook')" id="tab-btn-codebook" class="tutorial-tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            📋 Codebook Schema
+          </button>
+          <button type="button" onclick="switchTutorialTab('augmentation')" id="tab-btn-augmentation" class="tutorial-tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            🪄 Data Augmentation
+          </button>
+          <button type="button" onclick="switchTutorialTab('iaa')" id="tab-btn-iaa" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            ⚖️ IAA Adjudication
+          </button>
+          <button type="button" onclick="switchTutorialTab('quality')" id="tab-btn-quality" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
             🩺 Quality Scanner
           </button>
         </div>
@@ -268,6 +280,188 @@
               <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
                 <span>Output: Localized CSV · Key-Value JSON</span>
                 <a href="./translation.html" class="text-emerald-400 hover:underline">Open Tool →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Multi-Annotator Blinded Assignment Generator -->
+        <div id="tutorial-content-blinded" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Multi-Annotator Blinded Assignment Generator</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-800 dark:text-purple-200">Cohen's Kappa (κ) Workflow</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Evaluating Inter-Annotator Agreement without bias requires that annotators have no prior knowledge of which records are shared evaluation controls. EdgeLabel's <strong>Blinded Assignment Generator</strong> takes any master CSV, samples a designated control overlap percentage (10%–50%, default 20%), divides the remaining rows equally between Annotator A and Annotator B, and pseudorandomly intersperses the control samples throughout each batch.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Configurable Overlap:</strong> Slider lets project leads balance statistical power (20% overlap = 40% effort reduction vs 100% double-coding) with team velocity.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Double-Blind Shuffle:</strong> Control items are shuffled into unique random positions inside each annotator's batch. Neither annotator can guess which samples are being verified.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-purple-100 dark:bg-purple-900/40 text-purple-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>1-Click ZIP Distribution:</strong> Generates <code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">Annotator_A_Batch.csv</code>, <code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">Annotator_B_Batch.csv</code>, instructions, and an encrypted adjudication key for the project lead.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-purple-400 font-bold">Blinded Partition Manifest</span>
+                  <span class="text-emerald-400 font-semibold">20% Control Overlap</span>
+                </div>
+                <div class="space-y-2 mb-3">
+                  <div class="p-2.5 bg-gray-900 rounded border border-gray-800 text-[11px] space-y-1.5">
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Master Dataset:</span>
+                      <span class="text-white font-bold">1,000 Rows</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-purple-300">Shared Controls (Dual-Annotated):</span>
+                      <span class="text-purple-400 font-bold">200 Rows</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-blue-300">Batch A (Alex):</span>
+                      <span class="text-blue-400 font-semibold">600 Rows (200 ctrl + 400 solo)</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-emerald-300">Batch B (Beatriz):</span>
+                      <span class="text-emerald-400 font-semibold">600 Rows (200 ctrl + 400 solo)</span>
+                    </div>
+                    <div class="flex justify-between pt-1 border-t border-gray-800">
+                      <span class="text-amber-400">Annotation Effort Saved:</span>
+                      <span class="text-amber-300 font-bold">40% vs. Full Double-Pass</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-[10px] text-purple-300 bg-purple-950/40 p-1.5 rounded border border-purple-900/30">
+                  ✓ Ready for Cohen's Kappa adjudication post-labeling
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Multi-Annotator ZIP Archive</span>
+                <a href="./annotation.html" class="text-purple-400 hover:underline">Launch Splitter →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Custom Annotation Taxonomy & Codebook -->
+        <div id="tutorial-content-codebook" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Taxonomy Codebook Import &amp; Export</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">Standardized JSON Schema</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Consistency is the foundation of high-quality data labeling. EdgeLabel allows data leads to define an <strong>Annotation Codebook</strong> containing class definitions, hex color swatches, keyboard shortcuts, edge-case rules, and length constraints. Teams can export their codebook as a portable <code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800">taxonomy-codebook.json</code> file or import existing configurations with 1-click schema validation.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Team Uniformity:</strong> All annotators work with identical class color codes and keybindings across devices.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Preset Taxonomies:</strong> Includes instant templates for Healthcare/Clinical NER, Safety &amp; Moderation, Customer Support, and Autonomous Mobility.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>Universal Interop:</strong> Works seamlessly across Text Classification, NER Span tagging, and Image Object Detection (EdgeVision).</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-blue-400 font-bold">taxonomy-codebook.json</span>
+                  <span class="text-emerald-400 font-semibold">Valid Schema v1.2</span>
+                </div>
+                <div class="p-2.5 bg-gray-900 rounded border border-gray-800 text-[10px] space-y-1 text-gray-300 leading-tight">
+                  <div class="text-gray-500">"taxonomy": [</div>
+                  <div class="pl-3 text-emerald-400">{"name": "DIAGNOSIS", "color": "#ef4444", "key": "D"},</div>
+                  <div class="pl-3 text-blue-400">{"name": "MEDICATION", "color": "#3b82f6", "key": "M"},</div>
+                  <div class="pl-3 text-amber-400">{"name": "PROCEDURE", "color": "#f59e0b", "key": "P"}</div>
+                  <div class="text-gray-500">],</div>
+                  <div class="text-gray-400">"guidelines": "Label exact clinical mentions with span boundaries..."</div>
+                </div>
+                <div class="mt-3 flex gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-red-950/60 border border-red-800 text-red-300">DIAGNOSIS (D)</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-blue-950/60 border border-blue-800 text-blue-300">MEDICATION (M)</span>
+                  <span class="px-2 py-0.5 rounded text-[10px] bg-amber-950/60 border border-amber-800 text-amber-300">PROCEDURE (P)</span>
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Portable JSON Codebook</span>
+                <a href="./annotation.html" class="text-blue-400 hover:underline">Manage Codebook →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab: Synthetic Data Augmentation & Transformation Preview -->
+        <div id="tutorial-content-augmentation" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Data Augmentation &amp; Transformation Preview</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200">Text &amp; Image Bounding Boxes</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Before exporting data to train neural networks, augmenting rare samples makes models robust against real-world noise. EdgeLabel features an in-browser <strong>Data Augmentation Engine</strong> for both text and computer vision:
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Text Perturbations:</strong> Casing variations (lowercase, UPPERCASE, Title Case, alternating), QWERTY keyboard adjacent typos, letter swaps (transpositions), and synonym substitutions with real-time diff preview.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Image Bounding Box Flips:</strong> Horizontal and vertical flips with automatic coordinate recalculation (<code class="px-1 py-0.5 rounded bg-gray-100 dark:bg-gray-800 font-mono">x' = 1 - x - width</code>). Bounding boxes mirror in real-time alongside image canvas reflections.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>Photometric Adjustments:</strong> In-browser brightness shifts (&plusmn;40%), contrast enhancement, and grayscale conversion without external Python dependencies.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-amber-400 font-bold">Live Augmentation Preview</span>
+                  <span class="text-violet-400 font-mono">x' = W - x - w</span>
+                </div>
+                <div class="space-y-2 mb-3">
+                  <div class="p-2 bg-gray-900 rounded border border-gray-800 text-[11px]">
+                    <span class="text-gray-400 text-[10px] block uppercase">Original Text:</span>
+                    <span class="text-gray-200">"The quick brown fox jumps over the lazy dog."</span>
+                  </div>
+                  <div class="p-2 bg-amber-950/40 rounded border border-amber-900/50 text-[11px]">
+                    <span class="text-amber-400 text-[10px] block uppercase">Augmented (QWERTY typo + Title):</span>
+                    <span class="text-amber-200">"The <span class="underline decoration-amber-400">Qwick</span> Brown Fox Jumps Over <span class="underline decoration-amber-400">Teh</span> Lazy Dog!"</span>
+                  </div>
+                </div>
+                <div class="text-[10px] text-amber-300 bg-amber-950/40 p-1.5 rounded border border-amber-900/30">
+                  ✓ Mirrored YOLO annotations &amp; augmented CSV exportable instantly
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Augmented CSV · Mirrored YOLO (.zip)</span>
+                <a href="./annotation.html" class="text-amber-400 hover:underline">Test Augmentation →</a>
               </div>
             </div>
           </div>
@@ -626,6 +820,201 @@
       </section>
 
       <!-- =================================================================== -->
+      <!-- SECTION 5B: Multi-Annotator Blinded Assignment Generator -->
+      <!-- =================================================================== -->
+      <section id="blinded-split" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-100 dark:bg-purple-900/40 text-purple-600 dark:text-purple-400 flex items-center justify-center font-bold">
+            05
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Multi-Annotator Blinded Assignment Generator</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Scientifically Valid Partitioning with Control Overlap for Cohen's Kappa Evaluation</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            When deploying human annotators to label data, simply dividing a file in half makes inter-rater reliability impossible to verify. Conversely, having two annotators label 100% of the dataset doubles project costs. EdgeLabel provides an in-browser <strong>Multi-Annotator Blinded Assignment Generator</strong> that delivers rigorous scientific verification while saving up to 40% in labeling effort:
+          </p>
+
+          <!-- Partitioning Flow Diagram Card -->
+          <div class="p-6 rounded-2xl bg-purple-50/50 dark:bg-purple-950/20 border border-purple-100 dark:border-purple-900/40 space-y-4">
+            <h3 class="font-bold text-purple-950 dark:text-purple-200 text-base">How the Double-Blind Partition Works</h3>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs">
+              <div class="p-4 bg-white dark:bg-gray-900 rounded-xl border border-purple-100 dark:border-purple-900/50 space-y-2">
+                <span class="font-bold text-purple-700 dark:text-purple-300 block text-sm">1. Master Dataset (N)</span>
+                <p class="text-gray-500 dark:text-gray-400">
+                  You supply a master CSV (e.g., 1,000 sentences or records). Each row is assigned an immutable <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">master_record_id</code> for traceability.
+                </p>
+              </div>
+
+              <div class="p-4 bg-white dark:bg-gray-900 rounded-xl border border-purple-100 dark:border-purple-900/50 space-y-2">
+                <span class="font-bold text-purple-700 dark:text-purple-300 block text-sm">2. Control Overlap (10%–50%)</span>
+                <p class="text-gray-500 dark:text-gray-400">
+                  A representative control sample (default 20% = 200 rows) is sampled to be assigned to <em>both</em> annotators. The remaining 800 rows are split evenly (400 for Annotator A, 400 for Annotator B).
+                </p>
+              </div>
+
+              <div class="p-4 bg-white dark:bg-gray-900 rounded-xl border border-purple-100 dark:border-purple-900/50 space-y-2">
+                <span class="font-bold text-purple-700 dark:text-purple-300 block text-sm">3. Independent Blinding Shuffle</span>
+                <p class="text-gray-500 dark:text-gray-400">
+                  Control items are randomly permuted into different positions in each annotator's batch. Annotators cannot predict which rows are evaluation controls versus unique rows.
+                </p>
+              </div>
+            </div>
+
+            <!-- ZIP Distribution Contents -->
+            <div class="p-4 rounded-xl bg-white dark:bg-gray-900 border border-purple-100 dark:border-purple-900/50 space-y-2">
+              <span class="font-bold text-gray-900 dark:text-white text-xs uppercase tracking-wider">
+                Exported ZIP Package Architecture:
+              </span>
+              <ul class="space-y-1.5 text-xs text-gray-600 dark:text-gray-300">
+                <li class="flex items-center gap-2">
+                  <span class="text-blue-500 font-mono">📄 Annotator_A_Batch.csv</span> — Given to Annotator A (Control Overlap + Solo A records)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-emerald-500 font-mono">📄 Annotator_B_Batch.csv</span> — Given to Annotator B (Control Overlap + Solo B records)
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-purple-500 font-mono">🔑 Blinded_Control_Key.json</span> — Retained exclusively by project lead; lists control sample IDs
+                </li>
+                <li class="flex items-center gap-2">
+                  <span class="text-gray-500 font-mono">📝 INSTRUCTIONS_FOR_ANNOTATORS.txt</span> — Plaintext setup instructions for annotator onboarding
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 5C: Custom Annotation Taxonomy & Codebook Standard -->
+      <!-- =================================================================== -->
+      <section id="taxonomy-codebook" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+            06
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Annotation Taxonomy &amp; Codebook Management</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Standardized Label Schemas, Keyboard Shortcut Palettes, and Portable JSON Configs</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            When multiple annotators work across different machines, conflicting label palettes or unwritten rules result in noisy labels. EdgeLabel introduces a standardized <strong>Codebook JSON Specification</strong> (<code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">taxonomy-codebook.json</code>) that bundles labeling schemas into shareable, version-controlled artifacts:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-1 text-xs">
+            <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+              <h3 class="font-bold text-gray-900 dark:text-white text-base">Key Capabilities</h3>
+              <ul class="space-y-2 text-gray-600 dark:text-gray-300">
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-500 font-bold">✓</span>
+                  <span><strong>Export Codebook:</strong> 1-click download of the active class palette, hex swatches, keybindings, and guidelines into JSON.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-500 font-bold">✓</span>
+                  <span><strong>Drag-and-Drop Import:</strong> Drop any valid codebook JSON to instantly update labels, shortcut keys, and task descriptions.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-500 font-bold">✓</span>
+                  <span><strong>Preset Industry Templates:</strong> Built-in schemas for Clinical Healthcare NER, Trust &amp; Safety Moderation, Customer Support, and Autonomous Mobility.</span>
+                </li>
+                <li class="flex items-start gap-2">
+                  <span class="text-blue-500 font-bold">✓</span>
+                  <span><strong>Cross-Modal Support:</strong> Works across Text Classification, Named Entity Recognition, and Image Annotation (EdgeVision).</span>
+                </li>
+              </ul>
+            </div>
+
+            <div class="p-5 rounded-xl bg-gray-950 border border-gray-800 font-mono text-gray-300 space-y-2">
+              <span class="text-gray-500 text-[11px] block">// Standard taxonomy-codebook.json structure</span>
+              <pre class="text-[11px] leading-relaxed text-blue-300 overflow-x-auto">
+{
+  "projectName": "Clinical NER Project",
+  "organization": "Cueligence",
+  "taskType": "ner",
+  "taxonomy": [
+    {"name": "DIAGNOSIS", "color": "#ef4444", "shortcut": "D"},
+    {"name": "MEDICATION", "color": "#3b82f6", "shortcut": "M"},
+    {"name": "DOSAGE", "color": "#10b981", "shortcut": "S"}
+  ],
+  "guidelines": "Label full mentions including duration...",
+  "qualityRules": {"minLength": 3, "maxLength": 5000}
+}</pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 5D: In-Browser Synthetic Data Augmentation -->
+      <!-- =================================================================== -->
+      <section id="data-augmentation" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+            07
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Synthetic Data Augmentation &amp; Transformation Preview</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Robustness Perturbations for Text and Mirroring Inversions for Image Bounding Boxes</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            Machine learning models are prone to brittle failure when exposed to unseen casing, typing noise, or altered viewpoints. EdgeLabel provides instant, 100% in-browser <strong>Data Augmentation Tools</strong> that expand datasets and simulate real-world noise before training:
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-xs">
+            <!-- Text Augmentations -->
+            <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+              <h3 class="font-bold text-gray-900 dark:text-white text-base">A. Text Perturbations</h3>
+              <div class="space-y-2 text-gray-600 dark:text-gray-300">
+                <p>
+                  <strong>• Casing Transformations:</strong> Convert samples to lowercase, ALL CAPS, Title Case, or alternating casing to prevent models from overfitting to capitalization artifacts.
+                </p>
+                <p>
+                  <strong>• QWERTY Keyboard Typo Injection:</strong> Simulates human typing errors by substituting letters with adjacent keyboard neighbors (e.g. 'e' &rarr; 'w' or 'r'), dropping characters, duplicating letters, or transposing adjacent pairs ("the" &rarr; "teh").
+                </p>
+                <p>
+                  <strong>• Contextual Synonyms:</strong> Substitutes adjectives and sentiment markers with semantically aligned alternatives (e.g., "fast" &rarr; "speedy" &rarr; "quick").
+                </p>
+                <p>
+                  <strong>• Live Interactive Diff:</strong> Visual side-by-side comparison for the active row with real-time character-level difference highlighting.
+                </p>
+              </div>
+            </div>
+
+            <!-- Image Augmentations -->
+            <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+              <h3 class="font-bold text-gray-900 dark:text-white text-base">B. Image Bounding Box Transformations (EdgeVision)</h3>
+              <div class="space-y-2 text-gray-600 dark:text-gray-300">
+                <p>
+                  <strong>• Horizontal Flip &amp; Coordinate Inversion:</strong> Mirrors image canvas horizontally while mathematically recalculating bounding box coordinates:
+                </p>
+                <div class="p-2.5 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-750 font-mono text-center text-violet-600 dark:text-violet-400">
+                  x'<sub>new</sub> = Image_Width − x − width
+                </div>
+                <p>
+                  <strong>• Vertical Inversion:</strong> Inverts box coordinates ($y' = \text{Height} - y - \text{height}$) for aerial drone and satellite imagery.
+                </p>
+                <p>
+                  <strong>• Photometric Lighting Shifts:</strong> Interactive brightness (&plusmn;40%) and contrast sliders to test vision models under varying ambient light conditions.
+                </p>
+                <p>
+                  <strong>• Mirrored YOLO &amp; COCO Export:</strong> Exports augmented images and inverted annotation files packaged in a single <code class="px-1 py-0.5 bg-gray-100 dark:bg-gray-800 rounded">.zip</code>.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
       <!-- SECTION 6: Dataset Quality & Health Scanner -->
       <!-- =================================================================== -->
       <section id="data-quality" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
@@ -868,16 +1257,17 @@
 
     // Interactive Tutorial Tab Switcher
     function switchTutorialTab(tabId) {
-      const tabs = ['text', 'image', 'translation', 'iaa', 'quality'];
+      const tabs = ['text', 'image', 'translation', 'blinded', 'codebook', 'augmentation', 'iaa', 'quality'];
       tabs.forEach(t => {
         const content = document.getElementById('tutorial-content-' + t);
         const btn = document.getElementById('tab-btn-' + t);
+        if (!content || !btn) return;
         if (t === tabId) {
           content.classList.remove('hidden');
-          btn.className = 'tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs font-semibold';
+          btn.className = 'tutorial-tab-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs font-semibold';
         } else {
           content.classList.add('hidden');
-          btn.className = 'tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white';
+          btn.className = 'tutorial-tab-btn flex-1 min-w-[120px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white';
         }
       });
     }

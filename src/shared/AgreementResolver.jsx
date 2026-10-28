@@ -73,6 +73,7 @@ export function AgreementResolverModal({
   selectedColumn,
   labelsList,
   onApplyAdjudicated,
+  onOpenBlindedSplit,
   onToast,
 }) {
   const [secondAnnotations, setSecondAnnotations] = useState([]);
@@ -250,12 +251,25 @@ export function AgreementResolverModal({
               <p className="text-xs text-gray-500 dark:text-gray-400 max-w-sm mb-4">
                 Load a CSV or JSON file containing labels from a second annotator to measure inter-rater reliability.
               </p>
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
-              >
-                Choose Second Annotator File
-              </button>
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <button
+                  onClick={() => fileInputRef.current?.click()}
+                  className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-xl text-xs font-semibold shadow-xs transition-colors"
+                >
+                  Choose Second Annotator File
+                </button>
+                {onOpenBlindedSplit && (
+                  <button
+                    onClick={() => {
+                      onClose();
+                      onOpenBlindedSplit();
+                    }}
+                    className="px-4 py-2 bg-white dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-750 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-800 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"
+                  >
+                    <span>⚡ Generate Blinded Split Batches</span>
+                  </button>
+                )}
+              </div>
             </div>
           ) : (
             <>

@@ -6,6 +6,8 @@ import { PWAInstallButton, OfflineIndicator } from '../shared/PWAInstallButton.j
 import { BoundingBoxCanvas } from './Canvas.jsx';
 import { getSampleCvDataset } from './sampleData.js';
 import { exportCocoJson, exportYoloZip, exportClassificationCsv } from './cvExporters.js';
+import { ImageAugmentModal } from './ImageAugmentModal.jsx';
+import { TaxonomyCodebookModal } from '../shared/TaxonomyCodebookModal.jsx';
 
 const DEFAULT_CV_CLASSES = [
   { id: 'c1', name: 'Person', color: '#10b981' },
@@ -30,6 +32,8 @@ export default function App() {
   const [showAddClass, setShowAddClass] = useState(false);
   const [newClassName, setNewClassName] = useState('');
   const [newClassColor, setNewClassColor] = useState('#ec4899');
+  const [showAugmentModal, setShowAugmentModal] = useState(false);
+  const [showCodebookModal, setShowCodebookModal] = useState(false);
 
   const fileInputRef = useRef(null);
 
@@ -427,6 +431,17 @@ export default function App() {
               COCO (.json)
             </button>
             <button
+              onClick={() => setShowAugmentModal(true)}
+              disabled={!images.length}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-amber-600 hover:bg-amber-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl shadow-xs transition-all"
+              title="Data Augmentation: Bounding Box Flips, Brightness & Contrast Shifts"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+              Augment
+            </button>
+            <button
               onClick={handleExportCsv}
               disabled={!images.length}
               className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl shadow-xs transition-all"
@@ -534,12 +549,21 @@ export default function App() {
                 <span className="text-xs font-bold text-gray-300 uppercase tracking-wider">
                   Classes ({classes.length})
                 </span>
-                <button
-                  onClick={() => setShowAddClass(true)}
-                  className="text-xs text-violet-400 hover:text-violet-300 font-semibold"
-                >
-                  + Add Class
-                </button>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={() => setShowCodebookModal(true)}
+                    className="text-xs text-gray-400 hover:text-white font-medium"
+                    title="Import or Export Taxonomy Codebook JSON"
+                  >
+                    📋 Codebook
+                  </button>
+                  <button
+                    onClick={() => setShowAddClass(true)}
+                    className="text-xs text-violet-400 hover:text-violet-300 font-semibold"
+                  >
+                    + Add Class
+                  </button>
+                </div>
               </div>
 
               <div className="space-y-1.5 max-h-48 overflow-y-auto pr-1">
@@ -692,6 +716,44 @@ export default function App() {
           </div>
         </div>
       </footer>
+
+      {/* Image Augmentation Studio Modal */}
+      <ImageAugmentModal
+        show={showAugmentModal}
+        onClose={() => setShowAugmentModal(false)}
+        images={images}
+        currentIndex={currentIndex}
+        classes={classes}
+        onAddAugmentedImage={(newImg) => {
+          setImages((prev) => [...prev, newImg]);
+          setCurrentIndex(images.length);
+        }}
+        onToast={showToast}
+      />
+
+      {/* Taxonomy Codebook Modal */}
+      <TaxonomyCodebookModal
+        show={showCodebookModal}
+        onClose={() => setShowCodebookModal(false)}
+        taskType="image_annotation"
+        currentLabels={classes}
+        currentGuidelines="Draw accurate bounding boxes around target objects. Ensure boundaries align tightly with visible object edges."
+        currentQualityRules={{ minLength: 0, maxLength: 0 }}
+        projectName="EdgeVision Object Detection"
+        onApplyTaxonomy={(imported) => {
+          if (imported.labels && imported.labels.length) {
+            setClasses(
+              imported.labels.map((l, i) => ({
+                id: l.id || `c_${i + 1}`,
+                name: l.name,
+                color: l.color || '#3b82f6',
+              }))
+            );
+            setActiveClassId(imported.labels[0].id || 'c_1');
+          }
+        }}
+        onToast={showToast}
+      />
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
     </div>
