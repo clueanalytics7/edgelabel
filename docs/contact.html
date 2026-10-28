@@ -6,7 +6,7 @@
   <title>Contact Us | EdgeLabel</title>
   <link rel="icon" href="./assets/favicon-B3Ar59hU.svg" type="image/svg+xml">
   <script>const t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');</script>
-  <link rel="stylesheet" crossorigin href="./assets/input-BP3W71qx.css">
+  <link rel="stylesheet" crossorigin href="./assets/input-DWxNcsBl.css">
 <link rel="manifest" href="./manifest.webmanifest"><script id="vite-plugin-pwa:register-sw" src="./registerSW.js"></script></head>
 <body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
 
@@ -64,17 +64,30 @@
       </div>
 
       <!-- Contact form -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-lg font-bold text-gray-900 dark:text-white mb-6">Send us a message</h2>
+      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm">
+        <div class="flex items-center justify-between mb-6">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Send us a message</h2>
+          <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full font-medium">
+            <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            Direct to team
+          </span>
+        </div>
+
         <form id="contact-form" class="space-y-5" novalidate>
+          <!-- Anti-spam Honeypot (hidden from real users, traps automated bots) -->
+          <div style="position: absolute; left: -9999px; top: -9999px; opacity: 0; pointer-events: none;" aria-hidden="true">
+            <label for="contact_hp_website">Do not fill this field</label>
+            <input type="text" id="contact_hp_website" name="hp_website" tabindex="-1" autocomplete="off" value="">
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
             <div>
-              <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Name</label>
+              <label for="name" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Name <span class="text-blue-600">*</span></label>
               <input type="text" id="name" name="name" placeholder="Your name" required
                 class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
             </div>
             <div>
-              <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Email</label>
+              <label for="email" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Email <span class="text-blue-600">*</span></label>
               <input type="email" id="email" name="email" placeholder="you@example.com" required
                 class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
             </div>
@@ -82,26 +95,35 @@
           <div>
             <label for="type" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Enquiry type</label>
             <select id="type" name="type" class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all">
-              <option value="">Select a topic…</option>
-              <option>General enquiry</option>
-              <option>Enterprise / team pricing</option>
-              <option>Consulting services</option>
-              <option>Partnership</option>
-              <option>Bug report</option>
-              <option>Feature request</option>
+              <option value="General enquiry">General enquiry</option>
+              <option value="Enterprise / team pricing">Enterprise / team pricing</option>
+              <option value="Dataset quality audit">Dataset quality audit & validation</option>
+              <option value="Consulting services">Consulting services</option>
+              <option value="Partnership">Partnership</option>
+              <option value="Bug report">Bug report</option>
+              <option value="Feature request">Feature request</option>
             </select>
           </div>
           <div>
-            <label for="message" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Message</label>
-            <textarea id="message" name="message" rows="5" placeholder="Tell us what you need…" required
+            <label for="message" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Message <span class="text-blue-600">*</span></label>
+            <textarea id="message" name="message" rows="5" placeholder="Tell us about your project, team size, or questions…" required
               class="w-full px-4 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white text-sm placeholder-gray-400 focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none transition-all resize-y"></textarea>
           </div>
-          <div id="form-status" class="hidden text-sm font-medium rounded-xl px-4 py-3"></div>
-          <button type="submit" id="submit-btn"
-            class="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3 bg-blue-600 text-white font-semibold rounded-xl hover:bg-blue-700 transition-colors shadow-sm text-sm">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
-            Send Message
-          </button>
+
+          <!-- Dynamic Status Messages (Success / Error / Validation) -->
+          <div id="form-status" class="hidden text-sm rounded-xl p-4 transition-all"></div>
+
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 pt-1">
+            <button type="submit" id="submit-btn"
+              class="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-3 bg-blue-600 hover:bg-blue-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-semibold rounded-xl transition-all shadow-sm text-sm">
+              <svg id="submit-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/>
+              </svg>
+              <span id="submit-spinner" class="hidden w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
+              <span id="submit-text">Send Message</span>
+            </button>
+            <p class="text-xs text-gray-400 dark:text-gray-500">We typically reply within 24 hours.</p>
+          </div>
         </form>
       </div>
 
@@ -120,29 +142,201 @@
   </footer>
 
   <script>
-    const toggle=document.getElementById('theme-toggle'),sun=document.getElementById('icon-sun'),moon=document.getElementById('icon-moon');
-    function updateIcons(){const d=document.documentElement.classList.contains('dark');sun.classList.toggle('hidden',!d);moon.classList.toggle('hidden',d);}
+    const toggle = document.getElementById('theme-toggle'),
+          sun = document.getElementById('icon-sun'),
+          moon = document.getElementById('icon-moon');
+    function updateIcons() {
+      const d = document.documentElement.classList.contains('dark');
+      sun.classList.toggle('hidden', !d);
+      moon.classList.toggle('hidden', d);
+    }
     updateIcons();
-    toggle.addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');updateIcons();});
+    toggle.addEventListener('click', () => {
+      const d = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', d ? 'dark' : 'light');
+      updateIcons();
+    });
 
-    // Simple client-side form handling
-    document.getElementById('contact-form').addEventListener('submit', function(e) {
+    // ==========================================
+    // Contact Webhook Endpoint Config
+    // ==========================================
+    const DEFAULT_WEBAPP_URL = 'https://script.google.com/macros/s/AKfycbyWhNUqjQG1Y2lXAMmQK5v_xy9047qlhqDgpGHDtSyZR5GjIO2iLVs7FSLel1d6_x57/exec';
+    const TEAM_NOTIFICATION_EMAIL = 'clueanalytics7@gmail.com';
+
+    function getEndpointUrl() {
+      return localStorage.getItem('edgelabel_contact_endpoint') || 
+             window.EDGELABEL_CONTACT_ENDPOINT || 
+             DEFAULT_WEBAPP_URL;
+    }
+
+    // Form element references
+    const form = document.getElementById('contact-form');
+    const statusBox = document.getElementById('form-status');
+    const submitBtn = document.getElementById('submit-btn');
+    const submitIcon = document.getElementById('submit-icon');
+    const submitSpinner = document.getElementById('submit-spinner');
+    const submitText = document.getElementById('submit-text');
+
+    function setLoading(isLoading) {
+      submitBtn.disabled = isLoading;
+      if (isLoading) {
+        submitIcon.classList.add('hidden');
+        submitSpinner.classList.remove('hidden');
+        submitText.textContent = 'Submitting message...';
+      } else {
+        submitIcon.classList.remove('hidden');
+        submitSpinner.classList.add('hidden');
+        submitText.textContent = 'Send Message';
+      }
+    }
+
+    function showStatus(type, title, message, actionHtml = '') {
+      statusBox.classList.remove('hidden');
+      if (type === 'success') {
+        statusBox.className = 'text-sm rounded-xl p-4 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 transition-all';
+        statusBox.innerHTML = `
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <p class="font-semibold text-emerald-900 dark:text-emerald-100">${title}</p>
+              <p class="mt-1 text-xs sm:text-sm text-emerald-700 dark:text-emerald-300 leading-relaxed">${message}</p>
+              ${actionHtml ? `<div class="mt-2">${actionHtml}</div>` : ''}
+            </div>
+          </div>
+        `;
+      } else if (type === 'error') {
+        statusBox.className = 'text-sm rounded-xl p-4 bg-red-50 dark:bg-red-950/40 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 transition-all';
+        statusBox.innerHTML = `
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-red-600 dark:text-red-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <p class="font-semibold text-red-900 dark:text-red-100">${title}</p>
+              <p class="mt-1 text-xs sm:text-sm text-red-700 dark:text-red-300 leading-relaxed">${message}</p>
+              ${actionHtml ? `<div class="mt-2">${actionHtml}</div>` : ''}
+            </div>
+          </div>
+        `;
+      } else if (type === 'warning') {
+        statusBox.className = 'text-sm rounded-xl p-4 bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800 text-amber-800 dark:text-amber-200 transition-all';
+        statusBox.innerHTML = `
+          <div class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            <div>
+              <p class="font-semibold text-amber-900 dark:text-amber-100">${title}</p>
+              <p class="mt-1 text-xs sm:text-sm text-amber-700 dark:text-amber-300 leading-relaxed">${message}</p>
+              ${actionHtml ? `<div class="mt-2">${actionHtml}</div>` : ''}
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      const name = document.getElementById('name').value.trim();
-      const email = document.getElementById('email').value.trim();
-      const message = document.getElementById('message').value.trim();
-      const status = document.getElementById('form-status');
-      if (!name || !email || !message) {
-        status.className = 'text-sm font-medium rounded-xl px-4 py-3 bg-red-50 dark:bg-red-900/20 text-red-700 dark:text-red-300 border border-red-100 dark:border-red-800';
-        status.textContent = 'Please fill in your name, email, and message.';
-        status.classList.remove('hidden');
+
+      // 1. Anti-spam honeypot check
+      const honeypot = document.getElementById('contact_hp_website').value.trim();
+      if (honeypot) {
+        // Silently deflect bots by faking success
+        setLoading(true);
+        setTimeout(() => {
+          setLoading(false);
+          showStatus('success', 'Thank you for reaching out!', 'Your message has been safely received.');
+          form.reset();
+        }, 800);
         return;
       }
-      const mailtoLink = `mailto:hello@clue-analytics.com?subject=EdgeLabel Enquiry from ${encodeURIComponent(name)}&body=${encodeURIComponent(message + '\n\nFrom: ' + name + ' <' + email + '>')}`;
-      window.location.href = mailtoLink;
-      status.className = 'text-sm font-medium rounded-xl px-4 py-3 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-100 dark:border-green-800';
-      status.textContent = '✓ Your email client should open with the message pre-filled. If not, email us directly at hello@clue-analytics.com';
-      status.classList.remove('hidden');
+
+      // 2. Client-side input validation
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const type = document.getElementById('type').value;
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email || !message) {
+        showStatus('error', 'Missing Required Fields', 'Please enter your name, email address, and a message.');
+        return;
+      }
+
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        showStatus('error', 'Invalid Email Format', 'Please provide a valid email address so we can reply back.');
+        return;
+      }
+
+      setLoading(true);
+      statusBox.classList.add('hidden');
+
+      const endpoint = getEndpointUrl();
+      const isPlaceholder = endpoint.includes('placeholder') || endpoint.includes('AKfycbz_edgelabel_sheets_webhook');
+
+      // If user hasn't hooked up live Apps Script Web App URL yet, provide graceful direct email fallback
+      if (isPlaceholder) {
+        setLoading(false);
+        const mailtoSubject = encodeURIComponent(`[EdgeLabel ${type}] Inquiry from ${name}`);
+        const mailtoBody = encodeURIComponent(`Name: ${name}\nEmail: ${email}\nTopic: ${type}\nDate: ${new Date().toLocaleString()}\n\nMessage:\n${message}`);
+        const mailtoUrl = `mailto:${TEAM_NOTIFICATION_EMAIL}?subject=${mailtoSubject}&body=${mailtoBody}`;
+
+        showStatus(
+          'warning',
+          'Webhook URL Awaiting Deployment',
+          `Your message is ready! The Google Sheets webhook URL is currently set to placeholder mode. You can send it directly to our team at <strong>${TEAM_NOTIFICATION_EMAIL}</strong> with one click below, or deploy your Google Sheet Web App as documented in <code>GOOGLE_SHEETS_SETUP.md</code>.`,
+          `<div class="flex flex-wrap gap-2.5 mt-2">
+            <a href="${mailtoUrl}" class="inline-flex items-center gap-1.5 px-4 py-2 bg-amber-600 hover:bg-amber-700 text-white text-xs font-semibold rounded-lg transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+              Open Email to ${TEAM_NOTIFICATION_EMAIL}
+            </a>
+            <button type="button" onclick="navigator.clipboard.writeText('${message.replace(/'/g, "\\'")}'); alert('Message text copied to clipboard!');" class="inline-flex items-center gap-1.5 px-3 py-2 bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 text-xs font-semibold rounded-lg hover:bg-gray-50">
+              Copy Message Text
+            </button>
+          </div>`
+        );
+        return;
+      }
+
+      // 3. Submit to live Google Apps Script Web App
+      try {
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('type', type);
+        formData.append('message', message);
+        formData.append('timestamp', new Date().toISOString());
+        formData.append('page', window.location.href);
+
+        // Google Apps Script Web App receives POST in mode: 'no-cors'
+        await fetch(endpoint, {
+          method: 'POST',
+          mode: 'no-cors',
+          body: formData
+        });
+
+        setLoading(false);
+        showStatus(
+          'success',
+          'Message Sent Successfully!',
+          `Thank you, ${name}. Your message has been received by our team. We will review your request and get back to you shortly.`
+        );
+        form.reset();
+      } catch (err) {
+        console.error('Contact form submission error:', err);
+        setLoading(false);
+        const mailtoUrl = `mailto:${TEAM_NOTIFICATION_EMAIL}?subject=${encodeURIComponent(`[EdgeLabel] Fallback message from ${name}`)}&body=${encodeURIComponent(message)}`;
+        showStatus(
+          'error',
+          'Unable to reach submission server',
+          `We encountered a network issue submitting directly to Google Sheets. You can retry or send an email directly to our team:`,
+          `<a href="${mailtoUrl}" class="inline-flex items-center gap-1.5 px-4 py-2 mt-2 bg-red-600 hover:bg-red-700 text-white text-xs font-semibold rounded-lg transition-colors">
+            Email ${TEAM_NOTIFICATION_EMAIL} directly
+          </a>`
+        );
+      }
     });
   </script>
 </body>
