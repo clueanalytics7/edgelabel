@@ -1,59 +1,106 @@
-# EdgeLabel — Google Sheets Contact Form Setup Guide
+# EdgeLabel — Google Sheets Contact Form Setup & Troubleshooting Guide
 
-This guide walks you through setting up a **100% free, zero-maintenance database** for storing contact submissions in a Google Sheet and receiving instant email alerts at `clueanalytics7@gmail.com`.
-
----
-
-## Step 1: Create a Google Sheet
-
-1. Go to [Google Sheets](https://sheets.new) and create a new blank spreadsheet.
-2. Name the sheet (e.g. `EdgeLabel Contact Inquiries`).
-3. *(Optional)* In row 1, set the column headers:
-   - **A1**: `Timestamp`
-   - **B1**: `Name`
-   - **C1**: `Email`
-   - **D1**: `Enquiry Type`
-   - **E1**: `Message`
-   - **F1**: `Source URL`
+This guide explains how to connect your contact form to Google Sheets (`EdgeLabel Contact Submissions - Oct 26`) and how to solve why messages may not appear yet.
 
 ---
 
-## Step 2: Open Google Apps Script
+## 🔍 Why Submissions Weren't Displaying (The 3 Core Causes)
 
-1. In the Google Sheets menu, click **Extensions** > **Apps Script**.
-2. Replace any boilerplate code in `Code.gs` with the following production script:
+When you submit from the website and see "Message Sent Successfully!", but the sheet remains blank:
+
+1. **Google Apps Script Requires "New Version" Deployment**:
+   - In Google Apps Script, editing `Code.gs` does **not** update a live `/exec` Web App URL automatically.
+   - When a Web App URL is first generated, it is frozen to **Version 1** (often when the script file was still blank or had `function myFunction() {}`).
+   - Every time code is pasted into `Code.gs`, you **must** update the deployment to a **New version** (instructions below).
+
+2. **Web App Permissions ("Who has access")**:
+   - If **"Who has access"** is set to *"Only myself"* or *"Anyone with Google account"*, Google blocks visitor submissions with a redirect to a Google login page.
+   - Because modern browsers make contact form requests in background `no-cors` mode, the browser treats the redirect as completed, showing a green checkmark, even though Google blocked the data before `doPost` could execute.
+   - **Access must be set to "Anyone"**.
+
+3. **Script Authorization**:
+   - Google Apps Script requires one-time permission approval to edit your spreadsheet and send emails on your behalf.
+   - If never authorized, Google halts execution before touching the sheet.
+
+---
+
+## 📋 Should You Add Columns First or Leave the Sheet Blank?
+
+**Answer: Yes, add the 6 column headers in Row 1 before submissions!**
+
+Although the script contains a check to create headers if `sheet.getLastRow() === 0`, newly created Google Sheets frequently come pre-populated with 1,000 empty rows or empty cell formatting. When this happens, Google Sheets may not register the sheet as having 0 rows, which can cause headers to be skipped or rows to be appended at the very bottom (e.g., Row 1001).
+
+### Recommended Sheet Setup:
+In your spreadsheet tab (first sheet):
+- **Cell A1**: `Timestamp`
+- **Cell B1**: `Name`
+- **Cell C1**: `Email`
+- **Cell D1**: `Enquiry Type`
+- **Cell E1**: `Message`
+- **Cell F1**: `Source URL`
+
+*(Tip: In Google Sheets, click **View > Freeze > 1 row** to lock the header row in place).*
+
+---
+
+## 🛠️ Step-by-Step Fix in Google Apps Script
+
+### Step 1: Replace `Code.gs` with this Bulletproof Script
+Open your sheet, click **Extensions > Apps Script**, delete everything in `Code.gs`, and paste this updated version:
 
 ```javascript
 /**
- * EdgeLabel Contact Form Webhook
- * Appends contact submissions to the active Google Sheet
- * and sends an email notification to clueanalytics7@gmail.com
+ * EdgeLabel Contact Form Webhook & Notification System
+ * Sheet: EdgeLabel Contact Submissions - Oct 26
+ * Recipient: clueanalytics7@gmail.com
  */
 
 const NOTIFICATION_EMAIL = "clueanalytics7@gmail.com";
 
+// ==========================================
+// 1. Live Webhook Handler (Invoked on Website Submission)
+// ==========================================
 function doPost(e) {
   const lock = LockService.getScriptLock();
-  lock.tryLock(10000); // Prevent concurrent write race conditions
+  // Wait up to 10s for other submissions to finish
+  const hasLock = lock.tryLock(10000);
 
   try {
-    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-    const data = e.parameter;
+    // Always target the first sheet tab reliably
+    const ss = SpreadsheetApp.getActiveSpreadsheet();
+    const sheet = ss.getSheets()[0];
 
-    // Check if sheet has a header row; if not, create one
+    // Extract parameters from URL-encoded form data, query params, or JSON
+    let data = {};
+    if (e && e.parameter && Object.keys(e.parameter).length > 0) {
+      data = e.parameter;
+    } else if (e && e.postData && e.postData.contents) {
+      try {
+        data = JSON.parse(e.postData.contents);
+      } catch (jsonErr) {
+        // Fallback for url-encoded string in postData
+        const raw = e.postData.contents;
+        raw.split("&").forEach(function(part) {
+          const item = part.split("=");
+          data[decodeURIComponent(item[0])] = decodeURIComponent(item[1] || "");
+        });
+      }
+    }
+
+    // Auto-create headers if sheet is completely fresh
     if (sheet.getLastRow() === 0) {
       sheet.appendRow(["Timestamp", "Name", "Email", "Enquiry Type", "Message", "Source URL"]);
       sheet.getRange(1, 1, 1, 6).setFontWeight("bold").setBackground("#f3f4f6");
     }
 
     const timestamp = new Date();
-    const name = data.name || "Anonymous";
-    const email = data.email || "No email";
+    const name = data.name || "Anonymous Visitor";
+    const email = data.email || "No email provided";
     const type = data.type || "General enquiry";
-    const message = data.message || "";
-    const sourceUrl = data.page || "EdgeLabel Contact Page";
+    const message = data.message || "(No message body)";
+    const sourceUrl = data.page || data.sourceUrl || "EdgeLabel Contact Page";
 
-    // Append record row
+    // Append submission row
     sheet.appendRow([
       timestamp,
       name,
@@ -63,75 +110,96 @@ function doPost(e) {
       sourceUrl
     ]);
 
-    // Send instant notification email to team
+    // Send instant email notification to the team
     try {
       MailApp.sendEmail({
         to: NOTIFICATION_EMAIL,
-        replyTo: email,
+        replyTo: email !== "No email provided" ? email : NOTIFICATION_EMAIL,
         subject: `[EdgeLabel Contact] ${type} from ${name}`,
-        body: `New contact form submission received on ${timestamp.toLocaleString()}:\n\n` +
+        body: `New contact submission received on ${timestamp.toLocaleString()}:\n\n` +
               `• Name: ${name}\n` +
               `• Email: ${email}\n` +
               `• Topic: ${type}\n` +
-              `• Source: ${sourceUrl}\n\n` +
+              `• Page: ${sourceUrl}\n\n` +
               `Message:\n${message}\n\n` +
-              `---\nView and manage all records directly in your Google Sheet:\n${SpreadsheetApp.getActiveSpreadsheet().getUrl()}`
+              `---\nOpen Google Sheet: ${ss.getUrl()}`
       });
     } catch (mailErr) {
       Logger.log("Email notification error: " + mailErr.toString());
     }
 
-    return ContentService.createTextOutput(JSON.stringify({ result: "success" }))
+    return ContentService.createTextOutput(JSON.stringify({ result: "success", status: 200 }))
       .setMimeType(ContentService.MimeType.JSON);
 
   } catch (error) {
-    Logger.log("doPost error: " + error.toString());
+    Logger.log("Fatal doPost error: " + error.toString());
     return ContentService.createTextOutput(JSON.stringify({ result: "error", error: error.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
 
   } finally {
-    lock.releaseLock();
+    if (hasLock) {
+      lock.releaseLock();
+    }
   }
+}
+
+// ==========================================
+// 2. One-Click Authorization & Test Function
+// ==========================================
+function testRun() {
+  Logger.log("Starting testRun...");
+  const dummyEvent = {
+    parameter: {
+      name: "Test Visitor",
+      email: "clueanalytics7@gmail.com",
+      type: "Feature Request / Feedback",
+      message: "This is a test verification submission from the Apps Script editor.",
+      page: "https://clueanalytics7.github.io/edgelabel/contact.html"
+    }
+  };
+
+  const response = doPost(dummyEvent);
+  Logger.log("Response: " + response.getContent());
+  Logger.log("Check your Google Sheet and your email inbox now!");
 }
 ```
 
+### Step 2: Run `testRun()` to Authorize Permissions
+1. In the Apps Script toolbar, make sure **`testRun`** is selected in the function dropdown (next to "Debug").
+2. Click **Run**.
+3. A modal titled **"Authorization required"** will appear:
+   - Click **Review permissions**.
+   - Choose your Google account (`clueanalytics7@gmail.com`).
+   - If Google shows *"Google hasn’t verified this app"*, click **Advanced** (bottom left), then click **Go to Untitled project (unsafe)**.
+   - Click **Allow**.
+4. Check your Google Sheet: You will instantly see the header row and a test row added!
+5. Check your email: You will receive the test notification email.
+
 ---
 
-## Step 3: Deploy as a Web App
+### Step 3: Publish as a "New Version" (CRUCIAL)
+Now that your script is authorized and tested, you must point the Web App to this new code:
 
-1. In the upper right corner of the Apps Script editor, click **Deploy** > **New deployment**.
-2. Click the gear icon next to "Select type" and choose **Web app**.
-3. Fill in the deployment details:
-   - **Description**: `EdgeLabel Contact Webhook v1`
+1. In the top-right corner of Google Apps Script, click **Deploy** > **Manage deployments**.
+2. Select your active deployment and click the **Pencil icon (Edit)**.
+3. In the **Version** dropdown, click and select **"New version"**.
+4. Double-check that:
    - **Execute as**: **Me (clueanalytics7@gmail.com)**
-   - **Who has access**: **Anyone** *(Important: Must be "Anyone" so visitors can post form entries without logging in).*
-4. Click **Deploy**.
-5. When prompted, click **Authorize access**, select your Google account, click **Advanced**, and then click **Go to Untitled project (unsafe)** to approve spreadsheet and email permissions.
-6. Copy the generated **Web App URL** (it looks like `https://script.google.com/macros/s/AKfycb.../exec`).
+   - **Who has access**: **Anyone**
+5. Click **Deploy**.
+6. The URL remains:
+   `https://script.google.com/macros/s/AKfycbyWhNUqjQG1Y2lXAMmQK5v_xy9047qlhqDgpGHDtSyZR5GjIO2iLVs7FSLel1d6_x57/exec`
+7. Click **Done**.
 
 ---
 
-## Step 4: Connect to EdgeLabel
+## 🌐 Verification from Website
 
-You have two easy options to connect your Web App URL to the site:
-
-### Option A: Direct UI Configuration (No code edits needed)
-1. Open the deployed contact page: `https://clueanalytics7.github.io/edgelabel/contact.html`.
-2. Scroll to the bottom of the contact form card and click **Configure Sheet Endpoint URL**.
-3. Paste your Web App URL and click **Save**. It is stored directly in your browser.
-
-### Option B: Commit to the Repository (Permanent for all visitors)
-1. In `contact.html`, line ~142, update `DEFAULT_WEBAPP_URL`:
-   ```javascript
-   const DEFAULT_WEBAPP_URL = 'https://script.google.com/macros/s/YOUR_ACTUAL_SCRIPT_ID/exec';
-   ```
-2. Run `npm run build` to update the `docs/` folder, then commit and push to GitHub.
-
----
-
-## Features Built Into the Form
-
-- **Anti-Spam Honeypot**: Hidden field traps automated bots and silently prevents spam submissions.
-- **Loading Spinner & State**: Submit button displays active state (`Submitting message...`) and prevents duplicate submissions.
-- **Optimistic & Resilient Feedback**: Displays clean success confirmation on record save.
-- **Fail-Safe Email Fallback**: If the user's connection drops or the webhook is unavailable, a direct 1-click fallback opens their email client addressed to `clueanalytics7@gmail.com`.
+1. Open your contact page: `https://clueanalytics7.github.io/edgelabel/contact.html` (or locally).
+2. Fill out:
+   - Name: `Jane Doe`
+   - Email: `jane@example.com`
+   - Topic: `General Inquiry`
+   - Message: `Hello from EdgeLabel live test!`
+3. Click **Send Message**.
+4. Switch to your Google Sheet: The submission will appear in Row 2 instantly, and an email notification will be delivered to `clueanalytics7@gmail.com`.
