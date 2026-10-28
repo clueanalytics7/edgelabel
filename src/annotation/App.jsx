@@ -830,7 +830,7 @@ export default function App() {
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400">
           <span>© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">Cueligence</a> — EdgeLabel</span>
           <nav className="flex gap-4">
-            {[['Security Architecture', './security-architecture.html'], ['Privacy Policy','./privacy.html'],['Guide','./guide.html'],['About','./about.html']].map(([l,h]) => (
+            {[['Security Architecture', './security-architecture.html'], ['Privacy Policy','./privacy.html'],['User Guide','./guide.html'],['About','./about.html']].map(([l,h]) => (
               <a key={l} href={h} className="hover:text-blue-500 transition-colors">{l}</a>
             ))}
           </nav>
