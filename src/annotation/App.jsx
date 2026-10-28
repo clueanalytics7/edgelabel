@@ -104,6 +104,18 @@ function WelcomeScreen({ onGetStarted, onLoadSampleMedical }) {
             <span>✨ Try Medical NER Sample</span>
           </button>
         </div>
+
+        <div className="pt-4 border-t border-gray-100 dark:border-gray-800 mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+          <span>Finding EdgeLabel useful?</span>
+          <a
+            href="https://coff.ee/clueanalytq"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-amber-600 dark:text-amber-400 font-semibold hover:underline flex items-center gap-1"
+          >
+            <span>☕ Support Development</span>
+          </a>
+        </div>
       </div>
     </div>
   );
@@ -624,6 +636,17 @@ export default function App() {
                 </button>
               </>
             )}
+
+            <a
+              href="https://coff.ee/clueanalytq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors shadow-xs"
+              title="Support EdgeLabel Development"
+            >
+              <span>☕</span>
+              <span className="hidden lg:inline">Support Development</span>
+            </a>
 
             <PWAInstallButton compact />
 

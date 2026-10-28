@@ -64,6 +64,8 @@ export default defineConfig({
         imageAnnotation: 'image-annotation.html',
         about:           'about.html',
         contact:         'contact.html',
+        pricing:         'pricing.html',
+        admin:           'admin.html',
         guide:                'guide.html',
         privacy:              'privacy.html',
         securityArchitecture: 'security-architecture.html',

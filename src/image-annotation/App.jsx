@@ -301,6 +301,17 @@ export default function App() {
               Load Samples
             </button>
 
+            <a
+              href="https://coff.ee/clueanalytq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-500/10 text-amber-300 border border-amber-500/30 hover:bg-amber-500/20 transition shadow-xs"
+              title="Support EdgeLabel Development"
+            >
+              <span>☕</span>
+              <span className="hidden sm:inline">Support Development</span>
+            </a>
+
             <PWAInstallButton compact />
 
             {/* Theme Toggle */}
@@ -521,6 +532,17 @@ export default function App() {
                 >
                   Load Sample Dataset
                 </button>
+                <div className="pt-4 border-t border-gray-800 mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+                  <span>Free community annotation tool.</span>
+                  <a
+                    href="https://coff.ee/clueanalytq"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-400 font-semibold hover:underline flex items-center gap-1"
+                  >
+                    <span>☕ Support Development</span>
+                  </a>
+                </div>
               </div>
             )}
 

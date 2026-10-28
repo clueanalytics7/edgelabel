@@ -481,6 +481,17 @@ export default function App() {
               Settings
             </button>
 
+            <a
+              href="https://coff.ee/clueanalytq"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-amber-50 dark:bg-amber-950/40 text-amber-800 dark:text-amber-300 border border-amber-200 dark:border-amber-800 hover:bg-amber-100 dark:hover:bg-amber-900/50 transition-colors shadow-xs"
+              title="Support EdgeLabel Development"
+            >
+              <span>☕</span>
+              <span className="hidden sm:inline">Support Development</span>
+            </a>
+
             <PWAInstallButton compact />
 
             <select value={theme} onChange={(e) => setTheme(e.target.value)} aria-label="Theme"
@@ -507,6 +518,17 @@ export default function App() {
               Translate and review product catalogues, FAQ datasets, and AI fine-tuning corpora with built-in terminology enforcement, QA checks, and approval workflows.
             </p>
             <FileUpload onFileUpload={handleFileUpload} />
+            <div className="pt-4 border-t border-gray-100 dark:border-gray-800 mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
+              <span>Free for community researchers &amp; translators.</span>
+              <a
+                href="https://coff.ee/clueanalytq"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-amber-600 dark:text-amber-400 font-semibold hover:underline flex items-center gap-1"
+              >
+                <span>☕ Support Development</span>
+              </a>
+            </div>
           </div>
         ) : (
           <>

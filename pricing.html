@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en" class="">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pricing &amp; Enterprise Plans — EdgeLabel by Cueligence</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <meta name="description" content="EdgeLabel Pricing: Free forever for individual researchers. Flexible Team licences, air-gapped Enterprise deployments, and managed labelling services by Cueligence.">
+  <link rel="stylesheet" href="./src/input.css">
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased">
+
+  <!-- Header -->
+  <header class="fixed top-0 inset-x-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
+    <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <a href="./index.html" class="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-xl">
+          <svg class="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
+          EdgeLabel
+        </a>
+        <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">by Cueligence</span>
+      </div>
+
+      <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
+        <a href="./annotation.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Text Labelling</a>
+        <a href="./image-annotation.html" class="hover:text-violet-600 dark:hover:text-violet-400 transition-colors">Image Annotation</a>
+        <a href="./translation.html" class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Translate</a>
+        <a href="./pricing.html" class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 pb-0.5">Pricing</a>
+        <a href="./guide.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">User Guide</a>
+        <a href="./about.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">About</a>
+        <a href="./contact.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Contact</a>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
+          <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
+          <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
+        </button>
+        <a href="./annotation.html" class="hidden sm:inline-flex px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Start Free →</a>
+      </div>
+    </nav>
+  </header>
+
+  <main class="pt-24 pb-24 px-6 min-h-screen">
+    <div class="max-w-6xl mx-auto space-y-16">
+
+      <!-- Hero Section -->
+      <div class="text-center max-w-3xl mx-auto space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full border border-blue-100 dark:border-blue-800">
+          <span>Enterprise &amp; Monetisation Architecture</span>
+          <span aria-hidden="true">·</span>
+          <span>Zero Server Uploads</span>
+        </div>
+        <h1 class="text-4xl sm:text-5xl font-black text-gray-900 dark:text-white tracking-tight leading-tight">
+          Free for Individuals.<br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Built for Regulated Teams.</span>
+        </h1>
+        <p class="text-base sm:text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+          EdgeLabel runs 100% inside your browser. Individual researchers and solo annotators enjoy unlimited free access. Small businesses, clinics, and enterprises unlock team standardisation, air-gapped deployments, and managed labelling services.
+        </p>
+      </div>
+
+      <!-- Pricing Cards Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-stretch">
+
+        <!-- Tier 1: Free Community -->
+        <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm flex flex-col justify-between transition-transform hover:-translate-y-1">
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-gray-400">Community Tier</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Individual &amp; Research</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                For solo data scientists, academic students, and privacy-conscious developers.
+              </p>
+            </div>
+
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-extrabold text-gray-900 dark:text-white">£0</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-gray-600 dark:text-gray-300 pt-2 border-t border-gray-100 dark:border-gray-800">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>100% Client-Side In-Memory:</strong> Zero server uploads</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Unlimited Rows &amp; Images:</strong> No artificial caps</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Full Annotation Suite:</strong> Text classification, NER &amp; EdgeVision</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Standard Exports:</strong> YOLO, COCO, SpaCy v3, Hugging Face</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-emerald-500 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>In-Browser Heuristics:</strong> Regex bulk pre-labelling</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <a href="./annotation.html" class="block w-full py-3 text-center bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-200 font-bold rounded-xl transition text-sm">
+              Start Free (No Account)
+            </a>
+          </div>
+        </div>
+
+        <!-- Tier 2: Team & Pro Workspace (Highlighted) -->
+        <div class="relative bg-white dark:bg-gray-900 rounded-3xl border-2 border-blue-600 dark:border-blue-500 p-8 shadow-xl shadow-blue-500/10 flex flex-col justify-between transition-transform hover:-translate-y-1">
+          <div class="absolute -top-3.5 left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-[11px] rounded-full uppercase tracking-wider shadow-sm">
+            Most Popular for SMBs
+          </div>
+
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-blue-600 dark:text-blue-400">Team Workspace</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Pro &amp; Agency</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                For small businesses, data teams, and research labs managing multiple annotators.
+              </p>
+            </div>
+
+            <div class="flex items-baseline gap-1">
+              <span class="text-4xl font-extrabold text-gray-900 dark:text-white">£199</span>
+              <span class="text-sm text-gray-400">/ team / year</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-gray-600 dark:text-gray-300 pt-2 border-t border-gray-100 dark:border-gray-800">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Everything in Community Tier, plus:</strong></span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Blinded Assignment Splitter:</strong> Control overlap with Cohen's Kappa keys</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Taxonomy Codebook Sync:</strong> Distribute JSON schemas &amp; hotkeys to 10+ raters</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Dataset Health Reports:</strong> Formal Markdown audit certificates</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-blue-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Priority Cueligence Support:</strong> 24h response time SLA</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <a href="./contact.html?type=Team%20Workspace%20Licence" class="block w-full py-3 text-center bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition shadow-lg shadow-blue-500/25 text-sm">
+              Upgrade to Team Workspace
+            </a>
+          </div>
+        </div>
+
+        <!-- Tier 3: Enterprise & Air-Gapped -->
+        <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm flex flex-col justify-between transition-transform hover:-translate-y-1">
+          <div class="space-y-6">
+            <div class="space-y-2">
+              <span class="text-xs font-bold uppercase tracking-wider text-purple-600 dark:text-purple-400">Enterprise &amp; Compliance</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white">Air-Gapped On-Premises</h3>
+              <p class="text-xs text-gray-500 dark:text-gray-400">
+                For clinics, defence contractors, financial institutions, and hospitals.
+              </p>
+            </div>
+
+            <div class="flex items-baseline gap-1">
+              <span class="text-3xl font-extrabold text-gray-900 dark:text-white">Custom</span>
+              <span class="text-sm text-gray-400">/ annual licence</span>
+            </div>
+
+            <ul class="space-y-3 text-xs text-gray-600 dark:text-gray-300 pt-2 border-t border-gray-100 dark:border-gray-800">
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Self-Hosted Docker Image:</strong> Deploy in 100% disconnected LANs</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>HIPAA &amp; GDPR Package:</strong> Signed BAA and architecture signoff</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Single Sign-On (SSO / SAML):</strong> Okta, Azure AD, Google Workspace</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>Custom Heuristic Engines:</strong> Bespoke domain NER regex rules</span>
+              </li>
+              <li class="flex items-center gap-2">
+                <svg class="w-4 h-4 text-purple-600 shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                <span><strong>White-Label Branding:</strong> Custom logo &amp; colour schemes</span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="pt-8">
+            <a href="./contact.html?type=Enterprise%20Deployment" class="block w-full py-3 text-center bg-gray-900 dark:bg-gray-800 hover:bg-gray-800 text-white font-bold rounded-xl transition text-sm border border-gray-700">
+              Contact Enterprise Sales
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Additional Commercial Pillar: Managed Data Annotation Services -->
+      <div class="bg-gradient-to-br from-blue-900 via-indigo-950 to-gray-950 rounded-3xl p-8 sm:p-12 text-white border border-blue-800/40 relative overflow-hidden shadow-2xl">
+        <div class="absolute -right-16 -top-16 w-80 h-80 bg-blue-500/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+          <div class="lg:col-span-8 space-y-4">
+            <span class="inline-block px-3 py-1 rounded-full text-xs font-bold tracking-wider uppercase bg-blue-500/20 text-blue-300 border border-blue-400/30">
+              Cueligence Managed Labelling Services
+            </span>
+            <h2 class="text-3xl font-extrabold tracking-tight">
+              Don't have an in-house labelling team?<br/>
+              Let Cueligence label and adjudicate your dataset.
+            </h2>
+            <p class="text-sm text-blue-200/80 leading-relaxed max-w-2xl">
+              Focus on model training while our vetted human domain annotators label, blind-replicate, and adjudicate your proprietary text or image datasets with a mathematically guaranteed Cohen's Kappa score (&kappa; &gt; 0.85). 100% processed under signed non-disclosure and strict compliance controls.
+            </p>
+          </div>
+          <div class="lg:col-span-4 flex flex-col gap-3 justify-center">
+            <a href="./contact.html?type=Managed%20Data%20Labelling%20Services" class="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white text-blue-950 font-bold rounded-xl hover:bg-blue-50 transition-colors shadow-lg text-sm text-center">
+              Request a Labelling Quote →
+            </a>
+            <span class="text-[11px] text-center text-blue-300/70">
+              Typical turnaround: 48–72 hours for 10k items
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Feature Comparison Matrix -->
+      <div class="bg-white dark:bg-gray-900 rounded-3xl border border-gray-200 dark:border-gray-800 p-8 shadow-sm space-y-6">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 pb-4 border-b border-gray-100 dark:border-gray-800">
+          <div>
+            <h3 class="text-xl font-bold text-gray-900 dark:text-white">Feature &amp; Compliance Comparison Matrix</h3>
+            <p class="text-xs text-gray-500 dark:text-gray-400">Detailed technical comparison between Community and Commercial tiers.</p>
+          </div>
+          <span class="text-xs font-mono text-gray-400">EdgeLabel 1.2</span>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs border-collapse">
+            <thead>
+              <tr class="border-b border-gray-200 dark:border-gray-800 text-gray-400 uppercase tracking-wider text-[11px]">
+                <th class="py-3 px-4 font-semibold">Capability / Architecture</th>
+                <th class="py-3 px-4 font-semibold">Community (Free)</th>
+                <th class="py-3 px-4 font-semibold text-blue-600 dark:text-blue-400">Team Workspace</th>
+                <th class="py-3 px-4 font-semibold text-purple-600 dark:text-purple-400">Enterprise Air-Gapped</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-100 dark:divide-gray-800 text-gray-700 dark:text-gray-300">
+              <tr>
+                <td class="py-3 px-4 font-semibold">Data Privacy Guarantee</td>
+                <td class="py-3 px-4 text-emerald-600 dark:text-emerald-400 font-bold">100% In-Browser</td>
+                <td class="py-3 px-4 text-emerald-600 dark:text-emerald-400 font-bold">100% In-Browser</td>
+                <td class="py-3 px-4 text-emerald-600 dark:text-emerald-400 font-bold">Air-Gapped Docker LAN</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold">Multi-Annotator Blinded Assignment</td>
+                <td class="py-3 px-4 text-gray-400">Standard Overlap</td>
+                <td class="py-3 px-4 text-blue-600 dark:text-blue-400 font-bold">Adjudication Key Generator</td>
+                <td class="py-3 px-4 text-purple-600 dark:text-purple-400 font-bold">Multi-Team Batch Pipeline</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold">Taxonomy &amp; Codebook Export/Import</td>
+                <td class="py-3 px-4">Single Workspace</td>
+                <td class="py-3 px-4 text-blue-600 dark:text-blue-400 font-bold">Team Repository Sync</td>
+                <td class="py-3 px-4 text-purple-600 dark:text-purple-400 font-bold">Centralised Governance</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold">Data Augmentation Engine</td>
+                <td class="py-3 px-4">Text &amp; Image Preview</td>
+                <td class="py-3 px-4 font-bold">Batch Synthesis (.csv &amp; .zip)</td>
+                <td class="py-3 px-4 font-bold">Custom Synthesis Noise Rules</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold">Regulatory Audit Trail</td>
+                <td class="py-3 px-4">Local JSON Export</td>
+                <td class="py-3 px-4 font-bold">Cryptographically Verified Hash</td>
+                <td class="py-3 px-4 font-bold">Tamper-Evident SHA-256 Audit</td>
+              </tr>
+              <tr>
+                <td class="py-3 px-4 font-semibold">Legal &amp; Compliance Coverage</td>
+                <td class="py-3 px-4 text-gray-400">MIT Open Source</td>
+                <td class="py-3 px-4">Commercial SMB Terms</td>
+                <td class="py-3 px-4 text-purple-600 dark:text-purple-400 font-bold">Signed HIPAA BAA / SLA</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FAQ Section -->
+      <div class="space-y-6">
+        <h3 class="text-2xl font-bold text-gray-900 dark:text-white text-center">Frequently Asked Questions</h3>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-gray-600 dark:text-gray-300">
+          <div class="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+            <h4 class="font-bold text-gray-900 dark:text-white text-sm">Why is the individual version free forever?</h4>
+            <p class="leading-relaxed">
+              Because EdgeLabel runs entirely on the client's device using HTML5 Web Workers and in-browser memory, Cueligence incurs zero server compute costs when individuals use the app. This allows us to offer an uncompromised, ad-free tool for open research.
+            </p>
+          </div>
+          <div class="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+            <h4 class="font-bold text-gray-900 dark:text-white text-sm">Can small businesses run EdgeLabel completely offline?</h4>
+            <p class="leading-relaxed">
+              Yes. EdgeLabel is a compliant Progressive Web App (PWA). Once cached, annotators can disconnect Wi-Fi entirely and label sensitive CSVs, patient records, or proprietary imagery in total isolation.
+            </p>
+          </div>
+          <div class="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+            <h4 class="font-bold text-gray-900 dark:text-white text-sm">How does the Team Licence work?</h4>
+            <p class="leading-relaxed">
+              Team licences allow managers to generate shared taxonomy codebooks, manage multi-annotator blinded batches, and verify regulatory audit trails for regulatory filings (FDA, EMA, SOC2).
+            </p>
+          </div>
+          <div class="p-5 bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 space-y-2">
+            <h4 class="font-bold text-gray-900 dark:text-white text-sm">How do we purchase or request an enterprise pilot?</h4>
+            <p class="leading-relaxed">
+              Submit an inquiry on our <a href="./contact.html" class="text-blue-600 dark:text-blue-400 font-semibold underline">Contact Page</a>. Our solutions team responds within 24 hours to arrange an air-gapped container pilot or managed labelling evaluation.
+            </p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-gray-950 text-gray-400 py-10 px-6 border-t border-gray-800">
+    <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="text-sm">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition-colors">Cueligence</a> — EdgeLabel. MIT Licence.</p>
+      <nav class="flex gap-6 text-sm">
+        <a href="./pricing.html" class="hover:text-white transition-colors text-blue-400 font-semibold">Pricing</a>
+        <a href="./privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
+        <a href="./about.html" class="hover:text-white transition-colors">About Us</a>
+        <a href="./contact.html" class="hover:text-white transition-colors">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    const toggle = document.getElementById('theme-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+    function updateIcons() {
+      const dark = document.documentElement.classList.contains('dark');
+      sun.classList.toggle('hidden', !dark);
+      moon.classList.toggle('hidden', dark);
+    }
+    updateIcons();
+    toggle.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      updateIcons();
+    });
+  </script>
+</body>
+</html>
