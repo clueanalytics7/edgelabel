@@ -13,6 +13,18 @@
       document.documentElement.classList.add('dark');
     }
   </script>
+  <script>
+    // Unregister any stale dev service workers to ensure multi-page navigation works properly
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => {
+          if (r.active && (r.active.scriptURL.includes('dev-sw') || r.active.scriptURL.includes('localhost'))) {
+            r.unregister();
+          }
+        });
+      }).catch(() => {});
+    }
+  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 text-gray-900 dark:text-gray-100 font-sans antialiased">
 

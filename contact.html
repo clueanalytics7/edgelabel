@@ -7,6 +7,18 @@
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="./src/input.css">
   <script>const t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');</script>
+  <script>
+    // Unregister any stale dev service workers to ensure multi-page navigation works properly
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(regs => {
+        regs.forEach(r => {
+          if (r.active && (r.active.scriptURL.includes('dev-sw') || r.active.scriptURL.includes('localhost'))) {
+            r.unregister();
+          }
+        });
+      }).catch(() => {});
+    }
+  </script>
 </head>
 <body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
 
@@ -17,7 +29,7 @@
         EdgeLabel
       </a>
       <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
-        <a href="./annotation.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Text Labeling</a>
+        <a href="./annotation.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Text Labelling</a>
         <a href="./image-annotation.html" class="hover:text-violet-600 dark:hover:text-violet-400 transition-colors">Image Annotation</a>
         <a href="./translation.html" class="hover:text-green-600 dark:hover:text-green-400 transition-colors">Translate</a>
         <a href="./pricing.html" class="hover:text-blue-600 dark:hover:text-blue-400 transition-colors">Pricing</a>
@@ -69,12 +81,24 @@
 
       <!-- Contact form -->
       <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8 shadow-sm">
-        <div class="flex items-center justify-between mb-6">
+        <div class="flex items-center justify-between mb-4">
           <h2 class="text-lg font-bold text-gray-900 dark:text-white">Send us a message</h2>
           <span class="inline-flex items-center gap-1.5 text-xs text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/40 px-2.5 py-1 rounded-full font-medium">
             <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
             Direct to team
           </span>
+        </div>
+
+        <!-- Plan Prefill Banner (shown when arriving from pricing plans) -->
+        <div id="plan-prefill-banner" class="hidden mb-5 p-3.5 rounded-xl bg-blue-50 dark:bg-blue-950/50 border border-blue-200 dark:border-blue-800 text-blue-900 dark:text-blue-200 text-xs flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2">
+            <span class="text-base">💼</span>
+            <div>
+              <span class="font-bold">Requested Plan:</span>
+              <span id="plan-prefill-label" class="font-semibold text-blue-700 dark:text-blue-300 ml-1"></span>
+            </div>
+          </div>
+          <span class="text-[11px] text-blue-600 dark:text-blue-400 font-medium">Enquiry form prefilled</span>
         </div>
 
         <form id="contact-form" class="space-y-5" novalidate>
@@ -350,20 +374,60 @@
       }
     });
 
-    // Auto-select dropdown option from URL query parameter (e.g. ?type=Team%20Workspace)
+    // Auto-select dropdown option and prefill message from URL query parameter (e.g. ?type=Team%20Workspace)
     try {
       const urlParams = new URLSearchParams(window.location.search);
-      const reqType = urlParams.get('type');
+      const reqType = urlParams.get('type') || urlParams.get('plan');
       if (reqType) {
         const sel = document.getElementById('type');
-        for (let i = 0; i < sel.options.length; i++) {
-          if (sel.options[i].value.toLowerCase().includes(reqType.toLowerCase()) || reqType.toLowerCase().includes(sel.options[i].value.toLowerCase())) {
-            sel.selectedIndex = i;
-            break;
+        const msgField = document.getElementById('message');
+        const banner = document.getElementById('plan-prefill-banner');
+        const bannerLabel = document.getElementById('plan-prefill-label');
+        const lowerReq = reqType.toLowerCase();
+
+        let planName = null;
+
+        if (lowerReq.includes('team') || lowerReq.includes('workspace') || lowerReq.includes('199')) {
+          sel.value = "Team Workspace Licence";
+          planName = "Team Workspace Licence (£199/yr)";
+          if (msgField && !msgField.value.trim()) {
+            msgField.value = "Hi Cueligence team,\n\nWe would like to upgrade to the Team Workspace Licence (£199/year). We have approximately [  ] annotators on our team.\n\nPlease provide invoice details and guidance on onboarding our annotators.";
+          }
+        } else if (lowerReq.includes('enterprise') || lowerReq.includes('air-gapped') || lowerReq.includes('compliance')) {
+          sel.value = "Enterprise Deployment";
+          planName = "Enterprise Air-Gapped Deployment";
+          if (msgField && !msgField.value.trim()) {
+            msgField.value = "Hi Cueligence team,\n\nWe are interested in evaluating the Enterprise Air-Gapped Deployment of EdgeLabel for our organisation.\n\nOur key requirements include:\n- Environment: [Disconnected LAN / On-Premises Docker / Kubernetes]\n- Compliance: [HIPAA / GDPR / Defense Enclave]\n- Team size: [  ] users\n\nPlease send us technical documentation and an enterprise pilot quotation.";
+          }
+        } else if (lowerReq.includes('managed') || lowerReq.includes('labeling') || lowerReq.includes('labelling')) {
+          sel.value = "Managed Data Labelling Services";
+          planName = "Managed Data Labelling Services";
+          if (msgField && !msgField.value.trim()) {
+            msgField.value = "Hi Cueligence team,\n\nWe are requesting a quote for your managed data labelling and adjudication services.\n\nProject details:\n- Dataset size: approx [  ] rows / images\n- Data domain: [Clinical / Legal / Financial / Multi-modal]\n- Target completion timeframe: [  ]\n- Target Cohen's Kappa agreement threshold: > 0.85";
+          }
+        } else {
+          for (let i = 0; i < sel.options.length; i++) {
+            if (sel.options[i].value.toLowerCase().includes(lowerReq) || lowerReq.includes(sel.options[i].value.toLowerCase())) {
+              sel.selectedIndex = i;
+              planName = sel.options[i].text;
+              break;
+            }
+          }
+        }
+
+        if (planName && banner && bannerLabel) {
+          bannerLabel.textContent = planName;
+          banner.classList.remove('hidden');
+          // Smooth scroll to form if coming from external link
+          const formCard = document.getElementById('contact-form');
+          if (formCard) {
+            formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }
       }
-    } catch {}
+    } catch (e) {
+      console.warn('Query parameter parsing error:', e);
+    }
   </script>
 </body>
 </html>
