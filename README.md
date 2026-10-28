@@ -53,7 +53,7 @@ These features are planned or newly released. We update this section as work pro
 | Feature | Status |
 |---|---|
 | LLM Fine-Tuning Export (OpenAI ChatML, Gemini Supervised, Alpaca, HF JSONL) | ✅ Released |
-| EdgeVision Computer Vision (Bounding boxes, YOLO .zip & COCO .json export) | ✅ Released |
+| EdgeVision Image Annotation (Bounding boxes, YOLO .zip & COCO .json export) | ✅ Released |
 | Dataset QA & Health Checks (Duplicates, missing values, class imbalance) | ✅ Released |
 | Inter-Annotator Agreement (Cohen's Kappa & conflict resolution) | ✅ Released |
 | Glossary & Localisation Studio (Approval workflows, terminology manager) | ✅ Released |
@@ -120,7 +120,7 @@ edgelabel/
 ├── .github/workflows/deploy.yml  # Automated GitHub Actions deployment
 ├── index.html                    # Landing page & suite switcher
 ├── annotation.html               # Text annotation & LLM export tool
-├── image-annotation.html         # EdgeVision computer vision bounding boxes
+├── image-annotation.html         # EdgeVision image annotation & bounding boxes
 ├── translation.html              # Localization, terminology & approval studio
 ├── security-architecture.html    # Local processing & air-gap documentation
 ├── about.html
@@ -145,4 +145,4 @@ EdgeLabel is built on a 100% local-first principle: your dataset files and image
 
 ## 📄 License
 
-MIT © 2025 [ClueAnalytics](https://clueanalytics7.github.io/edgelabel/)
+MIT © 2025 [Cueligence](https://clueanalytics7.github.io/edgelabel/)

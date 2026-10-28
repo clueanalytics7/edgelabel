@@ -233,7 +233,7 @@ export default function App() {
               <span>EdgeVision</span>
             </a>
             <span className="text-xs px-2 py-0.5 rounded-full bg-violet-950/80 text-violet-300 border border-violet-800/60 font-semibold hidden md:inline">
-              Computer Vision
+              Image Annotation
             </span>
 
             {/* Suite Switcher */}
@@ -680,9 +680,9 @@ export default function App() {
           <span>
             © 2025{' '}
             <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="hover:text-violet-400">
-              ClueAnalytics
+              Cueligence
             </a>{' '}
-            — EdgeVision Computer Vision Annotation
+            — EdgeVision Image Annotation
           </span>
           <div className="flex items-center gap-4">
             <a href="./annotation.html" className="hover:text-violet-400">EdgeLabel CSV</a>

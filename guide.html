@@ -3,207 +3,884 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>User Guide | EdgeLabel</title>
+  <title>User Guide &amp; Tutorials | EdgeLabel by Cueligence</title>
   <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <meta name="description" content="Comprehensive guide and tutorials for EdgeLabel: in-browser Text Annotation, NER, Image Annotation & Bounding Boxes (EdgeVision), Data Translation, Inter-Annotator Agreement (IAA), and Dataset Quality Audits.">
   <link rel="stylesheet" href="./src/input.css">
-  <script>const t=localStorage.getItem('theme');if(t==='dark'||(!t&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.classList.add('dark');</script>
+  <script>
+    const t = localStorage.getItem('theme');
+    if (t === 'dark' || (!t && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
 </head>
-<body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased">
+<body class="bg-gray-50 dark:bg-gray-950 font-sans antialiased text-gray-800 dark:text-gray-200">
 
+  <!-- Header -->
   <header class="fixed top-0 inset-x-0 z-50 bg-white/90 dark:bg-gray-950/90 backdrop-blur-md border-b border-gray-100 dark:border-gray-800">
     <nav class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-      <a href="./index.html" class="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-xl">
-        <svg class="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
-        EdgeLabel
-      </a>
+      <div class="flex items-center gap-3">
+        <a href="./index.html" class="flex items-center gap-2.5 text-blue-600 dark:text-blue-400 font-bold text-xl">
+          <svg class="w-7 h-7" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="16" fill="#2563eb"/><path d="M8 10a2 2 0 0 1 2-2h6.586a2 2 0 0 1 1.414.586l5.828 5.828a2 2 0 0 1 0 2.828l-5.172 5.172a2 2 0 0 1-2.828 0L10.586 17.4A2 2 0 0 1 10 16V10z" fill="white"/><circle cx="13" cy="13" r="1.5" fill="#2563eb"/></svg>
+          EdgeLabel
+        </a>
+        <span class="hidden sm:inline-block text-xs font-semibold px-2 py-0.5 rounded bg-gray-100 dark:bg-gray-800 text-gray-500 dark:text-gray-400 border border-gray-200 dark:border-gray-700">by Cueligence</span>
+      </div>
+
       <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600 dark:text-gray-300">
         <a href="./annotation.html" class="hover:text-blue-600 dark:hover:text-blue-400">Text Labeling</a>
-        <a href="./image-annotation.html" class="hover:text-violet-600 dark:hover:text-violet-400">EdgeVision</a>
+        <a href="./image-annotation.html" class="hover:text-violet-600 dark:hover:text-violet-400">Image Annotation</a>
         <a href="./translation.html" class="hover:text-green-600 dark:hover:text-green-400">Translate</a>
-        <a href="./guide.html" class="text-blue-600 dark:text-blue-400 font-semibold">Guide</a>
+        <a href="./guide.html" class="text-blue-600 dark:text-blue-400 font-semibold border-b-2 border-blue-600 pb-0.5">Guide &amp; Tutorials</a>
         <a href="./about.html" class="hover:text-blue-600 dark:hover:text-blue-400">About</a>
+        <a href="./contact.html" class="hover:text-blue-600 dark:hover:text-blue-400">Contact</a>
       </div>
+
       <div class="flex items-center gap-3">
         <button id="theme-toggle" class="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors" aria-label="Toggle theme">
           <svg id="icon-sun" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/></svg>
           <svg id="icon-moon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/></svg>
         </button>
-        <a href="./annotation.html" class="hidden sm:inline-flex px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors">Start Free →</a>
+        <a href="./annotation.html" class="hidden sm:inline-flex px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg hover:bg-blue-700 transition-colors shadow-sm">Start Annotating →</a>
       </div>
     </nav>
   </header>
 
-  <main class="pt-24 pb-20 px-6 min-h-screen">
-    <div class="max-w-3xl mx-auto space-y-8">
+  <main class="pt-24 pb-24 px-6 min-h-screen">
+    <div class="max-w-5xl mx-auto space-y-12">
 
-      <div>
-        <h1 class="text-4xl font-extrabold text-gray-900 dark:text-white mb-3">User Guide</h1>
-        <p class="text-lg text-gray-500 dark:text-gray-400">Everything you need to annotate and translate CSV datasets with EdgeLabel.</p>
-      </div>
-
-      <!-- Quick start -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">Quick start — Annotation</h2>
-        <ol class="space-y-4">
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Open <a href="./annotation.html" class="text-blue-600 dark:text-blue-400 hover:underline font-medium">the annotation tool</a> and click <strong class="text-gray-900 dark:text-white">Get Started</strong>.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Drag a CSV file onto the upload zone, or click to browse. The file is read locally — nothing is uploaded.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Click <strong class="text-gray-900 dark:text-white">Settings</strong> and select the column containing the text you want to annotate. Click <strong class="text-gray-900 dark:text-white">Save settings</strong>.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">4</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Click a label button, or press the number key shown (1–9). The row is saved and you advance automatically.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">5</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">When finished, click <strong class="text-gray-900 dark:text-white">Export Dataset</strong> to export in fine-tuning formats (OpenAI ChatML, Gemini, Alpaca, Hugging Face) or standard CSV/JSON.</div>
-          </li>
-        </ol>
-      </div>
-
-      <!-- Quick start EdgeVision -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <div class="flex items-center gap-2.5 mb-5">
-          <span class="px-2.5 py-1 rounded-lg bg-violet-100 dark:bg-violet-900/40 text-violet-700 dark:text-violet-300 font-bold text-xs">New Feature</span>
-          <h2 class="text-xl font-bold text-gray-900 dark:text-white">Quick start — EdgeVision (Computer Vision)</h2>
+      <!-- Hero Introduction -->
+      <div class="text-center sm:text-left space-y-4">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-blue-50 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300 text-xs font-semibold rounded-full border border-blue-100 dark:border-blue-800">
+          <span>Documentation &amp; Tutorial Hub</span>
+          <span aria-hidden="true">·</span>
+          <span>Cueligence AI Suite</span>
         </div>
-        <ol class="space-y-4">
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">1</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Open <a href="./image-annotation.html" class="text-violet-600 dark:text-violet-400 hover:underline font-medium">EdgeVision</a>. You can use the built-in sample images or click <strong class="text-gray-900 dark:text-white">Upload Images</strong>.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">2</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Choose an active class from the category palette (e.g. Person, Vehicle, Sign) or press <strong class="text-gray-900 dark:text-white">1–9</strong>.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">3</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed"><strong class="text-gray-900 dark:text-white">Click and drag</strong> directly on the image to draw bounding box rectangles. Drag inside a box to move it, or drag corner handles to resize.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">4</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Switch to <strong class="text-gray-900 dark:text-white">Rapid Classification</strong> mode when you need to triage whole image categories at high speed with keyboard shortcuts.</div>
-          </li>
-          <li class="flex gap-4">
-            <span class="w-7 h-7 bg-violet-600 text-white rounded-full flex items-center justify-center text-sm font-bold shrink-0">5</span>
-            <div class="pt-0.5 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">Click <strong class="text-gray-900 dark:text-white">YOLO (.zip)</strong> to download your normalized YOLO txt files and dataset.yaml, or <strong class="text-gray-900 dark:text-white">COCO (.json)</strong> for object detection frameworks.</div>
-          </li>
-        </ol>
+        <h1 class="text-3xl sm:text-5xl font-extrabold text-gray-900 dark:text-white tracking-tight">
+          How EdgeLabel Works: The Complete Guide
+        </h1>
+        <p class="text-base sm:text-xl text-gray-600 dark:text-gray-400 max-w-3xl leading-relaxed">
+          An intuitive, end-to-end tutorial covering <strong>Text Annotation &amp; NER</strong>, <strong>Image Annotation &amp; Bounding Boxes</strong>, <strong>Data Translation</strong>, <strong>Inter-Annotator Agreement (IAA)</strong>, and <strong>Dataset Quality Health Checks</strong> — all running 100% locally on your machine with zero server uploads.
+        </p>
+
+        <!-- Quick Jump Bar -->
+        <div class="flex flex-wrap items-center gap-2 pt-2 text-xs">
+          <span class="text-gray-400 font-semibold uppercase tracking-wider text-[11px] mr-1">Quick Jump:</span>
+          <a href="#interactive-tutorial" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium">Interactive Overview</a>
+          <a href="#text-annotation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium">Text &amp; NER</a>
+          <a href="#image-annotation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-violet-500 transition-colors font-medium">Image Annotation (EdgeVision)</a>
+          <a href="#data-translation" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-emerald-500 transition-colors font-medium">Data Translation</a>
+          <a href="#iaa-agreement" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-amber-500 transition-colors font-medium">Inter-Annotator Agreement (IAA)</a>
+          <a href="#data-quality" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-cyan-500 transition-colors font-medium">Dataset Quality Scanner</a>
+          <a href="#export-formats" class="px-2.5 py-1 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg hover:border-blue-500 transition-colors font-medium">Export Formats</a>
+        </div>
       </div>
 
-      <!-- Sample datasets -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-2">Sample datasets</h2>
-        <p class="text-sm text-gray-500 dark:text-gray-400 mb-5">Download a sample to try EdgeLabel without using your own data.</p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <a href="./public/samples/sentiment-reviews.csv" download class="block p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group">
-            <div class="flex items-center gap-2 mb-1">
-              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm group-hover:text-blue-700 dark:group-hover:text-blue-300">Sentiment Reviews</p>
+      <!-- =================================================================== -->
+      <!-- SECTION 1: Interactive Task Explorer -->
+      <!-- =================================================================== -->
+      <section id="interactive-tutorial" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 sm:p-8 shadow-sm">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6 pb-4 border-b border-gray-100 dark:border-gray-800">
+          <div>
+            <h2 class="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">Interactive Task Walkthrough</h2>
+            <p class="text-xs sm:text-sm text-gray-500 dark:text-gray-400 mt-0.5">Select a task mode below to inspect its workflow, input formats, controls, and output pipelines.</p>
+          </div>
+          <span class="text-xs font-semibold px-2.5 py-1 rounded bg-blue-50 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300">Live Architecture Explorer</span>
+        </div>
+
+        <!-- Task Selector Tabs -->
+        <div class="flex items-center gap-1.5 p-1 bg-gray-100 dark:bg-gray-800 rounded-xl overflow-x-auto mb-6 text-xs sm:text-sm font-semibold">
+          <button type="button" onclick="switchTutorialTab('text')" id="tab-btn-text" class="tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs">
+            📝 Text &amp; NER
+          </button>
+          <button type="button" onclick="switchTutorialTab('image')" id="tab-btn-image" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            🖼️ Image Annotation
+          </button>
+          <button type="button" onclick="switchTutorialTab('translation')" id="tab-btn-translation" class="tutorial-tab-btn flex-1 min-w-[140px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            🌐 Data Translation
+          </button>
+          <button type="button" onclick="switchTutorialTab('iaa')" id="tab-btn-iaa" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            ⚖️ IAA &amp; Adjudication
+          </button>
+          <button type="button" onclick="switchTutorialTab('quality')" id="tab-btn-quality" class="tutorial-tab-btn flex-1 min-w-[150px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white">
+            🩺 Quality Scanner
+          </button>
+        </div>
+
+        <!-- Tab 1: Text & NER -->
+        <div id="tutorial-content-text" class="tutorial-panel space-y-6">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Text Classification &amp; Named Entity Recognition</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-800 dark:text-blue-200">CSV &amp; JSON</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Annotate rows from any CSV file in milliseconds. Use single-key shortcuts (1–9) to classify intent, sentiment, topics, or triage clinical notes. Toggle the <strong>NER Span Highlighter</strong> to select words or phrases and apply entity labels.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Load CSV:</strong> Processed entirely in memory via browser File API. Zero data upload.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>1-Touch Keyboard Labeling:</strong> Tap <kbd class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border text-gray-700 dark:text-gray-300 font-mono">1</kbd> to <kbd class="px-1.5 py-0.5 rounded bg-gray-100 dark:bg-gray-800 border text-gray-700 dark:text-gray-300 font-mono">9</kbd> to assign labels and auto-advance to next row.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>NER Span Tagging:</strong> Highlight text tokens to assign entity classes (PER, ORG, LOC, MED, PII) with exact character offsets.</p>
+                </div>
+              </div>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400">15 customer reviews · Positive / Neutral / Negative</p>
-          </a>
-          <a href="./public/samples/medical-ner.csv" download class="block p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-all group">
-            <div class="flex items-center gap-2 mb-1">
-              <svg class="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm group-hover:text-blue-700 dark:group-hover:text-blue-300">Medical NER</p>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span>Row 42 of 500 (8.4%)</span>
+                  <span class="text-emerald-400">● Autosaved</span>
+                </div>
+                <div class="p-2.5 bg-gray-900 rounded-lg text-gray-100 text-xs leading-relaxed mb-3">
+                  "Patient was prescribed <span class="bg-blue-900/80 border border-blue-500 text-blue-200 px-1 rounded">Amoxicillin [MED]</span> by <span class="bg-emerald-900/80 border border-emerald-500 text-emerald-200 px-1 rounded">Dr. Aris [PER]</span> at St. Jude."
+                </div>
+                <div class="grid grid-cols-3 gap-1.5 text-[11px]">
+                  <div class="p-1.5 rounded bg-gray-800 text-center border border-gray-700 text-blue-300">[1] Clinical</div>
+                  <div class="p-1.5 rounded bg-gray-800 text-center border border-gray-700 text-gray-300">[2] Billing</div>
+                  <div class="p-1.5 rounded bg-gray-800 text-center border border-gray-700 text-gray-300">[3] Admin</div>
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: OpenAI ChatML · HF · CSV</span>
+                <a href="./annotation.html" class="text-blue-400 hover:underline">Open Tool →</a>
+              </div>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400">12 clinical sentences · entity classification</p>
-          </a>
-          <a href="./public/samples/translation-support.csv" download class="block p-4 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-green-400 dark:hover:border-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition-all group">
-            <div class="flex items-center gap-2 mb-1">
-              <svg class="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-              <p class="font-semibold text-gray-800 dark:text-gray-100 text-sm group-hover:text-green-700 dark:group-hover:text-green-300">Support Translation</p>
+          </div>
+        </div>
+
+        <!-- Tab 2: Image Annotation -->
+        <div id="tutorial-content-image" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>EdgeVision — Image Annotation &amp; Bounding Boxes</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-violet-100 dark:bg-violet-900/50 text-violet-800 dark:text-violet-200">Detection &amp; Classification</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Why we call it <strong>Image Annotation</strong>: Rather than abstract "computer vision", EdgeVision provides hands-on 2D bounding box labeling for object detection and high-speed whole-image categorization. Draw boxes around items (vehicles, pedestrians, retail items, defects) with corner resize handles, customizable color palettes, and immediate YOLO &amp; COCO dataset downloads.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Batch Image Drop:</strong> Drop multiple JPG/PNG/WebP images. Thumbnails generate via local blob memory.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Canvas Bounding Boxes:</strong> Click and drag to create boxes. Drag inside to move; drag corners to resize.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-violet-100 dark:bg-violet-900/40 text-violet-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>Export to Model Frameworks:</strong> Instant one-click download of ready-to-train <strong>YOLO format (.zip with dataset.yaml)</strong> and <strong>COCO JSON format</strong>.</p>
+                </div>
+              </div>
             </div>
-            <p class="text-xs text-gray-500 dark:text-gray-400">12 support phrases · Translation tool</p>
-          </a>
-        </div>
-      </div>
 
-      <!-- Keyboard shortcuts -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">Keyboard shortcuts</h2>
-        <div class="overflow-x-auto">
-          <table class="w-full text-sm">
-            <thead>
-              <tr class="border-b border-gray-100 dark:border-gray-800">
-                <th class="text-left py-2 pr-8 font-semibold text-gray-700 dark:text-gray-300 w-40">Key</th>
-                <th class="text-left py-2 font-semibold text-gray-700 dark:text-gray-300">Action</th>
-              </tr>
-            </thead>
-            <tbody class="divide-y divide-gray-50 dark:divide-gray-800">
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">1</kbd> – <kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">9</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Apply label 1–9 and advance to next row</td></tr>
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">←</kbd> <kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">→</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Navigate previous / next row</td></tr>
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">Ctrl+Z</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Undo last annotation</td></tr>
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">Ctrl+Y</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Redo</td></tr>
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">Ctrl+S</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Save session to browser storage</td></tr>
-              <tr><td class="py-2.5 pr-8"><kbd class="bg-gray-100 dark:bg-gray-800 px-2 py-0.5 rounded text-xs font-mono">Ctrl+Enter</kbd></td><td class="py-2.5 text-gray-600 dark:text-gray-300">Save translation (Translation tool only)</td></tr>
-            </tbody>
-          </table>
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-violet-400 font-bold">EdgeVision Canvas</span>
+                  <span>Active: Person (#8b5cf6)</span>
+                </div>
+                <div class="relative bg-gray-900 rounded-lg h-36 border border-dashed border-gray-700 flex items-center justify-center overflow-hidden mb-3">
+                  <!-- Simulated Bounding Box 1 -->
+                  <div class="absolute left-6 top-4 w-20 h-28 border-2 border-violet-500 bg-violet-500/10 rounded flex flex-col justify-between p-1">
+                    <span class="bg-violet-600 text-white text-[9px] px-1 rounded w-max">Person</span>
+                    <span class="text-[8px] text-violet-300 self-end">0.72, 0.44</span>
+                  </div>
+                  <!-- Simulated Bounding Box 2 -->
+                  <div class="absolute right-8 top-10 w-24 h-16 border-2 border-emerald-500 bg-emerald-500/10 rounded flex flex-col justify-between p-1">
+                    <span class="bg-emerald-600 text-white text-[9px] px-1 rounded w-max">Vehicle</span>
+                    <span class="text-[8px] text-emerald-300 self-end">0.45, 0.60</span>
+                  </div>
+                </div>
+                <div class="flex gap-2 text-[10px]">
+                  <span class="px-2 py-0.5 rounded bg-violet-950 text-violet-300 border border-violet-800">2 boxes labeled</span>
+                  <span class="px-2 py-0.5 rounded bg-gray-800 text-gray-400">Normalized coordinates</span>
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: YOLO .zip · COCO .json · CSV</span>
+                <a href="./image-annotation.html" class="text-violet-400 hover:underline">Open Tool →</a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
 
-      <!-- Export formats -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">Export formats</h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
-            <p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">CSV</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Three columns: Data, Label, Comment. RFC 4180 compliant. Opens in Excel, Google Sheets, pandas.</p>
-          </div>
-          <div class="p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-100 dark:border-gray-700">
-            <p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">JSON</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Array of objects: <code class="bg-gray-200 dark:bg-gray-700 px-1 rounded text-xs">&#123;"data","label","comment"&#125;</code>. For programmatic use.</p>
-          </div>
-          <div class="p-4 bg-blue-50 dark:bg-blue-900/20 rounded-xl border border-blue-100 dark:border-blue-800">
-            <div class="flex items-center gap-2 mb-1"><p class="font-semibold text-gray-900 dark:text-white text-sm">JSONL</p><span class="text-xs px-1.5 py-0.5 bg-blue-600 text-white rounded font-semibold">LLM</span></div>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">One JSON object per line. Standard fine-tuning format for OpenAI, Anthropic, Mistral, Llama.</p>
-          </div>
-          <div class="p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-100 dark:border-green-800">
-            <p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">Translation CSV</p>
-            <p class="text-xs text-gray-500 dark:text-gray-400 leading-relaxed">Original CSV with Translation and Comment columns appended. All original rows preserved.</p>
-          </div>
-        </div>
-      </div>
+        <!-- Tab 3: Data Translation -->
+        <div id="tutorial-content-translation" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>EdgeTranslate — Parallel Corpus Translation &amp; Localization</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-200">Bi-text CSV &amp; JSON</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Translate customer support inquiries, dialogue transcripts, or UI copy row by row. Built for localization teams who need side-by-side source and target editing, reviewer sign-off workflows (Draft, Approved, Flagged), and <strong>Do-Not-Translate (DNT)</strong> terminology governance.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Parallel Row Alignment:</strong> Side-by-side card layout showing source text alongside the target input area.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Glossary &amp; DNT Manager:</strong> Matches branded terms in real-time. Click any matched term to inject into translation.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>Export Localized Corpora:</strong> Generates parallel CSVs with source, translation, and status metadata.</p>
+                </div>
+              </div>
+            </div>
 
-      <!-- FAQ -->
-      <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-100 dark:border-gray-800 p-8">
-        <h2 class="text-xl font-bold text-gray-900 dark:text-white mb-5">FAQ</h2>
-        <div class="space-y-5 divide-y divide-gray-50 dark:divide-gray-800">
-          <div class="pt-0"><p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">Is my data safe?</p><p class="text-sm text-gray-500 dark:text-gray-400">Yes. Files are read by the browser's File API and never transmitted anywhere. All processing is on your device.</p></div>
-          <div class="pt-4"><p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">What happens if I close the tab?</p><p class="text-sm text-gray-500 dark:text-gray-400">Use Save (or Ctrl+S) regularly. The session is saved to localStorage and can be reloaded from the same browser. Unsaved progress is lost on close.</p></div>
-          <div class="pt-4"><p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">Can I add custom labels?</p><p class="text-sm text-gray-500 dark:text-gray-400">Yes — open Settings and add or remove labels at any time. Default labels (Positive, Neutral, Negative, Others) can all be changed.</p></div>
-          <div class="pt-4"><p class="font-semibold text-gray-900 dark:text-white text-sm mb-1">What CSV files are supported?</p><p class="text-sm text-gray-500 dark:text-gray-400">UTF-8 encoded, comma-delimited CSVs with a header row. Quoted fields with embedded commas are supported. Files over 50,000 rows may slow the browser — split into batches.</p></div>
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-emerald-400 font-bold">EN → ES (Row 18)</span>
+                  <span class="text-emerald-400 bg-emerald-950/60 px-1.5 rounded">APPROVED</span>
+                </div>
+                <div class="space-y-2 mb-3">
+                  <div class="p-2 bg-gray-900 rounded border border-gray-800 text-[11px] text-gray-300">
+                    <span class="text-gray-500 block text-[9px] uppercase">Source (EN)</span>
+                    "Please review our privacy architecture before deploying."
+                  </div>
+                  <div class="p-2 bg-gray-900 rounded border border-emerald-900/60 text-[11px] text-emerald-200">
+                    <span class="text-gray-500 block text-[9px] uppercase">Target (ES)</span>
+                    "Por favor revise nuestra arquitectura de privacidad antes del despliegue."
+                  </div>
+                </div>
+                <div class="text-[10px] text-emerald-400/90 bg-emerald-950/40 p-1.5 rounded border border-emerald-900/30">
+                  ✓ Glossary check passed: "privacy architecture" adhered
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Localized CSV · Key-Value JSON</span>
+                <a href="./translation.html" class="text-emerald-400 hover:underline">Open Tool →</a>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
+
+        <!-- Tab 4: Inter-Annotator Agreement (IAA) -->
+        <div id="tutorial-content-iaa" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Inter-Annotator Agreement (IAA) &amp; Adjudication</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-200">Cohen's Kappa (κ)</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Production-grade AI models require consensus. When two annotators label the same dataset, EdgeLabel calculates <strong>Cohen's Kappa ($\kappa$)</strong> and raw percentage agreement. Filter specifically to disagreements and use the built-in <strong>Adjudication Modal</strong> to resolve conflicts into an authoritative gold-standard truth.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Upload Dual Annotations:</strong> Compare Run A vs Run B directly inside the browser.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Kappa Evaluation:</strong> See whether your agreement is <em>Substantial</em> (0.61–0.80) or <em>Almost Perfect</em> (>0.80).</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-amber-100 dark:bg-amber-900/40 text-amber-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>1-Click Adjudication:</strong> Isolate conflicting rows and click Annotator 1, Annotator 2, or a custom consensus label.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-amber-400 font-bold">IAA Adjudication Engine</span>
+                  <span class="text-emerald-400">κ = 0.842</span>
+                </div>
+                <div class="p-2.5 bg-gray-900 rounded-lg text-xs mb-3 space-y-1.5">
+                  <div class="flex justify-between text-[11px]">
+                    <span class="text-gray-400">Observed Agreement:</span>
+                    <span class="text-white font-bold">92.4% (462 / 500)</span>
+                  </div>
+                  <div class="flex justify-between text-[11px]">
+                    <span class="text-gray-400">Kappa Interpretation:</span>
+                    <span class="text-emerald-400 font-semibold">Almost Perfect Agreement</span>
+                  </div>
+                  <div class="flex justify-between text-[11px]">
+                    <span class="text-gray-400">Disagreements to resolve:</span>
+                    <span class="text-amber-400 font-bold">38 rows</span>
+                  </div>
+                </div>
+                <div class="bg-amber-950/40 border border-amber-900/50 p-2 rounded text-[11px] text-amber-200">
+                  <strong>Conflict Row #14:</strong> "Great value but battery drains fast"<br>
+                  • Annotator A: <span class="text-blue-300">Positive</span> | Annotator B: <span class="text-rose-300">Mixed</span><br>
+                  <span class="text-xs text-white">→ Adjudicated Winner: <strong>Mixed</strong></span>
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Gold-Standard Curated Dataset</span>
+                <a href="./annotation.html" class="text-amber-400 hover:underline">Launch Tool →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tab 5: Dataset Quality Scanner -->
+        <div id="tutorial-content-quality" class="tutorial-panel space-y-6 hidden">
+          <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-7 space-y-4">
+              <h3 class="text-lg font-bold text-gray-900 dark:text-white flex items-center gap-2">
+                <span>Dataset Quality Assurance &amp; Health Checks</span>
+                <span class="text-xs px-2 py-0.5 rounded bg-cyan-100 dark:bg-cyan-900/50 text-cyan-800 dark:text-cyan-200">Auditing &amp; Governance</span>
+              </h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+                Garbage in, garbage out. EdgeLabel includes an automated in-browser <strong>Dataset Health Scanner</strong> that flags contradictory labels, class distribution skew (Shannon entropy), redundant duplicates (which cause train/test split data leakage), and length outliers before model training.
+              </p>
+              <div class="space-y-2.5 text-xs text-gray-600 dark:text-gray-300">
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 flex items-center justify-center shrink-0 font-bold">1</div>
+                  <p><strong>Contradiction Finder:</strong> Flags identical text strings tagged with conflicting labels.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 flex items-center justify-center shrink-0 font-bold">2</div>
+                  <p><strong>Class Balance &amp; Leakage:</strong> Identifies underrepresented classes and duplicated rows that contaminate evaluation sets.</p>
+                </div>
+                <div class="flex items-start gap-2.5">
+                  <div class="w-5 h-5 rounded-full bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 flex items-center justify-center shrink-0 font-bold">3</div>
+                  <p><strong>Exportable Audit Report:</strong> Download a formatted Markdown compliance report for model documentation.</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- UI Preview Card -->
+            <div class="md:col-span-5 bg-gray-950 p-4 rounded-xl border border-gray-800 font-mono text-xs text-gray-300 flex flex-col justify-between">
+              <div>
+                <div class="flex items-center justify-between pb-2 mb-2 border-b border-gray-800 text-[11px] text-gray-400">
+                  <span class="text-cyan-400 font-bold">Dataset Quality Audit</span>
+                  <span class="text-emerald-400 font-bold">Score: 92/100</span>
+                </div>
+                <div class="space-y-2 mb-3">
+                  <div class="p-2 bg-gray-900 rounded border border-gray-800 text-[11px] space-y-1">
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Status:</span>
+                      <span class="text-emerald-400 font-semibold">Production Ready</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Duplicates Detected:</span>
+                      <span class="text-yellow-400 font-semibold">2 duplicate pairs</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Contradictory Labels:</span>
+                      <span class="text-emerald-400 font-semibold">0 contradictions</span>
+                    </div>
+                    <div class="flex justify-between">
+                      <span class="text-gray-400">Class Balance:</span>
+                      <span class="text-blue-300 font-semibold">Optimal (Entropy: 1.48)</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="text-[10px] text-cyan-300 bg-cyan-950/40 p-1.5 rounded border border-cyan-900/30">
+                  ✓ Ready for fine-tuning without evaluation distortion
+                </div>
+              </div>
+              <div class="mt-4 pt-2 border-t border-gray-800 flex justify-between items-center text-[10px] text-gray-400">
+                <span>Output: Markdown Audit Certificate</span>
+                <a href="./annotation.html" class="text-cyan-400 hover:underline">Scan Dataset →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 2: Detailed Text & NER Annotation -->
+      <!-- =================================================================== -->
+      <section id="text-annotation" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-400 flex items-center justify-center font-bold">
+            01
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Text Annotation &amp; Named Entity Recognition (NER)</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">For Sentiment Analysis, Topic Tagging, Medical Triage, and Entity Extraction</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">A. Row-by-Row Categorization</h3>
+            <p>
+              Load any standard comma-separated (<code class="text-xs bg-gray-200 dark:bg-gray-800 px-1 py-0.5 rounded">.csv</code>) or tab-separated dataset. In the <strong>Settings</strong> dialog, choose which column holds the text payload to annotate.
+            </p>
+            <p>
+              Each label button displays an assigned number shortcut. Tapping <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-gray-800 border text-xs font-mono">1</kbd> through <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-gray-800 border text-xs font-mono">9</kbd> commits the selection and advances instantly to the next row. Use <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-gray-800 border text-xs font-mono">Ctrl+Z</kbd> to undo any misclick.
+            </p>
+          </div>
+
+          <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">B. Named Entity Recognition (NER)</h3>
+            <p>
+              Toggle <strong>NER Mode</strong> from the top toolbar. Highlight any word or token span with your cursor. An entity palette appears with standard tags:
+            </p>
+            <div class="flex flex-wrap gap-1.5 text-xs">
+              <span class="px-2 py-0.5 rounded bg-blue-100 text-blue-800 dark:bg-blue-900/60 dark:text-blue-200">PER (Person)</span>
+              <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-200">ORG (Organization)</span>
+              <span class="px-2 py-0.5 rounded bg-purple-100 text-purple-800 dark:bg-purple-900/60 dark:text-purple-200">LOC (Location)</span>
+              <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 dark:bg-rose-900/60 dark:text-rose-200">MED (Medical)</span>
+              <span class="px-2 py-0.5 rounded bg-amber-100 text-amber-800 dark:bg-amber-900/60 dark:text-amber-200">PII (Confidential)</span>
+            </div>
+            <p class="text-xs text-gray-500 dark:text-gray-400">
+              Boundary offsets <code class="text-xs bg-gray-200 dark:bg-gray-800 px-1 py-0.5 rounded">[start, end, label]</code> are saved automatically, ready for SpaCy and Hugging Face token pipelines.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 3: Detailed Image Annotation (EdgeVision) -->
+      <!-- =================================================================== -->
+      <section id="image-annotation" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-violet-100 dark:bg-violet-900/40 text-violet-600 dark:text-violet-400 flex items-center justify-center font-bold">
+            02
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Image Annotation &amp; Bounding Boxes (EdgeVision)</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Client-Side Object Detection Labeling, YOLO &amp; COCO Dataset Generation</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            The term <em>Computer Vision</em> often obscures the practical day-to-day workflow required to train vision models. <strong>EdgeVision is specifically designed for Image Annotation</strong>: the process of identifying objects in photos, enclosing them in tight 2D bounding boxes, categorizing them, and generating standardized training manifests.
+          </p>
+
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 pt-2">
+            <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-950/30 border border-violet-100 dark:border-violet-900/50 space-y-2">
+              <p class="font-bold text-violet-900 dark:text-violet-200 text-sm">1. Multi-Class Palette</p>
+              <p class="text-xs text-violet-800 dark:text-violet-300">
+                Define custom classes (e.g. <em>Person, Vehicle, Cyclist, Defect, Packaging</em>) with distinct color swatches. Select classes using keys <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-gray-800 border text-xs font-mono">1</kbd> to <kbd class="px-1.5 py-0.5 rounded bg-white dark:bg-gray-800 border text-xs font-mono">9</kbd>.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-950/30 border border-violet-100 dark:border-violet-900/50 space-y-2">
+              <p class="font-bold text-violet-900 dark:text-violet-200 text-sm">2. Interactive Canvas</p>
+              <p class="text-xs text-violet-800 dark:text-violet-300">
+                Click and drag directly over the image to create a rectangle. Use corner anchor handles to adjust boundaries. Drag inside a box to translate its position.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-violet-50 dark:bg-violet-950/30 border border-violet-100 dark:border-violet-900/50 space-y-2">
+              <p class="font-bold text-violet-900 dark:text-violet-200 text-sm">3. YOLO &amp; COCO Exporters</p>
+              <p class="text-xs text-violet-800 dark:text-violet-300">
+                Download a fully structured <strong>YOLO .zip</strong> with normalized coordinate text files and <code class="text-[11px] bg-violet-200/50 dark:bg-violet-900/50 px-1 rounded">dataset.yaml</code>, or a standardized <strong>COCO .json</strong> file for Detectron2 and MMDetection.
+              </p>
+            </div>
+          </div>
+
+          <!-- Technical Explanation Callout -->
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 flex items-start gap-3">
+            <svg class="w-5 h-5 text-violet-500 shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            <div class="text-xs leading-relaxed">
+              <strong class="text-gray-900 dark:text-white">Normalized Coordinate Standard:</strong> EdgeVision automatically transforms pixel measurements into normalized relative values $[0.0, 1.0]$ based on the image's native resolution. Regardless of whether an image is $1920\times1080$ or $4000\times3000$, bounding box coordinates scale proportionally for model training.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 4: Data Translation Studio -->
+      <!-- =================================================================== -->
+      <section id="data-translation" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-100 dark:bg-emerald-900/40 text-emerald-600 dark:text-emerald-400 flex items-center justify-center font-bold">
+            03
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Data Translation &amp; Multilingual Localization (EdgeTranslate)</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Parallel Corpus Alignment, Terminology Glossaries &amp; Approval Workflows</p>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <div class="space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">Parallel Corpus Translation</h3>
+            <p>
+              When preparing datasets for translation models or localizing user feedback, each row represents a paired sentence. EdgeTranslate displays the original source row on the left and provides a distraction-free human translation editor on the right.
+            </p>
+            <p>
+              Mark each entry as <span class="px-1.5 py-0.5 rounded bg-emerald-100 dark:bg-emerald-900/50 text-emerald-800 dark:text-emerald-300 text-xs font-semibold">Approved</span>, <span class="px-1.5 py-0.5 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 text-xs font-semibold">Draft</span>, or <span class="px-1.5 py-0.5 rounded bg-rose-100 dark:bg-rose-900/50 text-rose-800 dark:text-rose-300 text-xs font-semibold">Flagged</span> for second-pass review.
+            </p>
+          </div>
+
+          <div class="space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">Glossary &amp; DNT (Do Not Translate)</h3>
+            <p>
+              Organizations frequently suffer from inconsistent brand names, acronyms, or untranslated product SKUs.
+            </p>
+            <p>
+              Open the <strong>Glossary Manager</strong> to register exact term translations and mark proprietary terms as <strong>DNT</strong>. When a source sentence contains a glossary entry, it is highlighted with a 1-click button to insert the approved localization directly into the active field.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 5: Inter-Annotator Agreement (IAA) -->
+      <!-- =================================================================== -->
+      <section id="iaa-agreement" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-900/40 text-amber-600 dark:text-amber-400 flex items-center justify-center font-bold">
+            04
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Inter-Annotator Agreement (IAA) &amp; Adjudication</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Statistical Concordance with Cohen's Kappa (κ) and Conflict Resolution</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            How do you know whether human labeling is objective and reliable? <strong>Inter-Annotator Agreement (IAA)</strong> quantifies the degree of concordance between two or more independent raters evaluating the identical dataset. High agreement confirms that your annotation guidelines are clear and unambiguous.
+          </p>
+
+          <!-- Mathematical Foundation Card -->
+          <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">The Math Behind Cohen's Kappa</h3>
+            <p class="text-xs text-gray-600 dark:text-gray-300">
+              Raw agreement percentage can be misleading because two annotators might agree simply by random coincidence (especially in imbalanced datasets). Cohen's Kappa ($\kappa$) accounts for chance agreement:
+            </p>
+            <div class="p-3 bg-white dark:bg-gray-900 rounded-lg border border-gray-200 dark:border-gray-800 text-center font-mono text-sm text-blue-600 dark:text-blue-400">
+              κ = (P<sub>o</sub> − P<sub>e</sub>) / (1 − P<sub>e</sub>)
+            </div>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs pt-1">
+              <div>
+                <strong class="text-gray-900 dark:text-white">P<sub>o</sub> (Observed Agreement):</strong> The proportion of items where both annotators agreed on the exact category.
+              </div>
+              <div>
+                <strong class="text-gray-900 dark:text-white">P<sub>e</sub> (Chance Agreement):</strong> The probability that agreement occurred by pure chance given the marginal distributions.
+              </div>
+            </div>
+          </div>
+
+          <!-- Kappa Interpretation Benchmarks -->
+          <div>
+            <h3 class="font-bold text-gray-900 dark:text-white text-sm mb-3">Interpreting Your Kappa Score:</h3>
+            <div class="grid grid-cols-2 sm:grid-cols-5 gap-2 text-center text-xs">
+              <div class="p-2.5 rounded-lg bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200 dark:border-emerald-800">
+                <span class="font-bold text-emerald-800 dark:text-emerald-300 block text-sm">&gt; 0.80</span>
+                <span class="text-emerald-700 dark:text-emerald-400">Almost Perfect</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-blue-50 dark:bg-blue-950/40 border border-blue-200 dark:border-blue-800">
+                <span class="font-bold text-blue-800 dark:text-blue-300 block text-sm">0.61 – 0.80</span>
+                <span class="text-blue-700 dark:text-blue-400">Substantial</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-yellow-50 dark:bg-yellow-950/40 border border-yellow-200 dark:border-yellow-800">
+                <span class="font-bold text-yellow-800 dark:text-yellow-300 block text-sm">0.41 – 0.60</span>
+                <span class="text-yellow-700 dark:text-yellow-400">Moderate</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-amber-50 dark:bg-amber-950/40 border border-amber-200 dark:border-amber-800">
+                <span class="font-bold text-amber-800 dark:text-amber-300 block text-sm">0.21 – 0.40</span>
+                <span class="text-amber-700 dark:text-amber-400">Fair Agreement</span>
+              </div>
+              <div class="p-2.5 rounded-lg bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-800">
+                <span class="font-bold text-rose-800 dark:text-rose-300 block text-sm">&le; 0.20</span>
+                <span class="text-rose-700 dark:text-rose-400">Poor / Unreliable</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Step-by-Step Adjudication Walkthrough -->
+          <div class="p-5 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-3">
+            <h3 class="font-bold text-gray-900 dark:text-white text-base">How to Adjudicate Disagreements</h3>
+            <ol class="space-y-2 text-xs">
+              <li class="flex gap-2.5">
+                <span class="font-bold text-amber-600">Step 1:</span>
+                <span>In the annotation tool, click <strong>Agreement &amp; Adjudication (IAA)</strong> from the toolbar.</span>
+              </li>
+              <li class="flex gap-2.5">
+                <span class="font-bold text-amber-600">Step 2:</span>
+                <span>Select the secondary annotation CSV to compare against your current workspace.</span>
+              </li>
+              <li class="flex gap-2.5">
+                <span class="font-bold text-amber-600">Step 3:</span>
+                <span>Toggle the <strong>"Disagreements Only"</strong> filter. You will see side-by-side chips highlighting where Annotator A and Annotator B diverged.</span>
+              </li>
+              <li class="flex gap-2.5">
+                <span class="font-bold text-amber-600">Step 4:</span>
+                <span>Click the preferred label button to adopt it, or input a consensus resolution. The final unified file is exported as the gold-standard dataset.</span>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 6: Dataset Quality & Health Scanner -->
+      <!-- =================================================================== -->
+      <section id="data-quality" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-cyan-100 dark:bg-cyan-900/40 text-cyan-600 dark:text-cyan-400 flex items-center justify-center font-bold">
+            05
+          </div>
+          <div>
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Dataset Quality Assurance &amp; Health Scanner</h2>
+            <p class="text-sm text-gray-500 dark:text-gray-400">Automated Inconsistency, Data Leakage, and Imbalance Detection</p>
+          </div>
+        </div>
+
+        <div class="space-y-4 text-sm text-gray-600 dark:text-gray-300 leading-relaxed">
+          <p>
+            Training an AI model on flawed datasets leads to silent evaluation failure. EdgeLabel's embedded <strong>Dataset Health Scanner</strong> audits your dataset in real time against five critical machine learning data quality rules:
+          </p>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-rose-500"></span>
+                <strong class="text-gray-900 dark:text-white text-sm">1. Label Contradictions</strong>
+              </div>
+              <p class="text-gray-500 dark:text-gray-400">
+                Detects instances where identical input sentences were assigned conflicting labels (e.g., Row 14 is "Positive" while Row 204 is "Negative").
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-amber-500"></span>
+                <strong class="text-gray-900 dark:text-white text-sm">2. Redundant Duplicate Rows</strong>
+              </div>
+              <p class="text-gray-500 dark:text-gray-400">
+                Identifies repeated rows that risk leaking between training and validation splits, giving you falsely optimistic evaluation scores.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-blue-500"></span>
+                <strong class="text-gray-900 dark:text-white text-sm">3. Severe Class Imbalance</strong>
+              </div>
+              <p class="text-gray-500 dark:text-gray-400">
+                Computes Shannon Entropy across classes. Warns when minority categories constitute less than 5% of samples, preventing classifier collapse.
+              </p>
+            </div>
+
+            <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1.5">
+              <div class="flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-purple-500"></span>
+                <strong class="text-gray-900 dark:text-white text-sm">4. Text Length Outliers</strong>
+              </div>
+              <p class="text-gray-500 dark:text-gray-400">
+                Flags anomalies such as empty/single-character strings or abnormally lengthy text blobs that will exceed token limits or indicate corrupted scraping.
+              </p>
+            </div>
+          </div>
+
+          <!-- Quality Score Summary -->
+          <div class="p-4 rounded-xl bg-cyan-50 dark:bg-cyan-950/30 border border-cyan-100 dark:border-cyan-900/50 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+            <div>
+              <p class="font-bold text-cyan-950 dark:text-cyan-200 text-sm">Dataset Health Score (0–100)</p>
+              <p class="text-xs text-cyan-800 dark:text-cyan-300 mt-0.5">
+                85–100 = <em>Production Ready</em> · 60–84 = <em>Requires Review</em> · &lt;60 = <em>Action Needed</em>
+              </p>
+            </div>
+            <a href="./annotation.html" class="px-3.5 py-1.5 bg-cyan-600 hover:bg-cyan-700 text-white font-semibold text-xs rounded-lg transition-colors shrink-0">
+              Run Dataset Health Scan →
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 7: Export Formats & Model Pipelines -->
+      <!-- =================================================================== -->
+      <section id="export-formats" class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Supported Export Formats &amp; Pipelines</h2>
+        <p class="text-sm text-gray-500 dark:text-gray-400">Everything exported from EdgeLabel is formatted ready to plug directly into open-source or commercial AI pipelines:</p>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 text-xs">
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">YOLO (.zip + dataset.yaml)</span>
+            <p class="text-gray-500 dark:text-gray-400">Ready for Ultralytics YOLOv8/v9/v10. Normalized coordinates per image file.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">COCO JSON (.json)</span>
+            <p class="text-gray-500 dark:text-gray-400">Standard for Detectron2, PyTorch, MMDetection, and academic benchmark models.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">OpenAI ChatML (.jsonl)</span>
+            <p class="text-gray-500 dark:text-gray-400">System, user, assistant conversational schema for OpenAI fine-tuning.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">Hugging Face Datasets</span>
+            <p class="text-gray-500 dark:text-gray-400">Single-line JSONL dictionaries compatible with Hugging Face <code class="text-[11px] bg-gray-200 dark:bg-gray-700 px-1 rounded">load_dataset()</code>.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">RFC 4180 CSV (.csv)</span>
+            <p class="text-gray-500 dark:text-gray-400">Standard tabular output with original text, labels, and timestamps. Opens in Excel and pandas.</p>
+          </div>
+          <div class="p-4 rounded-xl bg-gray-50 dark:bg-gray-850 border border-gray-200 dark:border-gray-750 space-y-1">
+            <span class="font-bold text-gray-900 dark:text-white block text-sm">Quality Audit (.md)</span>
+            <p class="text-gray-500 dark:text-gray-400">Auditable Markdown compliance report documenting IAA and dataset cleanliness.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 8: Sample Datasets & Keyboard Shortcuts -->
+      <!-- =================================================================== -->
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Sample Datasets -->
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Sample Datasets</h2>
+          <p class="text-xs text-gray-500 dark:text-gray-400">Download ready-to-label sample files to explore EdgeLabel without your own data:</p>
+          <div class="space-y-2.5">
+            <a href="./public/samples/sentiment-reviews.csv" download class="flex items-center justify-between p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors group">
+              <div>
+                <p class="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">Customer Sentiment Reviews</p>
+                <p class="text-[11px] text-gray-500">15 reviews · Positive / Neutral / Negative</p>
+              </div>
+              <span class="text-xs text-blue-600 font-semibold">Download .csv ↓</span>
+            </a>
+            <a href="./public/samples/medical-ner.csv" download class="flex items-center justify-between p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-blue-400 dark:hover:border-blue-600 hover:bg-blue-50/50 dark:hover:bg-blue-900/10 transition-colors group">
+              <div>
+                <p class="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-blue-600 dark:group-hover:text-blue-400">Medical NER &amp; Clinical Records</p>
+                <p class="text-[11px] text-gray-500">12 clinical sentences · Entity spans</p>
+              </div>
+              <span class="text-xs text-blue-600 font-semibold">Download .csv ↓</span>
+            </a>
+            <a href="./public/samples/translation-support.csv" download class="flex items-center justify-between p-3 rounded-xl border border-gray-200 dark:border-gray-700 hover:border-emerald-400 dark:hover:border-emerald-600 hover:bg-emerald-50/50 dark:hover:bg-emerald-900/10 transition-colors group">
+              <div>
+                <p class="text-xs font-semibold text-gray-800 dark:text-gray-200 group-hover:text-emerald-600 dark:group-hover:text-emerald-400">Multilingual Support Corpus</p>
+                <p class="text-[11px] text-gray-500">12 phrases · Localization review</p>
+              </div>
+              <span class="text-xs text-emerald-600 font-semibold">Download .csv ↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Keyboard Shortcuts -->
+        <div class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-6 space-y-4">
+          <h2 class="text-lg font-bold text-gray-900 dark:text-white">Keyboard Shortcuts</h2>
+          <div class="overflow-x-auto text-xs">
+            <table class="w-full">
+              <tbody class="divide-y divide-gray-100 dark:divide-gray-800">
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300 w-28"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">1</kbd> – <kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">9</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Apply label / select class &amp; advance</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">←</kbd> <kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">→</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Previous / next row or image</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">Ctrl+Z</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Undo last annotation</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">Ctrl+Y</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Redo undone change</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">Ctrl+S</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Save session to browser memory</td>
+                </tr>
+                <tr>
+                  <td class="py-2 font-mono text-gray-700 dark:text-gray-300"><kbd class="bg-gray-100 dark:bg-gray-800 px-1.5 py-0.5 rounded border">Ctrl+Enter</kbd></td>
+                  <td class="py-2 text-gray-600 dark:text-gray-400">Save &amp; approve active translation</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- =================================================================== -->
+      <!-- SECTION 9: FAQ -->
+      <!-- =================================================================== -->
+      <section class="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 p-8 space-y-6">
+        <h2 class="text-2xl font-bold text-gray-900 dark:text-white">Frequently Asked Questions</h2>
+        <div class="space-y-4 divide-y divide-gray-100 dark:divide-gray-800 text-sm">
+          <div class="pt-0">
+            <h3 class="font-bold text-gray-900 dark:text-white mb-1">Does EdgeLabel ever upload my data to the cloud?</h3>
+            <p class="text-gray-500 dark:text-gray-400 leading-relaxed">No. All file reading, token extraction, bounding box computation, and dataset serialization happens locally in the browser sandbox. You can disconnect your Wi-Fi or run EdgeLabel in an air-gapped cleanroom and it will continue to function fully.</p>
+          </div>
+          <div class="pt-4">
+            <h3 class="font-bold text-gray-900 dark:text-white mb-1">Who develops and maintains EdgeLabel?</h3>
+            <p class="text-gray-500 dark:text-gray-400 leading-relaxed">EdgeLabel is built by <strong>Cueligence</strong> (formerly Clue Analytics), an AI and machine learning engineering practice that creates specialized, privacy-first software for enterprise and scientific teams.</p>
+          </div>
+          <div class="pt-4">
+            <h3 class="font-bold text-gray-900 dark:text-white mb-1">Can I annotate both text and images in the same session?</h3>
+            <p class="text-gray-500 dark:text-gray-400 leading-relaxed">Yes. EdgeLabel (Text &amp; NER) and EdgeVision (Image Annotation) operate as specialized tools within the unified Cueligence suite. You can switch between tools using the top suite switcher at any time.</p>
+          </div>
+          <div class="pt-4">
+            <h3 class="font-bold text-gray-900 dark:text-white mb-1">How do I preserve my work across browser restarts?</h3>
+            <p class="text-gray-500 dark:text-gray-400 leading-relaxed">EdgeLabel automatically autosaves your progress to local storage every 5 seconds. When you return to the page on the same browser, your annotated rows and class schemes will restore seamlessly.</p>
+          </div>
+        </div>
+      </section>
 
     </div>
   </main>
 
-  <footer class="bg-gray-950 dark:bg-black text-gray-400 py-10 px-6 border-t border-gray-800">
+  <!-- Footer -->
+  <footer class="bg-gray-950 text-gray-400 py-10 px-6 border-t border-gray-800">
     <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-      <p class="text-sm">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition-colors">ClueAnalytics</a> — EdgeLabel. MIT License.</p>
+      <p class="text-sm">© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener" class="text-gray-300 hover:text-white transition-colors">Cueligence</a> — EdgeLabel. MIT License.</p>
       <nav class="flex gap-6 text-sm">
         <a href="./privacy.html" class="hover:text-white transition-colors">Privacy Policy</a>
-        <a href="./about.html" class="hover:text-white transition-colors">About</a>
+        <a href="./about.html" class="hover:text-white transition-colors">About Us</a>
         <a href="./contact.html" class="hover:text-white transition-colors">Contact</a>
         <a href="https://github.com/clueanalytics7/edgelabel" target="_blank" rel="noopener noreferrer" class="hover:text-white transition-colors">GitHub</a>
       </nav>
     </div>
   </footer>
 
+  <!-- Scripts -->
   <script>
-    const toggle=document.getElementById('theme-toggle'),sun=document.getElementById('icon-sun'),moon=document.getElementById('icon-moon');
-    function updateIcons(){const d=document.documentElement.classList.contains('dark');sun.classList.toggle('hidden',!d);moon.classList.toggle('hidden',d);}
+    // Theme toggle
+    const toggle = document.getElementById('theme-toggle');
+    const sun = document.getElementById('icon-sun');
+    const moon = document.getElementById('icon-moon');
+
+    function updateIcons() {
+      const dark = document.documentElement.classList.contains('dark');
+      sun.classList.toggle('hidden', !dark);
+      moon.classList.toggle('hidden', dark);
+    }
     updateIcons();
-    toggle.addEventListener('click',()=>{const d=document.documentElement.classList.toggle('dark');localStorage.setItem('theme',d?'dark':'light');updateIcons();});
+
+    toggle.addEventListener('click', () => {
+      const dark = document.documentElement.classList.toggle('dark');
+      localStorage.setItem('theme', dark ? 'dark' : 'light');
+      updateIcons();
+    });
+
+    // Interactive Tutorial Tab Switcher
+    function switchTutorialTab(tabId) {
+      const tabs = ['text', 'image', 'translation', 'iaa', 'quality'];
+      tabs.forEach(t => {
+        const content = document.getElementById('tutorial-content-' + t);
+        const btn = document.getElementById('tab-btn-' + t);
+        if (t === tabId) {
+          content.classList.remove('hidden');
+          btn.className = 'tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all bg-white dark:bg-gray-700 text-blue-600 dark:text-blue-400 shadow-xs font-semibold';
+        } else {
+          content.classList.add('hidden');
+          btn.className = 'tutorial-tab-btn flex-1 min-w-[130px] py-2.5 px-3 rounded-lg text-center transition-all text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white';
+        }
+      });
+    }
   </script>
 </body>
 </html>

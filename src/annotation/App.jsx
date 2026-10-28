@@ -828,7 +828,7 @@ export default function App() {
       {/* Footer */}
       <footer className="border-t border-gray-100 dark:border-gray-800 bg-white dark:bg-gray-900 py-4 px-4">
         <div className="max-w-6xl mx-auto flex flex-wrap items-center justify-between gap-3 text-xs text-gray-400">
-          <span>© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">ClueAnalytics</a> — EdgeLabel</span>
+          <span>© 2025 <a href="https://clue-analytics.web.app/" target="_blank" rel="noopener noreferrer" className="hover:text-blue-500">Cueligence</a> — EdgeLabel</span>
           <nav className="flex gap-4">
             {[['Security Architecture', './security-architecture.html'], ['Privacy Policy','./privacy.html'],['Guide','./guide.html'],['About','./about.html']].map(([l,h]) => (
               <a key={l} href={h} className="hover:text-blue-500 transition-colors">{l}</a>

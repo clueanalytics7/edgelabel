@@ -10,7 +10,7 @@ export function Footer() {
             rel="noopener noreferrer"
             className="hover:text-blue-400 transition-colors"
           >
-            ClueAnalytics
+            Cueligence
           </a>{' '}
           — EdgeLabel. All rights reserved.
         </p>

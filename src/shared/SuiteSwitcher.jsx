@@ -18,7 +18,7 @@ export const SUITE_PRODUCTS = [
   {
     id: 'edgevision',
     name: 'EdgeVision',
-    badge: 'Computer Vision',
+    badge: 'Image Annotation',
     tagline: 'Client-side bounding box & object detection labeling',
     href: './image-annotation.html',
     icon: (
@@ -53,10 +53,10 @@ export const SUITE_PRODUCTS = [
     ),
   },
   {
-    id: 'clueanalytics',
-    name: 'Clue Analytics',
+    id: 'cueligence',
+    name: 'Cueligence',
     badge: 'Hub',
-    tagline: 'Parent analytics platform & data intelligence hub',
+    tagline: 'Parent AI & machine learning intelligence practice',
     href: 'https://clue-analytics.web.app/',
     external: true,
     icon: (
@@ -91,7 +91,7 @@ export function SuiteSwitcher({ activeProductId = 'edgelabel' }) {
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-750 text-xs font-medium text-gray-700 dark:text-gray-200 transition-colors shadow-xs"
-        aria-label="Clue Analytics Product Suite"
+        aria-label="Cueligence Product Suite"
         aria-expanded={open}
       >
         <span className="flex items-center gap-1">
@@ -116,7 +116,7 @@ export function SuiteSwitcher({ activeProductId = 'edgelabel' }) {
         <div className="absolute left-0 sm:left-auto sm:right-0 mt-2 w-72 rounded-2xl bg-white dark:bg-gray-900 shadow-2xl border border-gray-100 dark:border-gray-800 p-2 z-50 animate-fade-in">
           <div className="px-3 py-2 border-b border-gray-100 dark:border-gray-800 mb-1 flex items-center justify-between">
             <span className="text-[11px] font-bold uppercase tracking-wider text-gray-400 dark:text-gray-500">
-              Clue Analytics Suite
+              Cueligence Suite
             </span>
             <span className="text-[10px] text-blue-600 dark:text-blue-400 font-semibold">100% Local</span>
           </div>
