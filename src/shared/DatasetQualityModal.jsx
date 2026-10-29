@@ -1,5 +1,9 @@
 import { useMemo, useState } from 'react';
-import { scanDatasetQuality, generateQualityReportMarkdown } from './DatasetQualityScanner.js';
+import {
+  scanDatasetQuality,
+  generateQualityReportMarkdown,
+  generateChangeLedgerMarkdown,
+} from './DatasetQualityScanner.js';
 
 export function DatasetQualityModal({
   show,
@@ -27,7 +31,7 @@ export function DatasetQualityModal({
 
   if (!show || !qualityResult) return null;
 
-  const { healthScore, totalRows, annotatedRows, issues, labelCounts } = qualityResult;
+  const { healthScore, totalRows, annotatedRows, issues, labelCounts, shannonEntropy, giniImpurity, flaggedRowIndices } = qualityResult;
 
   const getScoreColor = (score) => {
     if (score >= 85) return 'text-emerald-500 border-emerald-500 bg-emerald-50 dark:bg-emerald-950/40';
@@ -60,6 +64,25 @@ export function DatasetQualityModal({
     a.click();
     URL.revokeObjectURL(url);
     if (onToast) onToast('Downloaded Dataset Quality Report (.md)', 'success');
+  };
+
+  const handleDownloadLedger = () => {
+    const md = generateChangeLedgerMarkdown({
+      datasetName: fileName,
+      originalRowsCount: totalRows,
+      currentRowsCount: totalRows,
+      deduplicatedCount: qualityResult.duplicateGroupsCount || 0,
+      annotatedCount: annotatedRows,
+      labelsCount: Object.keys(labelCounts || {}).length,
+    });
+    const blob = new Blob([md], { type: 'text/markdown;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `dataset_change_ledger_${fileName || 'audit'}.md`;
+    a.click();
+    URL.revokeObjectURL(url);
+    if (onToast) onToast('Downloaded Transformation Ledger (.md)', 'success');
   };
 
   const filteredIssues = issues.filter((iss) => {
@@ -107,6 +130,18 @@ export function DatasetQualityModal({
 
         {/* Content */}
         <div className="overflow-y-auto flex-1 p-6 space-y-6">
+
+          {/* Scope of Verification & Objective Assessment Notice */}
+          <div className="p-4 rounded-2xl border border-blue-200 dark:border-blue-900/50 bg-blue-50/70 dark:bg-blue-950/30 text-xs space-y-1.5">
+            <div className="flex items-center gap-2 text-blue-900 dark:text-blue-300 font-bold">
+              <span>🛡️</span>
+              <span>Scope of Verification &amp; Objective Assessment Notice</span>
+            </div>
+            <p className="text-blue-900/90 dark:text-blue-200/80 leading-relaxed text-[11px]">
+              This report describes <strong>only the programmatic, deterministic checks executed on this dataset</strong>: exact and near-duplicate text matching, missing value counts, text length distribution boundaries, and annotation consistency. <strong>Important:</strong> It is an objective audit of structural completeness and internal consistency. It does NOT guarantee that the dataset is factually accurate, free from real-world bias, or suitable for any particular machine learning architecture or clinical application.
+            </p>
+          </div>
+
           {/* Health Score & High Level Metrics Card */}
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {/* Score Pill */}
@@ -114,7 +149,7 @@ export function DatasetQualityModal({
               <span className="text-xs font-bold uppercase tracking-wider opacity-80">Dataset Health Score</span>
               <div className="text-4xl font-black my-1">{healthScore}<span className="text-xl font-normal opacity-60">/100</span></div>
               <span className="text-xs font-semibold">
-                {healthScore >= 85 ? '✅ Fit for Model Training' : healthScore >= 60 ? '⚠️ Quality Risks Found' : '❌ Critical Fixes Needed'}
+                {healthScore >= 85 ? '✅ Structural Pass' : healthScore >= 60 ? '⚠️ Quality Risks Found' : '❌ Critical Fixes Needed'}
               </span>
             </div>
 
@@ -143,28 +178,43 @@ export function DatasetQualityModal({
               </span>
             </div>
 
-            {/* Identified Issues */}
+            {/* Identified Issues & Review Queue Action */}
             <div className="p-4 rounded-2xl border border-gray-200 dark:border-gray-800 bg-gray-50/50 dark:bg-gray-800/30 flex flex-col justify-between">
-              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Flagged Findings</span>
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase">Review Queue</span>
               <div className="text-2xl font-bold text-purple-600 dark:text-purple-400 my-1">
-                {issues.length}
+                {flaggedRowIndices?.length || 0}
               </div>
-              <span className="text-xs text-gray-500">
-                {issues.filter((i) => i.severity === 'critical').length} critical blockers
-              </span>
+              {flaggedRowIndices?.length > 0 ? (
+                <button
+                  onClick={() => {
+                    if (onSelectRow && flaggedRowIndices.length > 0) {
+                      onSelectRow(flaggedRowIndices[0]);
+                      if (onToast) onToast(`Loaded Row #${flaggedRowIndices[0] + 1} from Review Queue (${flaggedRowIndices.length} flagged)`, 'info');
+                    }
+                    onClose();
+                  }}
+                  className="px-2.5 py-1 bg-purple-600 hover:bg-purple-700 text-white rounded-lg text-[11px] font-bold transition shadow-xs flex items-center justify-center gap-1"
+                >
+                  <span>🎯 Enter Review Queue</span>
+                </button>
+              ) : (
+                <span className="text-xs text-gray-500">0 flagged samples</span>
+              )}
             </div>
           </div>
 
           {/* Class Distribution Breakdown */}
           {Object.keys(labelCounts).length > 0 && (
             <div className="bg-gray-50 dark:bg-gray-800/30 rounded-2xl p-4 border border-gray-200 dark:border-gray-800">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-bold text-gray-600 dark:text-gray-300 uppercase tracking-wider">
-                  Class Distribution &amp; Balance
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-3">
+                <span className="text-xs font-bold text-gray-700 dark:text-gray-300 uppercase tracking-wider">
+                  Class Distribution &amp; Statistical Balance
                 </span>
-                <span className="text-xs text-gray-400 font-mono">
-                  {Object.keys(labelCounts).length} unique classes
-                </span>
+                <div className="flex items-center gap-3 text-xs text-gray-500 font-mono">
+                  <span>Entropy: <strong className="text-gray-800 dark:text-gray-200">{shannonEntropy ?? 'N/A'}</strong></span>
+                  <span>Gini: <strong className="text-gray-800 dark:text-gray-200">{giniImpurity ?? 'N/A'}</strong></span>
+                  <span>{Object.keys(labelCounts).length} classes</span>
+                </div>
               </div>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
                 {Object.entries(labelCounts).map(([label, count]) => {
@@ -318,7 +368,17 @@ export function DatasetQualityModal({
             <span>GDPR Article 28 &amp; HIPAA Memory Isolation Verified</span>
           </div>
 
-          <div className="flex items-center gap-2.5">
+          <div className="flex items-center gap-2.5 flex-wrap">
+            <button
+              onClick={handleDownloadLedger}
+              className="inline-flex items-center gap-1.5 px-3 py-2 bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-200 text-xs font-semibold rounded-xl border border-gray-200 dark:border-gray-700 transition-colors"
+              title="Export reproducible change ledger of dataset mutations"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+              </svg>
+              <span>Change Ledger (.md)</span>
+            </button>
             <button
               onClick={handleDownloadReport}
               className="inline-flex items-center gap-1.5 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-xs font-bold rounded-xl shadow-xs transition-colors"

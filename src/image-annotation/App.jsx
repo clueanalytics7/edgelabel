@@ -4,9 +4,10 @@ import { Toast } from '../shared/Toast.jsx';
 import { SuiteSwitcher } from '../shared/SuiteSwitcher.jsx';
 import { PWAInstallButton, OfflineIndicator } from '../shared/PWAInstallButton.jsx';
 import { BoundingBoxCanvas } from './Canvas.jsx';
-import { getSampleCvDataset } from './sampleData.js';
+import { getSampleCvDataset, getClinicalWoundDataset, CLINICAL_WOUND_CLASSES } from './sampleData.js';
 import { exportCocoJson, exportYoloZip, exportClassificationCsv } from './cvExporters.js';
 import { ImageAugmentModal } from './ImageAugmentModal.jsx';
+import { ImageQaModal } from './ImageQaModal.jsx';
 import { TaxonomyCodebookModal } from '../shared/TaxonomyCodebookModal.jsx';
 
 const DEFAULT_CV_CLASSES = [
@@ -34,12 +35,31 @@ export default function App() {
   const [newClassColor, setNewClassColor] = useState('#ec4899');
   const [showAugmentModal, setShowAugmentModal] = useState(false);
   const [showCodebookModal, setShowCodebookModal] = useState(false);
+  const [showImageQaModal, setShowImageQaModal] = useState(false);
 
   const fileInputRef = useRef(null);
 
   const showToast = useCallback((message, type = 'info') => {
     setToast({ message, type });
   }, []);
+
+  const handleLoadClinicalWounds = () => {
+    const clinicalSamples = getClinicalWoundDataset();
+    setImages(clinicalSamples);
+    setClasses(CLINICAL_WOUND_CLASSES);
+    setActiveClassId('w1');
+    setCurrentIndex(0);
+    showToast('Loaded Clinical Dermatology & Wound Infection Cases (DFU, Cellulitis, SSI)', 'success');
+  };
+
+  const handleLoadGeneralCv = () => {
+    const generalSamples = getSampleCvDataset();
+    setImages(generalSamples);
+    setClasses(DEFAULT_CV_CLASSES);
+    setActiveClassId('c1');
+    setCurrentIndex(0);
+    showToast('Loaded General Computer Vision Object Detection Samples', 'info');
+  };
 
   useTheme(theme);
 
@@ -295,10 +315,20 @@ export default function App() {
             </button>
 
             <button
-              onClick={() => setImages(getSampleCvDataset())}
-              className="px-3 py-1.5 rounded-xl text-xs font-medium text-gray-400 hover:text-gray-200 border border-gray-800 hover:border-gray-700 transition-colors hidden sm:block"
+              onClick={handleLoadClinicalWounds}
+              className="px-2.5 py-1.5 rounded-xl text-xs font-semibold bg-rose-950/40 text-rose-300 border border-rose-800/60 hover:bg-rose-900/50 transition-colors flex items-center gap-1"
+              title="Load Diabetic Foot Ulcers, Cellulitis, and Surgical Dehiscence clinical cases"
             >
-              Load Samples
+              <span>🩺</span>
+              <span>Wound Samples</span>
+            </button>
+
+            <button
+              onClick={handleLoadGeneralCv}
+              className="px-2.5 py-1.5 rounded-xl text-xs font-medium text-gray-400 hover:text-gray-200 border border-gray-800 hover:border-gray-700 transition-colors hidden md:block"
+              title="Load General Object Detection samples"
+            >
+              General CV
             </button>
 
             <a
@@ -460,6 +490,17 @@ export default function App() {
             >
               CSV
             </button>
+            <button
+              onClick={() => setShowImageQaModal(true)}
+              disabled={!images.length}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-700 disabled:opacity-40 text-white text-xs font-semibold rounded-xl shadow-xs transition-all"
+              title="Audit bounding box boundaries, clipping, and class balance"
+            >
+              <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              QA Audit
+            </button>
           </div>
         </div>
 
@@ -526,12 +567,21 @@ export default function App() {
                 <p className="text-xs text-gray-500 max-w-sm mb-4">
                   Upload your image dataset or click below to load the built-in sample computer vision dataset.
                 </p>
-                <button
-                  onClick={() => setImages(getSampleCvDataset())}
-                  className="px-4 py-2 bg-violet-600 hover:bg-violet-700 text-white rounded-xl text-xs font-semibold"
-                >
-                  Load Sample Dataset
-                </button>
+                <div className="flex flex-wrap items-center justify-center gap-3">
+                  <button
+                    onClick={handleLoadClinicalWounds}
+                    className="px-4 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-semibold shadow-xs flex items-center gap-1.5"
+                  >
+                    <span>🩺</span>
+                    <span>Load Clinical Wound &amp; Skin Infection Dataset</span>
+                  </button>
+                  <button
+                    onClick={handleLoadGeneralCv}
+                    className="px-4 py-2 bg-gray-800 hover:bg-gray-700 text-gray-200 border border-gray-700 rounded-xl text-xs font-semibold"
+                  >
+                    Load General Vision Dataset
+                  </button>
+                </div>
                 <div className="pt-4 border-t border-gray-800 mt-6 flex items-center justify-center gap-2 text-xs text-gray-500">
                   <span>Free community annotation tool.</span>
                   <a
@@ -774,6 +824,16 @@ export default function App() {
             setActiveClassId(imported.labels[0].id || 'c_1');
           }
         }}
+        onToast={showToast}
+      />
+
+      {/* Image QA & Boundary Audit Modal */}
+      <ImageQaModal
+        show={showImageQaModal}
+        onClose={() => setShowImageQaModal(false)}
+        images={images}
+        classes={classes}
+        onSelectImage={(idx) => setCurrentIndex(idx)}
         onToast={showToast}
       />
 

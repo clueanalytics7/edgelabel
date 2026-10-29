@@ -21,6 +21,24 @@ export function BoundingBoxCanvas({
   const [drawingBox, setDrawingBox] = useState(null);
   const [dragAction, setDragAction] = useState(null); // { type: 'move'|'resize', handle: string, startX, startY, origBox }
   const [imgDimensions, setImgDimensions] = useState({ width: 800, height: 600 });
+  const [filters, setFilters] = useState({ brightness: 100, contrast: 100, saturate: 100, invert: false });
+  const [showFilterBar, setShowFilterBar] = useState(false);
+
+  const applyFilterPreset = (preset) => {
+    if (preset === 'erythema') {
+      setFilters({ brightness: 105, contrast: 135, saturate: 175, invert: false });
+      if (onToast) onToast('Applied Erythema & Vascular Contrast Preset', 'info');
+    } else if (preset === 'slough') {
+      setFilters({ brightness: 115, contrast: 160, saturate: 110, invert: false });
+      if (onToast) onToast('Applied Slough & Necrotic Tissue Depth Preset', 'info');
+    } else if (preset === 'edges') {
+      setFilters({ brightness: 100, contrast: 180, saturate: 80, invert: true });
+      if (onToast) onToast('Applied Edge & Border Inversion Preset', 'info');
+    } else {
+      setFilters({ brightness: 100, contrast: 100, saturate: 100, invert: false });
+      if (onToast) onToast('Reset clinical filters to normal', 'info');
+    }
+  };
 
   // On image load, read natural width/height
   const handleImageLoad = (e) => {
@@ -211,12 +229,13 @@ export function BoundingBoxCanvas({
           src={image.src}
           alt={image.name}
           onLoad={handleImageLoad}
-          className="max-w-none block rounded-lg pointer-events-none"
+          className="max-w-none block rounded-lg pointer-events-none transition-[filter] duration-150"
           style={{
             maxWidth: '100%',
             height: 'auto',
             maxHeight: '68vh',
             objectFit: 'contain',
+            filter: `brightness(${filters.brightness}%) contrast(${filters.contrast}%) saturate(${filters.saturate}%) ${filters.invert ? 'invert(100%)' : ''}`,
           }}
           draggable={false}
         />
@@ -360,26 +379,147 @@ export function BoundingBoxCanvas({
         </svg>
       </div>
 
-      {/* Selected Box Floating Info */}
+      {/* Clinical Wound & Tissue Inspection Toolbar */}
+      <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+        <button
+          onClick={() => setShowFilterBar((p) => !p)}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold transition shadow-md flex items-center gap-1.5 ${
+            showFilterBar
+              ? 'bg-blue-600 text-white'
+              : 'bg-gray-900/90 hover:bg-gray-800 text-gray-200 border border-gray-700'
+          }`}
+          title="Clinical contrast, saturation and edge inspection"
+        >
+          <span>🔬</span>
+          <span>Wound &amp; Tissue Enhancer</span>
+          <span className="text-[10px] opacity-70">{showFilterBar ? '▲' : '▼'}</span>
+        </button>
+
+        {showFilterBar && (
+          <div className="bg-gray-950/95 backdrop-blur-md border border-gray-800 rounded-2xl p-3.5 shadow-2xl text-xs space-y-3 w-72 text-gray-200 animate-fade-in">
+            <div className="flex items-center justify-between pb-1.5 border-b border-gray-800">
+              <span className="font-bold text-[11px] uppercase tracking-wider text-blue-400">
+                Clinical Presets
+              </span>
+              <button
+                onClick={() => applyFilterPreset('default')}
+                className="text-[10px] text-gray-400 hover:text-white underline"
+              >
+                Reset All
+              </button>
+            </div>
+
+            <div className="grid grid-cols-2 gap-1.5 text-[11px]">
+              <button
+                onClick={() => applyFilterPreset('erythema')}
+                className="p-1.5 rounded-lg bg-red-950/40 hover:bg-red-900/60 text-red-200 border border-red-800/40 text-left transition font-semibold"
+                title="Boost saturation to identify erythematous flare and cellulitis borders"
+              >
+                🔴 Erythema Focus
+              </button>
+              <button
+                onClick={() => applyFilterPreset('slough')}
+                className="p-1.5 rounded-lg bg-amber-950/40 hover:bg-amber-900/60 text-amber-200 border border-amber-800/40 text-left transition font-semibold"
+                title="Enhance contrast between devitalized slough and viable granulation tissue"
+              >
+                🟡 Slough Contrast
+              </button>
+              <button
+                onClick={() => applyFilterPreset('edges')}
+                className="p-1.5 rounded-lg bg-purple-950/40 hover:bg-purple-900/60 text-purple-200 border border-purple-800/40 text-left transition font-semibold"
+                title="Invert channels to assess advancing epithelial edge migration"
+              >
+                🟣 Edge Inversion
+              </button>
+              <button
+                onClick={() => applyFilterPreset('default')}
+                className="p-1.5 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-200 text-left transition"
+              >
+                ⚪ Standard View
+              </button>
+            </div>
+
+            {/* Manual Sliders */}
+            <div className="space-y-2 pt-1 border-t border-gray-800 text-[10px]">
+              <div className="space-y-0.5">
+                <div className="flex justify-between text-gray-400">
+                  <span>Contrast</span>
+                  <span>{filters.contrast}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="250"
+                  value={filters.contrast}
+                  onChange={(e) => setFilters((p) => ({ ...p, contrast: Number(e.target.value) }))}
+                  className="w-full accent-blue-500 h-1 bg-gray-850 rounded"
+                />
+              </div>
+
+              <div className="space-y-0.5">
+                <div className="flex justify-between text-gray-400">
+                  <span>Saturation (Erythema)</span>
+                  <span>{filters.saturate}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="0"
+                  max="250"
+                  value={filters.saturate}
+                  onChange={(e) => setFilters((p) => ({ ...p, saturate: Number(e.target.value) }))}
+                  className="w-full accent-blue-500 h-1 bg-gray-850 rounded"
+                />
+              </div>
+
+              <div className="space-y-0.5">
+                <div className="flex justify-between text-gray-400">
+                  <span>Brightness</span>
+                  <span>{filters.brightness}%</span>
+                </div>
+                <input
+                  type="range"
+                  min="50"
+                  max="200"
+                  value={filters.brightness}
+                  onChange={(e) => setFilters((p) => ({ ...p, brightness: Number(e.target.value) }))}
+                  className="w-full accent-blue-500 h-1 bg-gray-850 rounded"
+                />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Selected Box Floating Info & Lesion Surface Metrics */}
       {selectedBox && (
-        <div className="absolute top-4 right-4 bg-gray-900/90 backdrop-blur-md border border-gray-700 text-white px-3 py-2 rounded-xl text-xs flex items-center gap-3 shadow-lg z-20">
-          <span className="font-semibold flex items-center gap-1.5">
+        <div className="absolute top-4 right-4 bg-gray-950/95 backdrop-blur-md border border-gray-700 text-white px-3.5 py-2.5 rounded-2xl text-xs flex flex-col sm:flex-row items-start sm:items-center gap-3 shadow-xl z-20">
+          <span className="font-bold flex items-center gap-1.5">
             <span
-              className="w-2.5 h-2.5 rounded-full"
+              className="w-3 h-3 rounded-full shrink-0"
               style={{ backgroundColor: selectedBox.color }}
             />
             {selectedBox.label}
           </span>
-          <span className="text-gray-400 font-mono">
-            {Math.round(selectedBox.width)}×{Math.round(selectedBox.height)} px
-          </span>
+
+          <div className="flex items-center gap-2 text-gray-300 font-mono text-[11px] border-l border-gray-700 pl-2">
+            <span>{Math.round(selectedBox.width)}×{Math.round(selectedBox.height)} px</span>
+            <span className="text-gray-500">·</span>
+            <span className="text-blue-400">
+              {Math.round(selectedBox.width * selectedBox.height).toLocaleString()} px²
+            </span>
+            <span className="text-gray-500">·</span>
+            <span className="text-emerald-400 font-semibold" title="Percentage of image surface covered by lesion box">
+              {(((selectedBox.width * selectedBox.height) / (imgDimensions.width * imgDimensions.height)) * 100).toFixed(1)}% field
+            </span>
+          </div>
+
           <button
             onClick={() => {
               onChangeBoxes(boxes.filter((b) => b.id !== selectedBox.id));
               setSelectedBoxId(null);
             }}
-            className="text-red-400 hover:text-red-300 ml-1 px-1.5 py-0.5 rounded hover:bg-red-950/50"
-            title="Delete Box (Del)"
+            className="text-red-400 hover:text-red-300 px-2 py-0.5 rounded-md hover:bg-red-950/50 text-[11px] font-semibold border border-red-900/40 ml-auto"
+            title="Delete Selected Box (Del)"
           >
             Delete
           </button>

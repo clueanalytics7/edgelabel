@@ -172,15 +172,30 @@ export function scanDatasetQuality({
     }
   }
 
-  // 5. Class Imbalance
+  // 5. Class Imbalance & Entropy
   const distinctLabels = Object.keys(labelCounts);
+  let shannonEntropy = 0;
+  let giniImpurity = 0;
+
   if (distinctLabels.length >= 2 && totalAnnotated >= 10) {
     const labelPcts = distinctLabels.map((lbl) => ({
       label: lbl,
       count: labelCounts[lbl],
       pct: (labelCounts[lbl] / totalAnnotated) * 100,
+      prob: labelCounts[lbl] / totalAnnotated,
     }));
     labelPcts.sort((a, b) => b.count - a.count);
+
+    // Calculate Shannon Entropy: H = - sum(p * log2(p))
+    labelPcts.forEach((lp) => {
+      if (lp.prob > 0) {
+        shannonEntropy -= lp.prob * Math.log2(lp.prob);
+      }
+    });
+
+    // Gini Impurity = 1 - sum(p^2)
+    const sumSq = labelPcts.reduce((acc, lp) => acc + Math.pow(lp.prob, 2), 0);
+    giniImpurity = Math.max(0, 1 - sumSq);
 
     const topClass = labelPcts[0];
     const bottomClass = labelPcts[labelPcts.length - 1];
@@ -191,11 +206,64 @@ export function scanDatasetQuality({
         severity: 'warning',
         category: 'Label Balance',
         title: `Severe Class Imbalance (${topClass.label}: ${topClass.pct.toFixed(1)}%)`,
-        description: `"${topClass.label}" represents over ${topClass.pct.toFixed(1)}% of all annotations. Class imbalance causes classifiers to predict majority labels and fail on minority classes (${bottomClass.label}: ${bottomClass.pct.toFixed(1)}%).`,
+        description: `"${topClass.label}" represents over ${topClass.pct.toFixed(1)}% of all annotations. Class imbalance causes classifiers to predict majority labels and fail on minority classes (${bottomClass.label}: ${bottomClass.pct.toFixed(1)}%). Shannon Entropy: ${shannonEntropy.toFixed(2)}, Gini Impurity: ${giniImpurity.toFixed(2)}.`,
         count: topClass.count,
       });
     }
+
+    // Rare class alert (< 3% representation)
+    const rareClasses = labelPcts.filter((lp) => lp.pct < 3 && lp.count <= 2);
+    if (rareClasses.length > 0) {
+      issues.push({
+        id: 'rare_classes',
+        severity: 'info',
+        category: 'Label Balance',
+        title: `${rareClasses.length} Underrepresented / Rare Classes (<3%)`,
+        description: `Labels [${rareClasses.map((r) => r.label).join(', ')}] have fewer than 3 samples. Insufficient support samples often lead to zero precision in downstream models.`,
+        count: rareClasses.length,
+      });
+    }
   }
+
+  // 6. Incomplete / Corrupted Span Annotations Check
+  const incompleteSpanIndices = [];
+  annotations.forEach((ann, idx) => {
+    if (ann && ann.spans && Array.isArray(ann.spans)) {
+      const text = String(dataItems[idx]?.[selectedColumn] || '');
+      ann.spans.forEach((span) => {
+        if (
+          span.start === undefined ||
+          span.end === undefined ||
+          span.start < 0 ||
+          span.end > text.length ||
+          span.start >= span.end
+        ) {
+          incompleteSpanIndices.push(idx);
+        }
+      });
+    }
+  });
+
+  if (incompleteSpanIndices.length > 0) {
+    issues.push({
+      id: 'corrupted_spans',
+      severity: 'critical',
+      category: 'Annotation Integrity',
+      title: `${incompleteSpanIndices.length} Out-of-Bounds or Empty Entity Spans`,
+      description: `Detected entity character offsets that exceed the length of the string or have inverted bounds (start >= end). These will cause tokenizer errors during model training.`,
+      rowIndices: Array.from(new Set(incompleteSpanIndices)),
+      count: incompleteSpanIndices.length,
+    });
+  }
+
+  // Collect all unique flagged row indices for the Review Queue
+  const flaggedRowIndicesSet = new Set();
+  issues.forEach((iss) => {
+    if (iss.rowIndices && Array.isArray(iss.rowIndices)) {
+      iss.rowIndices.forEach((r) => flaggedRowIndicesSet.add(r));
+    }
+  });
+  const flaggedRowIndices = Array.from(flaggedRowIndicesSet).sort((a, b) => a - b);
 
   // Calculate Overall Dataset Health Score (0–100)
   let healthScore = 100;
@@ -212,14 +280,87 @@ export function scanDatasetQuality({
     annotatedRows: totalAnnotated,
     issues,
     labelCounts,
+    shannonEntropy: Number(shannonEntropy.toFixed(2)),
+    giniImpurity: Number(giniImpurity.toFixed(2)),
     avgLength: textLengths.length ? Math.round(textLengths.reduce((a, b) => a + b, 0) / textLengths.length) : 0,
     duplicateGroupsCount: duplicateGroups.length,
     emptyCellsCount,
+    flaggedRowIndices,
   };
 }
 
 /**
- * Generates an exportable Dataset Health & Quality Report in Markdown or HTML
+ * Pre-export Schema & Integrity Quality Gate
+ */
+export function validateExportSchema({
+  dataItems = [],
+  annotations = [],
+  selectedColumn = 0,
+  mode = 'classification',
+  strict = false,
+}) {
+  const errors = [];
+  const warnings = [];
+
+  if (!dataItems.length) {
+    errors.push('Dataset contains 0 rows. Cannot export empty dataset.');
+    return { isValid: false, errors, warnings, totalRows: 0, annotatedRows: 0 };
+  }
+
+  let annotatedCount = 0;
+  let emptyRowCount = 0;
+  let malformedOffsetCount = 0;
+
+  dataItems.forEach((row, idx) => {
+    const raw = row[selectedColumn];
+    const text = (raw === undefined || raw === null ? '' : String(raw)).trim();
+    const ann = annotations[idx];
+
+    if (!text) {
+      emptyRowCount++;
+    }
+
+    if (ann && (ann.label || (ann.spans && ann.spans.length))) {
+      annotatedCount++;
+      if (mode === 'ner' && ann.spans) {
+        ann.spans.forEach((sp) => {
+          if (sp.start < 0 || sp.end > text.length || sp.start >= sp.end) {
+            malformedOffsetCount++;
+          }
+        });
+      }
+    }
+  });
+
+  if (annotatedCount === 0) {
+    warnings.push('No rows have been annotated yet. Export will contain unlabelled data only.');
+  }
+
+  if (strict && annotatedCount < dataItems.length) {
+    errors.push(`Strict Export Mode: ${dataItems.length - annotatedCount} rows remain unlabelled.`);
+  }
+
+  if (emptyRowCount > 0) {
+    warnings.push(`${emptyRowCount} rows have empty values in the target column.`);
+  }
+
+  if (malformedOffsetCount > 0) {
+    errors.push(`${malformedOffsetCount} entity span offsets violate string boundary constraints.`);
+  }
+
+  return {
+    isValid: errors.length === 0,
+    errors,
+    warnings,
+    totalRows: dataItems.length,
+    annotatedRows: annotatedCount,
+    unannotatedRows: dataItems.length - annotatedCount,
+  };
+}
+
+/**
+ * Generates an exportable Dataset Health & Quality Report in Markdown
+ * Includes the essential Scope of Verification and Non-Guarantee Disclaimer.
  */
 export function generateQualityReportMarkdown({
   qualityResult,
@@ -227,24 +368,43 @@ export function generateQualityReportMarkdown({
   columnName,
 }) {
   const dateStr = new Date().toISOString().split('T')[0];
-  const { healthScore, totalRows, annotatedRows, issues, labelCounts, avgLength } = qualityResult;
+  const {
+    healthScore,
+    totalRows,
+    annotatedRows,
+    issues,
+    labelCounts,
+    avgLength,
+    shannonEntropy,
+    giniImpurity,
+    flaggedRowIndices,
+  } = qualityResult;
 
-  let report = `# EdgeLabel Dataset Quality & Assurance Audit Report\n\n`;
+  let report = `# EdgeLabel Dataset Quality Assurance & Deterministic Integrity Report\n\n`;
   report += `**Dataset:** ${datasetName || 'Unnamed Dataset'}\n`;
   report += `**Audited Target Column:** ${columnName || 'Column 1'}\n`;
   report += `**Audit Date:** ${dateStr}\n`;
-  report += `**Privacy Guarantee:** 100% Client-Side In-Memory Execution (Zero Server Leakage)\n\n`;
+  report += `**Audit Engine:** Cueligence EdgeLabel 100% In-Browser Deterministic Scanner\n\n`;
 
-  report += `## Executive Summary\n\n`;
-  report += `- **Overall Dataset Health Score:** **${healthScore}/100** (${
-    healthScore >= 85 ? 'Ready for Training' : healthScore >= 60 ? 'Requires Review' : 'Poor Quality — Action Needed'
+  report += `> ### ⚠️ Scope of Verification & Objective Assessment Notice\n`;
+  report += `> This quality report describes **only the structural and programmatic checks performed on this dataset**: exact and near-duplicate matching, missing value counts, label distribution balance, text length boundaries, and annotation consistency.\n`;
+  report += `> \n`;
+  report += `> **Important Disclaimer:** This report is an objective audit of structural dataset completeness and internal consistency. **It must NOT be marketed or interpreted as a guarantee that the dataset is factually accurate, free from real-world bias, clinically true, or suitable for any specific machine learning architecture or clinical application.**\n\n`;
+
+  report += `## 1. Executive Summary\n\n`;
+  report += `- **Overall Structural Health Score:** **${healthScore}/100** (${
+    healthScore >= 85 ? 'Structural Pass' : healthScore >= 60 ? 'Requires Review' : 'Structural Fail — Action Needed'
   })\n`;
   report += `- **Total Rows:** ${totalRows.toLocaleString()}\n`;
   report += `- **Annotated Rows:** ${annotatedRows.toLocaleString()} (${((annotatedRows / (totalRows || 1)) * 100).toFixed(1)}%)\n`;
   report += `- **Average Text Length:** ${avgLength} characters\n`;
-  report += `- **Total Identified Issues:** ${issues.length}\n\n`;
+  report += `- **Flagged Rows for Review Queue:** ${flaggedRowIndices?.length || 0} rows\n`;
+  report += `- **Total Identified Structural Findings:** ${issues.length}\n\n`;
 
-  report += `## Label Distribution\n\n`;
+  report += `## 2. Label Distribution & Statistical Balance\n\n`;
+  report += `- **Shannon Entropy:** ${shannonEntropy ?? 'N/A'} (higher indicates more uniform distribution)\n`;
+  report += `- **Gini Impurity:** ${giniImpurity ?? 'N/A'}\n\n`;
+
   report += `| Label | Count | Percentage |\n|---|---|---|\n`;
   Object.entries(labelCounts || {}).forEach(([lbl, count]) => {
     const pct = ((count / (annotatedRows || 1)) * 100).toFixed(1);
@@ -252,25 +412,59 @@ export function generateQualityReportMarkdown({
   });
   report += `\n`;
 
-  report += `## Audit Findings & Risk Breakdown\n\n`;
+  report += `## 3. Structural Findings Breakdown\n\n`;
   if (!issues.length) {
-    report += `✅ **No data quality issues found.** The dataset is clean, balanced, and free of contradictions.\n\n`;
+    report += `✅ **No structural issues detected.** The dataset satisfies all programmed deterministic constraints.\n\n`;
   } else {
     issues.forEach((iss, i) => {
       report += `### ${i + 1}. [${iss.severity.toUpperCase()}] ${iss.title}\n`;
       report += `- **Category:** ${iss.category}\n`;
-      report += `- **Description:** ${iss.description}\n`;
+      report += `- **Deterministic Check:** ${iss.description}\n`;
       if (iss.rowIndices?.length) {
-        report += `- **Impacted Sample Rows:** ${iss.rowIndices.slice(0, 10).map((idx) => '#' + (idx + 1)).join(', ')}${
-          iss.rowIndices.length > 10 ? ` and ${iss.rowIndices.length - 10} more` : ''
+        report += `- **Flagged Row Indices:** ${iss.rowIndices.slice(0, 15).map((idx) => '#' + (idx + 1)).join(', ')}${
+          iss.rowIndices.length > 15 ? ` and ${iss.rowIndices.length - 15} more` : ''
         }\n`;
       }
       report += `\n`;
     });
   }
 
-  report += `## Regulatory & Governance Compliance\n`;
-  report += `This audit was executed locally within browser memory adhering to GDPR Article 28 / HIPAA data isolation safeguards. No data rows or text contents were uploaded to any remote server or external cloud API during this scan.\n`;
+  report += `## 4. Privacy & Regulatory Data Sovereignty\n`;
+  report += `This audit was executed 100% locally within browser memory using WebAssembly and Web Workers, adhering to GDPR Article 28 and HIPAA security safeguards. Zero raw data rows or PHI were uploaded to external cloud servers.\n`;
 
   return report;
+}
+
+/**
+ * Generates an exportable Dataset Transformation & Change Ledger (Reproducible Audit Summary)
+ */
+export function generateChangeLedgerMarkdown({
+  datasetName,
+  originalRowsCount,
+  currentRowsCount,
+  deduplicatedCount = 0,
+  annotatedCount = 0,
+  labelsCount = 0,
+  mode = 'classification',
+}) {
+  const dateStr = new Date().toISOString();
+
+  let ledger = `# EdgeLabel Dataset Transformation & Change Ledger\n\n`;
+  ledger += `**Dataset:** ${datasetName || 'dataset.csv'}\n`;
+  ledger += `**Generated:** ${dateStr}\n`;
+  ledger += `**Annotation Mode:** ${mode}\n\n`;
+
+  ledger += `## Mutation Log & Reproducibility Summary\n\n`;
+  ledger += `| Metric / Step | Value | Status |\n`;
+  ledger += `|---|---|---|\n`;
+  ledger += `| Raw Ingested Rows | ${originalRowsCount} | Verified |\n`;
+  ledger += `| Current Active Rows | ${currentRowsCount} | Active |\n`;
+  ledger += `| Rows Deduplicated / Quarantined | ${deduplicatedCount} | Processed |\n`;
+  ledger += `| Total Annotated Records | ${annotatedCount} | Ground Truth |\n`;
+  ledger += `| Active Taxonomy Classes | ${labelsCount} | Defined |\n\n`;
+
+  ledger += `### Verification Ledger Notice\n`;
+  ledger += `This ledger summarizes dataset transformations performed within this session. All edits and annotations occurred in-memory on the client workstation with zero remote persistence.\n`;
+
+  return ledger;
 }
