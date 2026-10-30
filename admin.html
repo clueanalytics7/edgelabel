@@ -250,11 +250,16 @@
 
               <div>
                 <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Licence Tier</label>
-                <select id="lic-tier" class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none text-xs">
+                <select id="lic-tier" onchange="toggleCustomLicenceFields()" class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none text-xs">
                   <option value="Team Workspace (Annual)">Team Workspace — £199 (Year 1 Promotional Launch Rate)</option>
                   <option value="Enterprise Air-Gapped">Enterprise Air-Gapped (On-Premises)</option>
                   <option value="Academic Research Partner">Academic Research Partner</option>
+                  <option value="__custom__">✏️ Custom Licence Tier (type your own)...</option>
                 </select>
+                <div id="custom-lic-tier-wrap" class="hidden mt-2 p-2.5 bg-purple-50/50 dark:bg-purple-950/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                  <label class="block text-[11px] font-semibold text-purple-700 dark:text-purple-300 mb-1">Custom Licence Tier Name</label>
+                  <input id="lic-tier-custom" type="text" placeholder="e.g. NHS Foundation Trust, Multicentre Phase III Consortium..." class="w-full px-3 py-1.5 rounded-lg border border-purple-200 dark:border-purple-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none text-xs"/>
+                </div>
               </div>
 
               <div>
@@ -264,12 +269,17 @@
 
               <div>
                 <label class="block font-semibold mb-1 text-gray-700 dark:text-gray-300">Validity Period</label>
-                <select id="lic-duration" class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none text-xs">
+                <select id="lic-duration" onchange="toggleCustomLicenceFields()" class="w-full px-3 py-2 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 outline-none text-xs">
                   <option value="365">1 Year (Standard)</option>
                   <option value="730">2 Years</option>
                   <option value="30">30-Day Pilot Evaluation</option>
                   <option value="9999">Perpetual Offline</option>
+                  <option value="__custom__">✏️ Custom Duration in Days (type your own)...</option>
                 </select>
+                <div id="custom-lic-duration-wrap" class="hidden mt-2 p-2.5 bg-purple-50/50 dark:bg-purple-950/20 rounded-xl border border-purple-200 dark:border-purple-800">
+                  <label class="block text-[11px] font-semibold text-purple-700 dark:text-purple-300 mb-1">Custom Validity (Number of Days)</label>
+                  <input id="lic-duration-custom" type="number" min="1" max="36500" placeholder="e.g. 90, 180, 1095" class="w-full px-3 py-1.5 rounded-lg border border-purple-200 dark:border-purple-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white outline-none text-xs"/>
+                </div>
               </div>
 
               <div class="sm:col-span-2 pt-2">
@@ -1180,13 +1190,48 @@
       reader.readAsText(file);
     }
 
+    function toggleCustomLicenceFields() {
+      const tierSel = document.getElementById('lic-tier');
+      const customTierWrap = document.getElementById('custom-lic-tier-wrap');
+      const customTierInput = document.getElementById('lic-tier-custom');
+      if (tierSel && customTierWrap) {
+        if (tierSel.value === '__custom__') {
+          customTierWrap.classList.remove('hidden');
+          if (customTierInput) customTierInput.focus();
+        } else {
+          customTierWrap.classList.add('hidden');
+        }
+      }
+
+      const durSel = document.getElementById('lic-duration');
+      const customDurWrap = document.getElementById('custom-lic-duration-wrap');
+      const customDurInput = document.getElementById('lic-duration-custom');
+      if (durSel && customDurWrap) {
+        if (durSel.value === '__custom__') {
+          customDurWrap.classList.remove('hidden');
+          if (customDurInput) customDurInput.focus();
+        } else {
+          customDurWrap.classList.add('hidden');
+        }
+      }
+    }
+
     // Generate signed license JSON
     function generateLicenseKey(e) {
       e.preventDefault();
       const org = document.getElementById('lic-org').value.trim();
-      const tier = document.getElementById('lic-tier').value;
+      let tier = document.getElementById('lic-tier').value;
+      if (tier === '__custom__') {
+        const customTierInput = document.getElementById('lic-tier-custom');
+        tier = (customTierInput && customTierInput.value.trim()) || 'Custom Enterprise Tier';
+      }
       const seats = parseInt(document.getElementById('lic-seats').value, 10) || 1;
-      const days = parseInt(document.getElementById('lic-duration').value, 10) || 365;
+      let days = parseInt(document.getElementById('lic-duration').value, 10);
+      if (document.getElementById('lic-duration').value === '__custom__') {
+        const customDurInput = document.getElementById('lic-duration-custom');
+        days = parseInt(customDurInput ? customDurInput.value : '365', 10) || 365;
+      }
+      if (isNaN(days) || days <= 0) days = 365;
 
       const issued = new Date();
       const expires = new Date(issued.getTime() + days * 86400000);

@@ -109,40 +109,207 @@ function GlossaryModal({ show, onClose, glossary, onSaveGlossary, onToast }) {
 }
 
 // ─── Settings Modal ──────────────────────────────────────────────────────────
+const PRESET_LANGUAGES = [
+  { code: 'es', label: 'Spanish (es-ES / es-419)' },
+  { code: 'fr', label: 'French (fr-FR / fr-CA)' },
+  { code: 'de', label: 'German (de-DE / de-AT)' },
+  { code: 'it', label: 'Italian (it-IT)' },
+  { code: 'pt', label: 'Portuguese (pt-BR / pt-PT)' },
+  { code: 'ja', label: 'Japanese (ja-JP)' },
+  { code: 'zh', label: 'Chinese (zh-CN / zh-TW)' },
+  { code: 'ar', label: 'Arabic (ar-SA)' },
+  { code: 'hi', label: 'Hindi (hi-IN)' },
+  { code: 'nl', label: 'Dutch (nl-NL / nl-BE)' },
+  { code: 'pl', label: 'Polish (pl-PL)' },
+  { code: 'sv', label: 'Swedish (sv-SE)' },
+  { code: 'ru', label: 'Russian (ru-RU)' },
+  { code: 'ko', label: 'Korean (ko-KR)' },
+  { code: 'tr', label: 'Turkish (tr-TR)' },
+  { code: 'el', label: 'Greek (el-GR)' },
+  { code: 'uk', label: 'Ukrainian (uk-UA)' },
+  { code: 'cs', label: 'Czech (cs-CZ)' },
+  { code: 'da', label: 'Danish (da-DK)' },
+  { code: 'fi', label: 'Finnish (fi-FI)' },
+  { code: 'no', label: 'Norwegian (nb-NO)' },
+  { code: 'vi', label: 'Vietnamese (vi-VN)' },
+  { code: 'th', label: 'Thai (th-TH)' },
+  { code: 'id', label: 'Indonesian (id-ID)' },
+  { code: 'he', label: 'Hebrew (he-IL)' },
+  { code: 'ro', label: 'Romanian (ro-RO)' },
+  { code: 'hu', label: 'Hungarian (hu-HU)' },
+  { code: 'sw', label: 'Swahili (sw-KE)' },
+  { code: 'cy', label: 'Welsh (cy-GB)' },
+  { code: 'ga', label: 'Irish Gaelic (ga-IE)' },
+];
+
+const SUGGESTED_LOCALES = [
+  'af', 'am', 'bn', 'bg', 'ca', 'cs', 'cy', 'da', 'de-AT', 'de-CH', 'de-DE', 
+  'el', 'es-419', 'es-ES', 'es-MX', 'et', 'eu', 'fa', 'fi', 'fil', 'fr-CA', 
+  'fr-FR', 'ga', 'gl', 'gu', 'he', 'hi', 'hr', 'hu', 'id', 'is', 'it', 'ja', 
+  'ka', 'kk', 'kn', 'ko', 'lt', 'lv', 'mk', 'ml', 'mr', 'ms', 'nb-NO', 'nl-BE', 
+  'nl-NL', 'pa', 'pl', 'pt-BR', 'pt-PT', 'ro', 'ru', 'sk', 'sl', 'sq', 'sr', 
+  'sv', 'sw', 'ta', 'te', 'th', 'tl', 'tr', 'uk', 'ur', 'vi', 'yo', 'zh-CN', 'zh-TW', 'zu'
+];
+
 function SettingsModal({ show, onClose, columnHeaders, selectedColumn, setSelectedColumn, setHasSelectedColumn, targetLang, setTargetLang }) {
+  const isInitialPreset = PRESET_LANGUAGES.some((p) => p.code.toLowerCase() === (targetLang || '').toLowerCase());
+  const [selectedPreset, setSelectedPreset] = useState(isInitialPreset ? targetLang : '__custom__');
+  const [isCustomMode, setIsCustomMode] = useState(!isInitialPreset);
+  const [customInput, setCustomInput] = useState(!isInitialPreset ? (targetLang || '') : '');
+  const [localColumn, setLocalColumn] = useState(selectedColumn);
+
+  useEffect(() => {
+    if (show) {
+      const match = PRESET_LANGUAGES.some((p) => p.code.toLowerCase() === (targetLang || '').toLowerCase());
+      if (match) {
+        setSelectedPreset(targetLang);
+        setIsCustomMode(false);
+        setCustomInput('');
+      } else {
+        setSelectedPreset('__custom__');
+        setIsCustomMode(true);
+        setCustomInput(targetLang || '');
+      }
+      setLocalColumn(selectedColumn);
+    }
+  }, [show, targetLang, selectedColumn]);
+
+  const handlePresetSelect = (e) => {
+    const val = e.target.value;
+    setSelectedPreset(val);
+    if (val === '__custom__') {
+      setIsCustomMode(true);
+      if (!customInput) setCustomInput('nl-BE');
+    } else {
+      setIsCustomMode(false);
+    }
+  };
+
+  const handleQuickChip = (code) => {
+    setIsCustomMode(true);
+    setSelectedPreset('__custom__');
+    setCustomInput(code);
+  };
+
   const save = () => {
-    setSelectedColumn(parseInt(document.getElementById('col-select-t').value));
+    let finalLang = targetLang;
+    if (isCustomMode) {
+      finalLang = customInput.trim() || 'custom';
+    } else {
+      finalLang = selectedPreset;
+    }
+    setTargetLang(finalLang);
+    setSelectedColumn(localColumn);
     setHasSelectedColumn(true);
     onClose();
   };
+
   if (!show) return null;
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl max-w-md w-full border border-gray-100 dark:border-gray-700">
-        <h2 className="text-base font-bold mb-4 text-gray-900 dark:text-white">Localization Settings</h2>
+      <div className="bg-white dark:bg-gray-800 p-6 rounded-2xl shadow-xl max-w-md w-full border border-gray-100 dark:border-gray-700 animate-fade-in">
+        <div className="flex items-center justify-between pb-3 border-b border-gray-100 dark:border-gray-700 mb-4">
+          <h2 className="text-base font-bold text-gray-900 dark:text-white">Localization Settings</h2>
+          <button onClick={onClose} className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-sm">✕</button>
+        </div>
+
+        {/* Source Column Selector */}
         <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Source Column to Localize</label>
-        <select id="col-select-t" defaultValue={selectedColumn}
-          className="w-full p-2 mb-4 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-xs outline-none">
-          {columnHeaders.map((h, i) => <option key={i} value={i}>{h || `Column ${i + 1}`}</option>)}
+        <select
+          value={localColumn}
+          onChange={(e) => setLocalColumn(parseInt(e.target.value, 10))}
+          className="w-full p-2 mb-4 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-xs outline-none focus:ring-2 focus:ring-green-500"
+        >
+          {columnHeaders.map((h, i) => (
+            <option key={i} value={i}>{h || `Column ${i + 1}`}</option>
+          ))}
         </select>
 
-        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">Target Language / Locale</label>
-        <select value={targetLang} onChange={(e) => setTargetLang(e.target.value)}
-          className="w-full p-2 mb-4 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-xs outline-none">
-          <option value="es">Spanish (es-ES / es-419)</option>
-          <option value="fr">French (fr-FR)</option>
-          <option value="de">German (de-DE)</option>
-          <option value="it">Italian (it-IT)</option>
-          <option value="pt">Portuguese (pt-BR / pt-PT)</option>
-          <option value="ja">Japanese (ja-JP)</option>
-          <option value="zh">Chinese (zh-CN / zh-TW)</option>
-          <option value="ar">Arabic (ar-SA)</option>
-          <option value="hi">Hindi (hi-IN)</option>
+        {/* Target Language / Locale Dropdown with Custom Input Support */}
+        <label className="block text-xs font-semibold text-gray-600 dark:text-gray-300 mb-1">
+          Target Language / Locale
+        </label>
+        <select
+          value={isCustomMode ? '__custom__' : selectedPreset}
+          onChange={handlePresetSelect}
+          className="w-full p-2 mb-2 border rounded-xl bg-gray-50 dark:bg-gray-700 dark:border-gray-600 dark:text-white text-xs outline-none focus:ring-2 focus:ring-green-500"
+        >
+          <optgroup label="Standard Presets">
+            {PRESET_LANGUAGES.map((l) => (
+              <option key={l.code} value={l.code}>
+                {l.label}
+              </option>
+            ))}
+          </optgroup>
+          <option value="__custom__">✏️ Custom / Other Language or Locale (type your own)...</option>
         </select>
 
-        <div className="flex justify-end gap-2">
-          <button onClick={onClose} className="px-4 py-2 bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded-xl text-xs font-semibold">Cancel</button>
-          <button onClick={save} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold">Save Settings</button>
+        {/* Custom Input Field when selected or when not in standard dropdown */}
+        {isCustomMode && (
+          <div className="p-3 mb-4 rounded-xl bg-green-50/70 dark:bg-green-950/30 border border-green-200 dark:border-green-800 space-y-2">
+            <div className="flex items-center justify-between">
+              <label className="text-[11px] font-bold text-green-900 dark:text-green-300">
+                Type Target Language or Locale Code
+              </label>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsCustomMode(false);
+                  setSelectedPreset('es');
+                }}
+                className="text-[10px] text-green-700 dark:text-green-400 hover:underline"
+              >
+                ← Use preset list
+              </button>
+            </div>
+            <div>
+              <input
+                type="text"
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                placeholder="e.g. Dutch (nl-BE), Tagalog (tl-PH), Bengali (bn), Swahili (sw)..."
+                list="edgetranslate-locale-list"
+                autoFocus
+                className="w-full p-2 border rounded-lg bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white text-xs outline-none focus:ring-2 focus:ring-green-500 font-medium"
+              />
+              <datalist id="edgetranslate-locale-list">
+                {SUGGESTED_LOCALES.map((loc) => (
+                  <option key={loc} value={loc} />
+                ))}
+              </datalist>
+            </div>
+            {/* Quick Suggestion Chips */}
+            <div className="pt-1">
+              <span className="text-[10px] text-gray-500 dark:text-gray-400 block mb-1">Popular Quick Choices:</span>
+              <div className="flex flex-wrap gap-1">
+                {['nl-BE', 'pl', 'sv', 'ko', 'tr', 'el', 'uk', 'sw', 'cy', 'ga'].map((chip) => (
+                  <button
+                    key={chip}
+                    type="button"
+                    onClick={() => handleQuickChip(chip)}
+                    className={`text-[10px] px-2 py-0.5 rounded-md font-mono transition-colors ${
+                      customInput === chip
+                        ? 'bg-green-600 text-white font-bold'
+                        : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-700 hover:bg-green-50'
+                    }`}
+                  >
+                    {chip}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {!isCustomMode && (
+          <p className="text-[11px] text-gray-400 dark:text-gray-500 mb-4">
+            Need another language? Select <span className="font-semibold text-green-600 dark:text-green-400">"Custom / Other"</span> in the dropdown above to type any language or BCP 47 locale code.
+          </p>
+        )}
+
+        <div className="flex justify-end gap-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+          <button onClick={onClose} className="px-4 py-2 bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-600 dark:text-gray-300 rounded-xl text-xs font-semibold transition">Cancel</button>
+          <button onClick={save} className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-xl text-xs font-bold transition shadow-xs">Save Settings</button>
         </div>
       </div>
     </div>
@@ -401,10 +568,11 @@ export default function App() {
       ];
       rows.push(cells.map((c) => `"${String(c || '').replace(/"/g, '""')}"`).join(','));
     });
+    const safeTargetLang = (targetLang || 'target').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
     const blob = new Blob([rows.join('\n')], { type: 'text/csv;charset=utf-8;' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `localized_${targetLang}_${fileName || 'dataset.csv'}`;
+    a.download = `localized_${safeTargetLang}_${fileName || 'dataset.csv'}`;
     a.click();
     URL.revokeObjectURL(a.href);
     showToast('Exported localized dataset (.csv)!', 'success');
@@ -419,10 +587,11 @@ export default function App() {
       comment: translations[i]?.comment || null,
       targetLanguage: targetLang,
     }));
+    const safeTargetLang = (targetLang || 'target').toLowerCase().replace(/[^a-z0-9_-]/g, '_');
     const blob = new Blob([JSON.stringify(output, null, 2)], { type: 'application/json' });
     const a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
-    a.download = `translation_dictionary_${targetLang}.json`;
+    a.download = `translation_dictionary_${safeTargetLang}.json`;
     a.click();
     URL.revokeObjectURL(a.href);
     showToast('Exported localization dictionary (.json)!', 'success');
@@ -539,7 +708,7 @@ export default function App() {
                   File: <strong className="text-gray-800 dark:text-gray-200">{fileName}</strong>
                 </span>
                 <span className="text-xs text-gray-400">•</span>
-                <span className="text-xs text-green-600 dark:text-green-400 font-semibold">
+                <span className="text-xs text-green-600 dark:text-green-400 font-semibold max-w-[180px] truncate" title={`Target language: ${targetLang}`}>
                   Target: {targetLang.toUpperCase()}
                 </span>
               </div>

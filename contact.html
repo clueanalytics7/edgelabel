@@ -132,7 +132,15 @@
               <option value="Partnership">Partnership</option>
               <option value="Bug report">Bug report</option>
               <option value="Feature request">Feature request</option>
+              <option value="__custom__">✏️ Other / Custom enquiry topic (type your own)...</option>
             </select>
+            <div id="custom-type-wrap" class="hidden mt-2 p-3 bg-blue-50/60 dark:bg-blue-950/30 rounded-xl border border-blue-200 dark:border-blue-850 transition-all">
+              <label for="custom-type-input" class="block text-xs font-semibold text-blue-700 dark:text-blue-300 mb-1">
+                Type your specific enquiry topic
+              </label>
+              <input type="text" id="custom-type-input" placeholder="e.g. Clinical Trial Consortium, Custom SLA, Regulatory Validation..."
+                class="w-full px-3 py-2 rounded-lg border border-blue-200 dark:border-blue-700 bg-white dark:bg-gray-800 text-gray-900 dark:text-white text-xs focus:ring-2 focus:ring-blue-500 outline-none transition-all">
+            </div>
           </div>
           <div>
             <label for="message" class="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-1.5">Message <span class="text-blue-600">*</span></label>
@@ -287,7 +295,12 @@
       // 2. Client-side input validation
       const name = document.getElementById('name').value.trim();
       const email = document.getElementById('email').value.trim();
-      const type = document.getElementById('type').value;
+      let type = document.getElementById('type').value;
+      if (type === '__custom__') {
+        const customInput = document.getElementById('custom-type-input');
+        type = customInput ? customInput.value.trim() : '';
+        if (!type) type = 'Custom Enquiry';
+      }
       const message = document.getElementById('message').value.trim();
 
       if (!name || !email || !message) {
@@ -406,12 +419,22 @@
             msgField.value = "Hi Cueligence team,\n\nWe are requesting a quote for your managed data labelling and adjudication services.\n\nProject details:\n- Dataset size: approx [  ] rows / images\n- Data domain: [Clinical / Legal / Financial / Multi-modal]\n- Target completion timeframe: [  ]\n- Target Cohen's Kappa agreement threshold: > 0.85";
           }
         } else {
+          let found = false;
           for (let i = 0; i < sel.options.length; i++) {
-            if (sel.options[i].value.toLowerCase().includes(lowerReq) || lowerReq.includes(sel.options[i].value.toLowerCase())) {
+            if (sel.options[i].value !== '__custom__' && (sel.options[i].value.toLowerCase().includes(lowerReq) || lowerReq.includes(sel.options[i].value.toLowerCase()))) {
               sel.selectedIndex = i;
               planName = sel.options[i].text;
+              found = true;
               break;
             }
+          }
+          if (!found) {
+            sel.value = '__custom__';
+            const customWrap = document.getElementById('custom-type-wrap');
+            const customInput = document.getElementById('custom-type-input');
+            if (customWrap) customWrap.classList.remove('hidden');
+            if (customInput) customInput.value = reqType;
+            planName = reqType;
           }
         }
 
@@ -424,6 +447,21 @@
             formCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
           }
         }
+      }
+
+      // Toggle custom enquiry topic input on select change
+      const typeSelect = document.getElementById('type');
+      const customTypeWrap = document.getElementById('custom-type-wrap');
+      const customTypeInput = document.getElementById('custom-type-input');
+      if (typeSelect && customTypeWrap) {
+        typeSelect.addEventListener('change', function() {
+          if (this.value === '__custom__') {
+            customTypeWrap.classList.remove('hidden');
+            if (customTypeInput) customTypeInput.focus();
+          } else {
+            customTypeWrap.classList.add('hidden');
+          }
+        });
       }
     } catch (e) {
       console.warn('Query parameter parsing error:', e);

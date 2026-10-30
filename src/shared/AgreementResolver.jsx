@@ -80,10 +80,16 @@ export function AgreementResolverModal({
   const [annotator2Name, setAnnotator2Name] = useState('Annotator B');
   const [adjudications, setAdjudications] = useState({}); // rowIdx -> label
   const [filterMode, setFilterMode] = useState('disagreements'); // 'disagreements' | 'all'
+  const [customClasses, setCustomClasses] = useState([]);
+  const [customEditingRow, setCustomEditingRow] = useState(null);
   const fileInputRef = useRef(null);
 
   // Extract classes
   const classes = useMemo(() => labelsList.map((l) => l.name), [labelsList]);
+  const allAvailableClasses = useMemo(
+    () => Array.from(new Set([...classes, ...customClasses])),
+    [classes, customClasses]
+  );
 
   // Extract label strings
   const annotator1Labels = useMemo(
@@ -434,22 +440,73 @@ export function AgreementResolverModal({
                             )}
                           </td>
                           <td className="py-2.5 px-3 text-right">
-                            <select
-                              value={row.resolvedLabel || ''}
-                              onChange={(e) => handleResolveRow(row.idx, e.target.value)}
-                              className={`text-xs p-1 rounded-lg border outline-none font-semibold ${
-                                isAdjudicated
-                                  ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700'
-                                  : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
-                              }`}
-                            >
-                              <option value="">-- Choose --</option>
-                              {classes.map((c) => (
-                                <option key={c} value={c}>
-                                  {c}
-                                </option>
-                              ))}
-                            </select>
+                            {customEditingRow === row.idx ? (
+                              <div className="inline-flex items-center gap-1 justify-end">
+                                <input
+                                  type="text"
+                                  autoFocus
+                                  defaultValue={row.resolvedLabel || ''}
+                                  placeholder="Custom label..."
+                                  onKeyDown={(e) => {
+                                    if (e.key === 'Enter') {
+                                      const val = e.target.value.trim();
+                                      if (val) {
+                                        handleResolveRow(row.idx, val);
+                                        if (!allAvailableClasses.includes(val)) {
+                                          setCustomClasses((prev) => [...prev, val]);
+                                        }
+                                      }
+                                      setCustomEditingRow(null);
+                                    } else if (e.key === 'Escape') {
+                                      setCustomEditingRow(null);
+                                    }
+                                  }}
+                                  onBlur={(e) => {
+                                    const val = e.target.value.trim();
+                                    if (val) {
+                                      handleResolveRow(row.idx, val);
+                                      if (!allAvailableClasses.includes(val)) {
+                                        setCustomClasses((prev) => [...prev, val]);
+                                      }
+                                    }
+                                    setCustomEditingRow(null);
+                                  }}
+                                  className="text-xs px-2 py-1 rounded-lg border border-purple-400 bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 outline-none w-32 shadow-xs"
+                                />
+                                <button
+                                  type="button"
+                                  onClick={() => setCustomEditingRow(null)}
+                                  className="text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 text-xs px-1"
+                                  title="Cancel"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ) : (
+                              <select
+                                value={row.resolvedLabel || ''}
+                                onChange={(e) => {
+                                  if (e.target.value === '__custom__') {
+                                    setCustomEditingRow(row.idx);
+                                  } else {
+                                    handleResolveRow(row.idx, e.target.value);
+                                  }
+                                }}
+                                className={`text-xs p-1 rounded-lg border outline-none font-semibold ${
+                                  isAdjudicated
+                                    ? 'bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/40 dark:text-emerald-300 dark:border-emerald-700'
+                                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border-gray-200 dark:border-gray-700'
+                                }`}
+                              >
+                                <option value="">-- Choose --</option>
+                                {allAvailableClasses.map((c) => (
+                                  <option key={c} value={c}>
+                                    {c}
+                                  </option>
+                                ))}
+                                <option value="__custom__">✏️ Custom Label (type your own)...</option>
+                              </select>
+                            )}
                           </td>
                         </tr>
                       );
