@@ -45,7 +45,7 @@ EdgeLabel provides a unified tri-modal workspace designed to eliminate tool spra
 
 ## 🛡️ Dataset Quality Assurance & Trust Engine
 
-A central differentiator of EdgeLabel is its **Dataset Quality Assurance & Trust Engine**. Modern machine learning and regulatory audits require moving beyond basic manual tagging toward **measurable dataset integrity**.
+One of the central differentiators of EdgeLabel is its **Dataset Quality Assurance & Trust Engine**. Modern machine learning and regulatory audits require moving beyond basic manual tagging toward **measurable dataset integrity**.
 
 EdgeLabel complements annotation by transforming raw or partially labelled tables into datasets that engineering teams, clinical leads, and auditors can trust, inspect, and verify.
 
@@ -271,6 +271,16 @@ DEV-04,"Verify that the battery LED illuminates green prior to initiating data l
 5. Assign review statuses (**Draft**, **Needs Review**, **Approved**) with one click.
 6. Click **Export Translated CSV** to download the updated spreadsheet with the new `Translation` and `Review_Status` columns appended.
 
+#### 3. Example Export: Bilingual Localization CSV (`medical_localization_sample_translated.csv`)
+
+```csv
+item_id,source_en,context,translation_status,translation,review_status
+DEV-01,"Clean the EdgeLabel Sensor Probe with 70% isopropyl alcohol before patient contact.","Medical device cleaning manual",Draft,"Nettoyer le capteur EdgeLabel Sensor Probe avec de l'alcool isopropylique à 70% avant tout contact avec le patient.",Approved
+DEV-02,"Do not autoclave the Cueligence Optical Transducer. Store at room temperature.","Operating room warnings",Draft,"Ne pas passer à l'autoclave le Cueligence Optical Transducer. Conserver à température ambiante.",Approved
+DEV-03,"Patient indicated moderate pain in the right shoulder joint during abduction.","Clinical trial evaluation",Needs Review,"Le patient a signalé une douleur modérée dans l'articulation de l'épaule droite pendant l'abduction.",Approved
+DEV-04,"Verify that the battery LED illuminates green prior to initiating data logging.","Field engineering guide",Approved,"Vérifier que la diode DEL de la batterie s'allume en vert avant de démarrer l'enregistrement des données.",Approved
+```
+
 ---
 
 ### Workflow 4: Inter-Annotator Agreement (Cohen's Kappa) & Blinded Splits
@@ -295,11 +305,40 @@ DEV-04,"Verify that the battery LED illuminates green prior to initiating data l
    - $\kappa < 0.60$: Moderate/Fair Agreement (flags for senior adjudication).
 4. Review the conflict matrix and click **Apply Adjudicated Master** to resolve tie-breakers.
 
+#### 3. Example Export: Cohen's Kappa Concordance & Adjudication Report (`agreement_audit_report.json`)
+
+```json
+{
+  "audit_type": "Inter-Annotator Agreement & Adjudication Protocol",
+  "dataset": "clinical_triage_master_v2.csv",
+  "raters": ["Annotator_Dr_Evans", "Annotator_RN_Patel"],
+  "overlap_sample_size": 100,
+  "metrics": {
+    "observed_agreement_Po": 0.920,
+    "chance_agreement_Pe": 0.385,
+    "cohens_kappa": 0.870,
+    "interpretation": "Almost Perfect Agreement (Landis & Koch, 1977)"
+  },
+  "confusion_matrix": {
+    "Normal": { "Normal": 42, "Urgent": 2, "Critical": 0 },
+    "Urgent": { "Normal": 3, "Urgent": 33, "Critical": 1 },
+    "Critical": { "Normal": 0, "Urgent": 2, "Critical": 17 }
+  },
+  "adjudication_summary": {
+    "unanimous_rows": 92,
+    "disputed_rows": 8,
+    "adjudicated_by": "Lead Clinical Adjudicator",
+    "adjudication_timestamp": "2026-10-30T10:15:00Z",
+    "consensus_status": "Final Ground Truth Certified"
+  }
+}
+```
+
 ---
 
 ## 🔒 Zero-Server Privacy Enclave & Compliance
 
-Traditional cloud annotation tools (Labelbox, Scale AI, V7 Labs) transmit your raw data to remote AWS or GCP clusters, triggering lengthy 3–9 month enterprise Information Security (InfoSec) assessments, Data Protection Impact Assessments (DPIA), and Business Associate Agreements (BAA).
+Traditional cloud annotation tools tend to transmit your raw data to remote cloud clusters, triggering lengthy enterprise Information Security (InfoSec) assessments, Data Protection Impact Assessments (DPIA), and Business Associate Agreements (BAA).
 
 EdgeLabel operates on an **in-browser execution model**:
 
@@ -337,8 +376,6 @@ EdgeLabel offers transparent, predictable pricing with zero per-row cloud comput
 | **Team Workspace** | **£199** / first year<br/>*(Standard: £399/yr)* | Small businesses, clinical research units, AI agencies | Up to 10 seats, blinded assignment splitter, shared taxonomy codebooks, Cohen's Kappa adjudication, QA audit reports, and priority 24h SLA. |
 | **Enterprise Air-Gapped** | Custom Quote | Hospitals, pharmaceutical enterprises, defence enclaves | Self-hosted on-premises Docker containers, custom heuristic regex engines, signed HIPAA BAA agreements, SSO/SAML integration. |
 | **Managed Labelling** | Per-Project Quote | Teams requiring vetted annotators | Cueligence's domain specialists label and adjudicate datasets with guaranteed inter-annotator concordance ($\kappa > 0.85$). |
-
-*Note: All currency values are in Pounds Sterling (£). British English spelling conventions apply throughout the platform.*
 
 ---
 
